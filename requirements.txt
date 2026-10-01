@@ -1,0 +1,9 @@
+# Se requiere una versión exacta de PySpark
+pyspark==3.5.3
+
+# Tablas 
+pandas>=2.0
+pyarrow>=14
+
+# Para la ejecución del notebook
+jupyter
