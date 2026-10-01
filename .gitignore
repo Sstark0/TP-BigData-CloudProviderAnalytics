@@ -216,3 +216,16 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- Proyecto: los datos del Data Lake NO se versionan ---
+datalake/**
+!datalake/**/
+!datalake/**/.gitkeep
+
+# --- Secretos de AstraDB ---
+*secure-connect*.zip
+
+# --- Archivos que genera Spark ---
+spark-warehouse/
+metastore_db/
+derby.log
