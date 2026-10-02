@@ -13,7 +13,7 @@ La tabla "hallazgo → evidencia → impacto" y la de implicancias para la arqui
 Los chequeos sobre maestros se clasifican en **Calidad** (validez, completitud, consistencia), **Negocio** (condiciones válidas que se analizan) y **Gobierno** (PII).
 
 ### Volumen y forma de los datos
-- **Landing total ≈ 13 MB**: 7 CSV (≈ 370 KB) + 120 archivos JSONL de eventos (12.624 KB ≈ 12,3 MB; 1 KB = 1.024 bytes).
+- **Landing total ≈ 13 MB**: 7 CSV (307.906 bytes ≈ 301 KiB) + 120 archivos JSONL de eventos (12.624 KiB ≈ 12,3 MiB; 1 KiB = 1.024 bytes).
 - **43.200 eventos** · 60 días (2025-07-03 → 2025-08-31) · **exactamente 720 eventos/día** · 80 organizaciones · 400 recursos · 6 servicios · 7 regiones · 3 métricas.
 - Archivos de eventos de **≈ 105 KB** cada uno: un bloque HDFS de 128 MB es ~1.250 veces más grande → caso típico de *small files*. **Impacto:** compactar al promover a Bronze/Silver y particionar grueso (por fecha, no por fecha × servicio × región).
 
@@ -68,7 +68,7 @@ Los chequeos sobre maestros se clasifican en **Calidad** (validez, completitud, 
 - Ninguna fuente tiene duplicados sobre su clave natural ni `org_id` huérfanos; `billing_monthly` cumple el grano 1 factura por (org, mes) y `users.email` es único (notebook, celda de integridad referencial de maestros).
 - **Dialecto CSV:** los archivos usan comillas duplicadas (`""`) como escape (RFC 4180). Sin `option("escape", '"')`, Spark cortaba `tags_json` en la primera coma interna (se contaban 45 recursos `pii:true` en lugar de 85). Corregido en el lector.
 - `billing_monthly` = 80 orgs × 3 meses (jun, jul, ago 2025). Los eventos cubren solo jul–ago → **junio no se puede conciliar** contra uso.
-- **Impuestos = 21 % exacto** en las 240 facturas; en las 13 con subtotal negativo el impuesto también es −21 % → se interpretan como **notas de crédito** (D-09).
+- **Impuestos ≈ 21 % de abs(subtotal)** en las 240 facturas, con redondeo a centavos. En las 13 con subtotal negativo el impuesto es positivo; no se confirma semántica de nota de crédito (D-09).
 
 ### Facturación y moneda (notebook, celdas de normalización a USD)
 | Criterio para llevar a USD | Revenue jun–ago |

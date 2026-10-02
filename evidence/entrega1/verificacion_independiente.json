@@ -1,0 +1,303 @@
+{
+  "billing_monthly": {
+    "rows": 240,
+    "bytes": 15854,
+    "fields": [
+      "invoice_id",
+      "org_id",
+      "month",
+      "subtotal",
+      "credits",
+      "taxes",
+      "currency",
+      "exchange_rate_to_usd"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "invoice_id": 0,
+      "org_id": 0,
+      "month": 0,
+      "subtotal": 0,
+      "credits": 137,
+      "taxes": 0,
+      "currency": 0,
+      "exchange_rate_to_usd": 0
+    }
+  },
+  "customers_orgs": {
+    "rows": 80,
+    "bytes": 7746,
+    "fields": [
+      "org_id",
+      "org_name",
+      "industry",
+      "hq_region",
+      "plan_tier",
+      "is_enterprise",
+      "signup_date",
+      "sales_rep",
+      "lifecycle_stage",
+      "marketing_source",
+      "nps_score"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "org_id": 0,
+      "org_name": 0,
+      "industry": 0,
+      "hq_region": 0,
+      "plan_tier": 0,
+      "is_enterprise": 0,
+      "signup_date": 0,
+      "sales_rep": 0,
+      "lifecycle_stage": 0,
+      "marketing_source": 0,
+      "nps_score": 11
+    }
+  },
+  "marketing_touches": {
+    "rows": 1500,
+    "bytes": 101998,
+    "fields": [
+      "touch_id",
+      "org_id",
+      "campaign",
+      "channel",
+      "timestamp",
+      "clicked",
+      "converted"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "touch_id": 0,
+      "org_id": 0,
+      "campaign": 0,
+      "channel": 0,
+      "timestamp": 0,
+      "clicked": 0,
+      "converted": 0
+    }
+  },
+  "nps_surveys": {
+    "rows": 92,
+    "bytes": 3977,
+    "fields": [
+      "org_id",
+      "survey_date",
+      "nps_score",
+      "comment"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "org_id": 0,
+      "survey_date": 0,
+      "nps_score": 19,
+      "comment": 10
+    }
+  },
+  "resources": {
+    "rows": 400,
+    "bytes": 36703,
+    "fields": [
+      "resource_id",
+      "org_id",
+      "service",
+      "region",
+      "created_at",
+      "state",
+      "tags_json"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "resource_id": 0,
+      "org_id": 0,
+      "service": 0,
+      "region": 0,
+      "created_at": 0,
+      "state": 0,
+      "tags_json": 83
+    }
+  },
+  "support_tickets": {
+    "rows": 1000,
+    "bytes": 70945,
+    "fields": [
+      "ticket_id",
+      "org_id",
+      "category",
+      "severity",
+      "created_at",
+      "resolved_at",
+      "csat",
+      "sla_breached"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "ticket_id": 0,
+      "org_id": 0,
+      "category": 0,
+      "severity": 0,
+      "created_at": 0,
+      "resolved_at": 240,
+      "csat": 254,
+      "sla_breached": 0
+    }
+  },
+  "users": {
+    "rows": 800,
+    "bytes": 70683,
+    "fields": [
+      "user_id",
+      "org_id",
+      "email",
+      "role",
+      "active",
+      "created_at",
+      "last_login"
+    ],
+    "duplicates": 0,
+    "nulls": {
+      "user_id": 0,
+      "org_id": 0,
+      "email": 0,
+      "role": 0,
+      "active": 0,
+      "created_at": 0,
+      "last_login": 139
+    }
+  },
+  "events": {
+    "rows": 43200,
+    "files": 120,
+    "bytes": 12927515,
+    "fields": [
+      "carbon_kg",
+      "cost_usd_increment",
+      "event_id",
+      "genai_tokens",
+      "metric",
+      "org_id",
+      "region",
+      "resource_id",
+      "schema_version",
+      "service",
+      "timestamp",
+      "unit",
+      "value"
+    ],
+    "versions": {
+      "2": 32400,
+      "1": 10800
+    },
+    "version_ranges": {
+      "1": [
+        "2025-07-03T00:02:00Z",
+        "2025-07-17T23:56:00Z"
+      ],
+      "2": [
+        "2025-07-18T00:01:00Z",
+        "2025-08-31T23:58:00Z"
+      ]
+    },
+    "null_value": 877,
+    "text_value": 1309,
+    "null_unit": 2075,
+    "negative_cost": 216,
+    "below_tolerance": 211,
+    "min_cost": -154.4608,
+    "max_cost": 317.4308,
+    "sum_cost": 147433.9778,
+    "duplicate_event_id": 0,
+    "context_collisions": 14,
+    "carbon_present": 32400,
+    "tokens_present": 3132,
+    "days": {
+      "2025-08-17": 720,
+      "2025-07-16": 720,
+      "2025-08-18": 720,
+      "2025-07-29": 720,
+      "2025-08-11": 720,
+      "2025-08-16": 720,
+      "2025-07-12": 720,
+      "2025-08-07": 720,
+      "2025-08-31": 720,
+      "2025-07-23": 720,
+      "2025-07-26": 720,
+      "2025-08-08": 720,
+      "2025-07-06": 720,
+      "2025-07-18": 720,
+      "2025-08-19": 720,
+      "2025-08-24": 720,
+      "2025-08-09": 720,
+      "2025-08-10": 720,
+      "2025-07-19": 720,
+      "2025-08-04": 720,
+      "2025-08-22": 720,
+      "2025-08-14": 720,
+      "2025-07-27": 720,
+      "2025-08-02": 720,
+      "2025-08-26": 720,
+      "2025-08-28": 720,
+      "2025-07-22": 720,
+      "2025-07-30": 720,
+      "2025-07-14": 720,
+      "2025-08-15": 720,
+      "2025-07-21": 720,
+      "2025-07-24": 720,
+      "2025-07-15": 720,
+      "2025-08-06": 720,
+      "2025-08-13": 720,
+      "2025-07-25": 720,
+      "2025-08-01": 720,
+      "2025-07-07": 720,
+      "2025-08-03": 720,
+      "2025-08-05": 720,
+      "2025-07-13": 720,
+      "2025-08-29": 720,
+      "2025-07-31": 720,
+      "2025-07-10": 720,
+      "2025-07-17": 720,
+      "2025-08-25": 720,
+      "2025-08-21": 720,
+      "2025-07-11": 720,
+      "2025-08-27": 720,
+      "2025-08-20": 720,
+      "2025-07-05": 720,
+      "2025-07-20": 720,
+      "2025-07-03": 720,
+      "2025-08-12": 720,
+      "2025-07-04": 720,
+      "2025-07-28": 720,
+      "2025-08-23": 720,
+      "2025-07-08": 720,
+      "2025-08-30": 720,
+      "2025-07-09": 720
+    },
+    "late_simulation": {
+      "1": 42801,
+      "24": 42118,
+      "72": 40683,
+      "168": 37831
+    },
+    "mean_span_days": 59.68834490740741,
+    "resource_orphans": 0,
+    "org_orphans": 0,
+    "before_resource_creation": 7371
+  },
+  "checks": {
+    "pii_resources": 85,
+    "users_login_before_creation": 232,
+    "csat_invalid": 40,
+    "billing_negative": 13,
+    "billing_usd_fx_not_one": 160,
+    "billing_revenue": {
+      "A": 164184.9028152,
+      "B": 164293.0622322,
+      "C": 211294.58
+    }
+  },
+  "sha256": {
+    "Consigna_Proyecto_Integrador_Big_Data_ITBA_2C_2026.pdf": "ad683fe7666fc85e3d21f0b856959d9ea98f30fbc48ea8cef1ee389182c7f854",
+    "cloud_provider_challenge_dataset_v1.zip": "49bdc33693426add261750a0d4e6225d3fc5f9e334dc0689786f43f8d29d1141"
+  }
+}

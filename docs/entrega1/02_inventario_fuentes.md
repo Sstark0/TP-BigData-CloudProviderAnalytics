@@ -74,7 +74,7 @@ Calidad: **[C]** calidad (validez, completitud, consistencia) · **[N]** condici
   `subtotal`, `credits`, `taxes` → decimal(12,2) · `exchange_rate_to_usd` → decimal(12,6).
 - **Calidad:** [C] `credits` nulo 137 (57 %; supuesto = 0, D-09) · 160 facturas USD con tasa ≠ 1 ·
   montos ARS en escala USD · 50 de 80 organizaciones cambian de moneda entre meses ·
-  [N] 13 subtotales negativos con impuesto −21 % (notas de crédito, D-09) · impuestos = 21 % exacto.
+  [N] 13 subtotales negativos con impuesto positivo (D-09); taxes = 21 % de abs(subtotal), con redondeo a centavos.
 - **Riesgos:** **la normalización a USD cambia la facturación un 22 %** según el criterio (D-08, inconsistencia
   intencional confirmada por el docente). Junio no tiene eventos para conciliar contra uso.
 
@@ -123,12 +123,12 @@ Silver que la componen → sus `event_id` y `source_file` en Bronze → la líne
 
 ## 2.5 Riesgos de datos (resumen)
 
-Se desarrollan con probabilidad, impacto y responsable en el plan inicial (sección 7).
+Probabilidad, impacto y roles propuestos: diseño integrado, sección 7.
 
 | # | Riesgo | Fuente | Mitigación |
 |---|---|---|---|
 | RD-1 | Normalización de moneda ambigua | billing | Conservar monto, moneda y tasa; opciones documentadas (D-08) |
-| RD-2 | Llegada desordenada de eventos | eventos | Streaming sin estado + agregados en batch (D-04) |
+| RD-2 | Llegada desordenada de eventos | eventos | Captura completa + dedupe/publicación incremental + reconciliación batch (D-04) |
 | RD-3 | Dialecto CSV (escape de comillas) | CSV | `escape = '"'` en el lector; verificación de conteos |
 | RD-4 | Columnas asignadas por posición con esquema explícito | CSV | Validar encabezados (`enforceSchema = false`) en Bronze |
 | RD-5 | Nueva versión de esquema de eventos | eventos | Esquema superset + `_corrupt_record` + alerta por campos desconocidos |

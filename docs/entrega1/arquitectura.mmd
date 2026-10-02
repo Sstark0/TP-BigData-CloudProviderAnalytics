@@ -1,0 +1,18 @@
+flowchart TB
+  CSV[7 CSV: CRM, recursos, tickets, billing, NPS, marketing] --> L[Landing inmutable]
+  JSON[120 JSONL: usage v1 / v2] --> L
+  L --> B[PySpark batch: esquemas y metadata]
+  L --> S[Structured Streaming: captura completa y checkpoint]
+  B --> BR[Bronze Parquet / grano origen]
+  S --> BR
+  BR --> SI[Silver: casts, dedupe, joins, flags]
+  SI --> OP[Micro-lotes: ventanas operativas provisionales]
+  SI --> BA[Batch diario: reconciliación histórica]
+  OP --> G[Gold FinOps / Soporte / Producto]
+  BA --> G
+  G --> C[Cassandra / AstraDB query-first]
+  C --> Q[Consultas y tableros]
+  SI --> R[Quarantine Parquet con motivo]
+  GOV[Transversales: calidad, acceso, linaje, metadatos, métricas] -.-> BR
+  GOV -.-> SI
+  GOV -.-> G

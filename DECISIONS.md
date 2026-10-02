@@ -1,19 +1,19 @@
 # Registro de decisiones técnicas
 
 Formato: cada decisión tiene **contexto → decisión → alternativas descartadas → consecuencias**.
-Estado: `Aceptada` · `Propuesta` (a validar en el feedback del 28/09) · `Abierta` (sin resolver todavía).
+Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega reprogramada al 05/10, hora pendiente) · `Abierta` (sin resolver todavía).
 
 | ID | Decisión | Estado | Fecha |
 |---|---|---|---|
 | D-01 | Entorno de ejecución: PySpark 3.5 en Colab / local; Docker diferido | Aceptada | 2026-09-25 |
 | D-02 | Landing inmutable; lectura con esquema explícito "defensivo" | Aceptada | 2026-09-25 |
 | D-03 | Patrón arquitectónico híbrido | Propuesta | 2026-09-25 |
-| D-04 | Tratamiento del desorden temporal de los eventos (watermark) | Abierta | 2026-09-25 |
+| D-04 | Replay, late data e idempotencia | Propuesta | 2026-09-25 |
 | D-05 | Numéricos ambiguos leídos como texto y casteados con fallback | Aceptada | 2026-09-25 |
 | D-06 | Deduplicación de eventos por `event_id` | Aceptada | 2026-09-25 |
 | D-07 | Configuración de Spark para dataset chico | Aceptada | 2026-09-25 |
 | D-08 | Normalización del revenue a USD (moneda y tasa de cambio) | Abierta · inconsistencia intencional (docente) | 2026-09-28 |
-| D-09 | Subtotales negativos = notas de crédito; `credits` nulo = 0 (supuesto) | Propuesta | 2026-09-28 |
+| D-09 | Subtotales negativos e impuesto positivo; `credits` nulo = 0 (supuesto) | Propuesta | 2026-09-28 |
 | D-10 | Dialecto CSV: `escape = '"'` y validación de encabezados | Aceptada | 2026-09-30 |
 
 ---
@@ -31,14 +31,17 @@ Estado: `Aceptada` · `Propuesta` (a validar en el feedback del 28/09) · `Abier
 
 ## D-03 · Patrón arquitectónico (propuesta)
 - **Contexto.** Maestros chicos y de baja frecuencia (80 orgs, 240 facturas en 3 meses) vs. eventos de uso en flujo continuo (720/día en la muestra). La consigna exige como piso streaming de eventos + batch de maestros/facturación.
-- **Decisión propuesta.** Híbrido: **eventos con un único camino Structured Streaming** (reprocesamiento por re-stream desde Landing, estilo Kappa) + **batch para maestros y facturación**.
+- **Decisión propuesta.** Híbrido: **eventos con ingesta Structured Streaming**, publicación incremental y reconciliación batch diaria del histórico + **batch para maestros y facturación**. Es híbrido con un único contrato de transformación reutilizado; no se presenta como Kappa pura.
 - **Descartado.** *Lambda clásica* (batch layer + speed layer sobre los mismos eventos): duplica la lógica sin ganancia, porque Landing ya permite recalcular. *Kappa pura*: tratar CSV mensuales como streams es artificial.
 - **Detalle.** Se desarrolla en el paso 4 (arquitectura v1).
 
-## D-04 · Desorden temporal de los eventos (abierta)
-- **Contexto.** Cada archivo JSONL cubre ~59,7 de los 60 días. Simulando un archivo por micro-lote (`maxFilesPerTrigger = 1`, en orden de fecha de modificación), un watermark de 24 h dejaría atrasado el 97,5 % de los eventos respecto del máximo `event_time` observado. Con la configuración por defecto (todos los archivos en el primer micro-lote) no habría late data, pero tampoco una simulación real de streaming. Evidencia: notebook, celda del watermark; es una simulación a validar en la entrega 2.
-- **Opciones.** (a) Streaming solo *stateless* hacia Bronze (dedupe por `event_id` con watermark amplio o `foreachBatch` + merge) y agregados diarios en batch sobre Silver. (b) Watermark amplio (≥ 60 días) aceptando estado grande. (c) Documentar que en producción los eventos llegarían casi ordenados y usar un watermark operativo.
-- **A decidir** en el paso 4, con la opción (a) como favorita.
+## D-04 · Replay, late data e idempotencia (propuesta v1)
+- **Evidencia.** La simulación con un archivo por micro-lote y watermark 24 h identifica 42.118 eventos atrasados; no demuestra el descarte real de Spark.
+- **Decisión.** Captura completa hacia Bronze sin filtro por watermark. Dedupe exacto por event_id en publicación Silver. Para el prototipo futuro en Parquet: staging por run_id/batch_id, manifiesto de lotes completados, reemplazo de particiones afectadas y recuperación de corrida incompleta; escritor único. foreachBatch por sí solo no ofrece idempotencia y Parquet no posee merge transaccional nativo.
+- **Operación propuesta.** Vista operacional por micro-lote con ventana UTC de 5 minutos y watermark 24 h, identificada como provisional; late data se conserva en Bronze y se incorpora mediante reconciliación batch diaria. El histórico canónico no se deriva exclusivamente de la ventana.
+- **Replay didáctico.** Mantener Landing intacto. Una copia derivada para demo puede ordenarse por event_ts fuera de Landing, con manifiesto del origen. Ensayar también archivos originales mezclados y comparar sumas completas. No sustituir el original.
+- **Trade-off.** Reescribir particiones pequeñas simplifica el prototipo, pero no escala ni es atómico en todos los almacenamientos. En producción evaluar formato transaccional; no incorporarlo ahora como implementación.
+- **Estado.** Diseño propuesto; validar en entrega 2 watermark, checkpoint, dedupe, recuperación y latencia. Véase documento integrado.
 
 ## D-05 · Numéricos ambiguos
 - **Contexto.** El 3 % de `value` llega como texto (`"95.0"`). Declararlo `DoubleType` en la lectura lo convertiría en NULL en silencio.
@@ -63,11 +66,11 @@ Estado: `Aceptada` · `Propuesta` (a validar en el feedback del 28/09) · `Abier
 - **Propuesta.** Conservar en Silver monto, moneda y tasa originales (sin perder el dato de origen) y calcular `revenue_usd = subtotal − credits + taxes` con la opción **C**, marcando `flag_fx_usd_distinto_de_1` y `flag_moneda_inconsistente`. Si el docente indica aplicar la tasa, el cambio es una sola expresión porque los datos originales se conservan.
 - **Estado.** Consultado con el docente (2026-09-28): la inconsistencia es **intencional** y para la entrega 1 corresponde documentar el problema y las posibles soluciones. Se mantienen las tres opciones con su impacto; la **C** es la preferida por la evidencia. Se resuelve antes de construir el mart `revenue_by_org_month` (entrega 2).
 
-## D-09 · Subtotales negativos y créditos nulos (propuesta)
-- **Contexto.** 13 facturas (5,4 %) tienen subtotal negativo y 137 (57,1 %) tienen `credits` nulo.
-- **Evidencia.** `taxes / subtotal` = 0,21 en las 240 facturas; en las 13 negativas el impuesto también es negativo (−21 %), como en una nota de crédito que revierte monto e IVA.
-- **Decisión propuesta.** (a) Los subtotales negativos son **notas de crédito válidas**: se conservan y restan del revenue (no van a quarantine). (b) **Supuesto pendiente de validación:** `credits` nulo se normaliza a 0 ("sin créditos"). El dataset no permite distinguir entre "no hubo crédito", "dato faltante" o "no informado"; se registra en supuestos y riesgos y se marca con `flag_credits_imputado`.
-- **Descartado.** Mandar los negativos a quarantine: subestimaría las devoluciones y sobrestimaría el revenue.
+## D-09 · Subtotales negativos y créditos nulos (propuesta corregida)
+- **Medido.** 13 subtotales negativos y 137 credits nulos. Las 13 facturas negativas tienen taxes positivo: taxes/subtotal ≈ -0,21. Las otras 227 tienen ratio ≈ +0,21. La regla observada es taxes ≈ 0,21 × abs(subtotal), redondeado.
+- **Decisión propuesta.** Conservar subtotal y taxes originales; marcar flag_subtotal_negativo y flag_signo_impuesto. No afirmar que sean notas de crédito válidas ni corregir signos automáticamente.
+- **Supuesto.** credits NULL → 0 sólo para las comparaciones exploratorias y un cálculo provisional, con flag_credits_imputado. La interpretación contable y el efecto en revenue siguen abiertos antes del mart de entrega 2.
+- **Consecuencia.** Se corrige la explicación anterior sin alterar datos ni cifras del perfil. FX, signo del impuesto y ausencia de créditos se resuelven como contratos explícitos.
 
 ## D-10 · Dialecto CSV
 - **Contexto.** Los CSV siguen RFC 4180: los campos con comas van entre comillas y las comillas internas se duplican (`""`). Spark usa por defecto la barra invertida como escape: con esa configuración `tags_json` se cortaba en la primera coma interna (45 recursos con `pii:true` detectados en lugar de 85).
