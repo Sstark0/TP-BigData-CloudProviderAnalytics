@@ -50,14 +50,16 @@ Correcciones de esta preparación y comprobaciones: [cierre](evidence/entrega1/C
 
 ## Quickstart (entrega 1: exploración de datos)
 
-### Google Colab (recomendado)
+### Google Colab (alternativa por validar)
+Esta preparación validó el entorno local Python3.11; no ejecutó Colab. Verificar una versión de Python compatible con Spark3.5 antes de usar esta alternativa.
+
 1. Clonar o descargar este repositorio.
 2. Copiar el dataset del docente dentro de `datalake/landing/` (ver [`data/README.md`](data/README.md)).
 3. Subir la carpeta completa `TP-BigData-CloudProviderAnalytics/` a la raíz de Google Drive (*Mi unidad*). Si está en otro lugar, definir `PROJECT_ROOT` en una celda antes de la preparación.
 4. En Drive, abrir `notebooks/01_exploracion_fuentes.ipynb` con **Google Colaboratory**.
 5. *Entorno de ejecución → Ejecutar todas*. La primera celda pide permiso para conectar Drive e instala PySpark.
 
-### Local
+### Local (entorno validado)
 Requisitos: **Python 3.11** (evitar Python3.14 con Spark3.5), **Java 11 o 17** (Spark corre sobre Java; no se instala con pip) y PySpark 3.5.x.
 ```bash
 git clone https://github.com/Sstark0/TP-BigData-CloudProviderAnalytics.git
