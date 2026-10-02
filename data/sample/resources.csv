@@ -1,0 +1,21 @@
+resource_id,org_id,service,region,created_at,state,tags_json
+res_eubfn9kr,org_pnsm43d8,compute,sa-east,2025-08-14,running,"[""env:prod""]"
+res_fvb66h3r,org_i7p5tb94,database,ap-south,2025-06-05,stopped,
+res_cbrlqmn4,org_d14ve92m,storage,eu-central,2025-08-10,running,"[""env:prod"", ""pii:true""]"
+res_ew1yf0dw,org_pja1wj0t,networking,us-west,2025-06-02,running,"[""pii:true""]"
+res_n6mbypjd,org_pja1wj0t,storage,us-west,2025-06-05,running,"[""env:prod"", ""costcenter:beta""]"
+res_aw1lxxd8,org_1t2tala7,compute,eu-central,2025-05-20,running,"[""team:core"", ""costcenter:alpha"", ""pii:true""]"
+res_gr6e7ga2,org_ly8ozcyw,database,ap-south,2025-08-07,stopped,"[""env:dev"", ""pii:true""]"
+res_z5p3vob5,org_n9j2qp89,compute,sa-east,2025-06-21,running,"[""team:core"", ""env:prod""]"
+res_po4ljedg,org_ir4cowgz,analytics,sa-east,2025-07-21,running,"[""env:prod"", ""team:ml"", ""backup:daily""]"
+res_1f8yc8gz,org_phr62gds,storage,ap-south,2025-06-24,terminated,"[""costcenter:alpha""]"
+res_ololn3eh,org_n9j2qp89,compute,ap-northeast,2025-06-17,terminated,"[""env:dev""]"
+res_r1necqor,org_1n13jcat,database,eu-central,2025-07-02,terminated,"[""pii:true"", ""costcenter:beta"", ""team:ml""]"
+res_6atvd1xe,org_afeyuhz1,compute,ap-northeast,2025-05-14,stopped,
+res_dwh8n92t,org_pbhsahxt,storage,sa-east,2025-07-29,stopped,"[""pii:true""]"
+res_8tb38wxg,org_okep7y6w,storage,eu-west,2025-08-12,running,"[""team:core"", ""env:dev""]"
+res_jjy94h4k,org_874frhoc,storage,eu-west,2025-05-17,running,
+res_0ukoefuk,org_a7tz0ync,analytics,sa-east,2025-06-22,running,"[""pii:true"", ""team:ml"", ""costcenter:alpha""]"
+res_s258w9zj,org_1swjckjl,database,us-east,2025-05-19,stopped,"[""costcenter:beta""]"
+res_mqvayxar,org_axeqbnhl,storage,ap-northeast,2025-05-31,stopped,
+res_o6z1t2xc,org_1swjckjl,database,ap-south,2025-07-12,running,"[""team:core""]"

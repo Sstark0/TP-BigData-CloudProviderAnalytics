@@ -1,0 +1,21 @@
+org_id,org_name,industry,hq_region,plan_tier,is_enterprise,signup_date,sales_rep,lifecycle_stage,marketing_source,nps_score
+org_xaji0y6d,Nimbus Labs 0,Education,sa-east,standard,True,2025-05-26,rep_c,churned,partner,
+org_pbhsahxt,Nova Tech 1,Education,us-east,standard,False,2025-06-16,rep_d,lead,event,-3.0
+org_hv3a3zmf,Gamma Data 2,Media,eu-central,pro,True,2025-05-12,rep_c,active,organic,4.0
+org_8mdd4v30,Apex Data 3,Manufacturing,sa-east,standard,False,2025-05-30,rep_b,active,ads,12.0
+org_t9nt3w5u,Delta Digital 4,E-commerce,us-west,standard,False,2025-05-16,rep_d,active,partner,17.0
+org_zbikcidk,Omega Tech 5,Retail,eu-central,pro,False,2025-05-20,rep_e,active,organic,
+org_wnnhj7xv,Alpha Data 6,Manufacturing,sa-east,pro,False,2025-05-29,rep_c,active,event,14.0
+org_g0fn9xuy,Nimbus Data 7,E-commerce,us-east,free,False,2025-06-24,rep_e,active,event,4.0
+org_41ibljh7,Gamma Cloud 8,Education,us-west,standard,False,2025-05-26,rep_c,active,ads,22.0
+org_5lxo6qji,Omega Labs 9,Healthcare,ap-south,free,False,2025-06-03,rep_d,at_risk,referral,12.0
+org_ujv6oh9s,Delta Digital 10,Energy,sa-east,enterprise,False,2025-05-10,rep_a,active,event,51.0
+org_dbdw2pcn,Nimbus AI 11,Retail,ap-northeast,standard,True,2025-05-04,rep_d,active,event,12.0
+org_9t84azyt,Vertex Data 12,Fintech,ap-northeast,enterprise,False,2025-06-04,rep_b,active,referral,
+org_jxepq85j,Alpha Cloud 13,Gaming,ap-northeast,free,False,2025-05-20,rep_d,prospect,event,81.0
+org_sg65kxvf,Omega Data 14,E-commerce,ap-northeast,standard,False,2025-06-21,rep_a,active,event,
+org_1t2tala7,Gamma Data 15,Media,eu-central,enterprise,False,2025-06-03,rep_b,active,event,41.0
+org_53lc58dr,Apex Digital 16,Energy,eu-west,standard,True,2025-05-10,rep_a,active,organic,11.0
+org_c11ertj5,Apex Cloud 17,Retail,eu-west,pro,False,2025-06-27,rep_d,churned,organic,14.0
+org_pht0hl9x,Nimbus Data 18,Government,eu-central,pro,False,2025-05-09,rep_a,active,referral,-4.0
+org_pseimvih,Vertex Data 19,Fintech,eu-central,standard,False,2025-05-30,rep_d,active,event,-7.0

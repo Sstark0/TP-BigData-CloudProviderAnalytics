@@ -1,0 +1,994 @@
+{
+  "inventario_fisico": [
+    {
+      "fuente": "billing_monthly",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 15854,
+      "KB": 15.5
+    },
+    {
+      "fuente": "customers_orgs",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 7746,
+      "KB": 7.6
+    },
+    {
+      "fuente": "marketing_touches",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 101998,
+      "KB": 99.6
+    },
+    {
+      "fuente": "nps_surveys",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 3977,
+      "KB": 3.9
+    },
+    {
+      "fuente": "resources",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 36703,
+      "KB": 35.8
+    },
+    {
+      "fuente": "support_tickets",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 70945,
+      "KB": 69.3
+    },
+    {
+      "fuente": "users",
+      "formato": "csv",
+      "archivos": 1,
+      "bytes": 70683,
+      "KB": 69.0
+    },
+    {
+      "fuente": "usage_events_stream",
+      "formato": "jsonl",
+      "archivos": 120,
+      "bytes": 12927515,
+      "KB": 12624.5
+    }
+  ],
+  "perfil_csv": [
+    {
+      "fuente": "customers_orgs",
+      "filas": 80,
+      "columnas": 11,
+      "clave": "org_id",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "org_name",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "industry",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "hq_region",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "plan_tier",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "is_enterprise",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "signup_date",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "sales_rep",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "lifecycle_stage",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "marketing_source",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "nps_score",
+          "nulos": 11,
+          "pct_nulos": 13.8
+        }
+      ]
+    },
+    {
+      "fuente": "users",
+      "filas": 800,
+      "columnas": 7,
+      "clave": "user_id",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "user_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "email",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "role",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "active",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "created_at",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "last_login",
+          "nulos": 139,
+          "pct_nulos": 17.4
+        }
+      ]
+    },
+    {
+      "fuente": "resources",
+      "filas": 400,
+      "columnas": 7,
+      "clave": "resource_id",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "resource_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "service",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "region",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "created_at",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "state",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "tags_json",
+          "nulos": 83,
+          "pct_nulos": 20.8
+        }
+      ]
+    },
+    {
+      "fuente": "support_tickets",
+      "filas": 1000,
+      "columnas": 8,
+      "clave": "ticket_id",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "ticket_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "category",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "severity",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "created_at",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "resolved_at",
+          "nulos": 240,
+          "pct_nulos": 24.0
+        },
+        {
+          "columna": "csat",
+          "nulos": 254,
+          "pct_nulos": 25.4
+        },
+        {
+          "columna": "sla_breached",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        }
+      ]
+    },
+    {
+      "fuente": "marketing_touches",
+      "filas": 1500,
+      "columnas": 7,
+      "clave": "touch_id",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "touch_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "campaign",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "channel",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "timestamp",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "clicked",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "converted",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        }
+      ]
+    },
+    {
+      "fuente": "nps_surveys",
+      "filas": 92,
+      "columnas": 4,
+      "clave": "org_id+survey_date",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "survey_date",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "nps_score",
+          "nulos": 19,
+          "pct_nulos": 20.7
+        },
+        {
+          "columna": "comment",
+          "nulos": 10,
+          "pct_nulos": 10.9
+        }
+      ]
+    },
+    {
+      "fuente": "billing_monthly",
+      "filas": 240,
+      "columnas": 8,
+      "clave": "invoice_id",
+      "duplicados_clave": 0,
+      "detalle": [
+        {
+          "columna": "invoice_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "org_id",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "month",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "subtotal",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "credits",
+          "nulos": 137,
+          "pct_nulos": 57.1
+        },
+        {
+          "columna": "taxes",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "currency",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        },
+        {
+          "columna": "exchange_rate_to_usd",
+          "nulos": 0,
+          "pct_nulos": 0.0
+        }
+      ]
+    }
+  ],
+  "chequeos_maestros": [
+    {
+      "tipo": "Calidad",
+      "dimension": "Consistencia",
+      "fuente": "billing_monthly",
+      "chequeo": "currency = USD con exchange_rate_to_usd <> 1",
+      "casos": 160,
+      "total": 240,
+      "pct": 66.7
+    },
+    {
+      "tipo": "Negocio",
+      "dimension": "-",
+      "fuente": "billing_monthly",
+      "chequeo": "subtotal negativo (posible nota de crédito, ver D-09)",
+      "casos": 13,
+      "total": 240,
+      "pct": 5.4
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Completitud",
+      "fuente": "billing_monthly",
+      "chequeo": "credits nulo",
+      "casos": 137,
+      "total": 240,
+      "pct": 57.1
+    },
+    {
+      "tipo": "Negocio",
+      "dimension": "-",
+      "fuente": "billing_monthly",
+      "chequeo": "moneda distinta de USD (requiere normalización)",
+      "casos": 80,
+      "total": 240,
+      "pct": 33.3
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Completitud",
+      "fuente": "customers_orgs",
+      "chequeo": "nps_score nulo",
+      "casos": 11,
+      "total": 80,
+      "pct": 13.8
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Validez",
+      "fuente": "customers_orgs",
+      "chequeo": "nps_score fuera de [-100, 100]",
+      "casos": 1,
+      "total": 80,
+      "pct": 1.2
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Completitud",
+      "fuente": "nps_surveys",
+      "chequeo": "nps_score nulo",
+      "casos": 19,
+      "total": 92,
+      "pct": 20.7
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Validez",
+      "fuente": "nps_surveys",
+      "chequeo": "nps_score fuera de [0, 10] (escala individual)",
+      "casos": 66,
+      "total": 92,
+      "pct": 71.7
+    },
+    {
+      "tipo": "Negocio",
+      "dimension": "-",
+      "fuente": "support_tickets",
+      "chequeo": "ticket abierto (resolved_at nulo)",
+      "casos": 240,
+      "total": 1000,
+      "pct": 24.0
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Completitud",
+      "fuente": "support_tickets",
+      "chequeo": "csat nulo",
+      "casos": 254,
+      "total": 1000,
+      "pct": 25.4
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Validez",
+      "fuente": "support_tickets",
+      "chequeo": "csat fuera de [1, 5]",
+      "casos": 40,
+      "total": 1000,
+      "pct": 4.0
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Consistencia",
+      "fuente": "support_tickets",
+      "chequeo": "resolved_at < created_at",
+      "casos": 0,
+      "total": 1000,
+      "pct": 0.0
+    },
+    {
+      "tipo": "Negocio",
+      "dimension": "-",
+      "fuente": "support_tickets",
+      "chequeo": "severity = critical",
+      "casos": 56,
+      "total": 1000,
+      "pct": 5.6
+    },
+    {
+      "tipo": "Negocio",
+      "dimension": "-",
+      "fuente": "support_tickets",
+      "chequeo": "sla_breached = True",
+      "casos": 95,
+      "total": 1000,
+      "pct": 9.5
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Consistencia",
+      "fuente": "users",
+      "chequeo": "last_login < created_at",
+      "casos": 232,
+      "total": 800,
+      "pct": 29.0
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Completitud",
+      "fuente": "users",
+      "chequeo": "last_login nulo",
+      "casos": 139,
+      "total": 800,
+      "pct": 17.4
+    },
+    {
+      "tipo": "Gobierno",
+      "dimension": "PII",
+      "fuente": "users",
+      "chequeo": "email presente (dato personal)",
+      "casos": 800,
+      "total": 800,
+      "pct": 100.0
+    },
+    {
+      "tipo": "Gobierno",
+      "dimension": "PII",
+      "fuente": "resources",
+      "chequeo": "tags_json contiene pii:true",
+      "casos": 85,
+      "total": 400,
+      "pct": 21.2
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Consistencia",
+      "fuente": "customers_orgs",
+      "chequeo": "is_enterprise no coincide con plan_tier = enterprise",
+      "casos": 25,
+      "total": 80,
+      "pct": 31.2
+    },
+    {
+      "tipo": "Calidad",
+      "dimension": "Consistencia",
+      "fuente": "marketing_touches",
+      "chequeo": "converted = True sin clicked",
+      "casos": 96,
+      "total": 1500,
+      "pct": 6.4
+    }
+  ],
+  "rangos_temporales": [
+    {
+      "fuente": "billing_monthly",
+      "columna": "month",
+      "desde": "2025-06-01",
+      "hasta": "2025-08-01",
+      "fechas_distintas": 3
+    },
+    {
+      "fuente": "customers_orgs",
+      "columna": "signup_date",
+      "desde": "2025-05-04",
+      "hasta": "2025-07-02",
+      "fechas_distintas": 40
+    },
+    {
+      "fuente": "support_tickets",
+      "columna": "created_at",
+      "desde": "2025-05-09",
+      "hasta": "2025-08-31",
+      "fechas_distintas": 115
+    },
+    {
+      "fuente": "marketing_touches",
+      "columna": "timestamp",
+      "desde": "2025-05-04",
+      "hasta": "2025-08-31",
+      "fechas_distintas": 120
+    },
+    {
+      "fuente": "nps_surveys",
+      "columna": "survey_date",
+      "desde": "2025-05-24",
+      "hasta": "2025-08-31",
+      "fechas_distintas": 57
+    },
+    {
+      "fuente": "users",
+      "columna": "created_at",
+      "desde": "2025-05-04",
+      "hasta": "2025-08-11",
+      "fechas_distintas": 100
+    },
+    {
+      "fuente": "resources",
+      "columna": "created_at",
+      "desde": "2025-05-04",
+      "hasta": "2025-08-21",
+      "fechas_distintas": 106
+    }
+  ],
+  "integridad_maestros": {
+    "por_fuente": [
+      {
+        "fuente": "users",
+        "filas": 800,
+        "huerfanos_org_id": 0,
+        "orgs_con_filas": 80,
+        "filas_por_org": 10.0
+      },
+      {
+        "fuente": "resources",
+        "filas": 400,
+        "huerfanos_org_id": 0,
+        "orgs_con_filas": 80,
+        "filas_por_org": 5.0
+      },
+      {
+        "fuente": "support_tickets",
+        "filas": 1000,
+        "huerfanos_org_id": 0,
+        "orgs_con_filas": 80,
+        "filas_por_org": 12.5
+      },
+      {
+        "fuente": "marketing_touches",
+        "filas": 1500,
+        "huerfanos_org_id": 0,
+        "orgs_con_filas": 80,
+        "filas_por_org": 18.8
+      },
+      {
+        "fuente": "nps_surveys",
+        "filas": 92,
+        "huerfanos_org_id": 0,
+        "orgs_con_filas": 60,
+        "filas_por_org": 1.5
+      },
+      {
+        "fuente": "billing_monthly",
+        "filas": 240,
+        "huerfanos_org_id": 0,
+        "orgs_con_filas": 80,
+        "filas_por_org": 3.0
+      }
+    ],
+    "billing_dup_org_mes": 0,
+    "users_email_dup": 0
+  },
+  "eventos_basicos": {
+    "eventos": 43200,
+    "archivos": 120,
+    "registros_corruptos": 0,
+    "timestamp_no_parseable": 0,
+    "event_id_nulo": 0,
+    "event_id_duplicado": 0,
+    "colisiones_clave_contextual(org,resource,timestamp,metric)": 14,
+    "organizaciones": 80,
+    "recursos": 400,
+    "dias_con_eventos": 60,
+    "desde": "2025-07-03 00:02:00",
+    "hasta": "2025-08-31 23:58:00"
+  },
+  "versiones_esquema": [
+    {
+      "schema_version": "1",
+      "eventos": "10800",
+      "primer_evento": "2025-07-03 00:02:00",
+      "ultimo_evento": "2025-07-17 23:56:00",
+      "con_carbon_kg": "0",
+      "con_genai_tokens": "0"
+    },
+    {
+      "schema_version": "2",
+      "eventos": "32400",
+      "primer_evento": "2025-07-18 00:01:00",
+      "ultimo_evento": "2025-08-31 23:58:00",
+      "con_carbon_kg": "32400",
+      "con_genai_tokens": "3132"
+    }
+  ],
+  "genai_tokens_por_servicio": [
+    {
+      "service": "genai",
+      "count": 3132
+    }
+  ],
+  "eventos_nulos": {
+    "org_id": 0,
+    "resource_id": 0,
+    "service": 0,
+    "region": 0,
+    "metric": 0,
+    "value": 877,
+    "unit": 2075,
+    "cost_usd_increment": 0
+  },
+  "eventos_tipos": {
+    "value_nulo": 877,
+    "value_llego_como_texto": 1309,
+    "value_no_casteable_a_numero": 0,
+    "cost_llego_como_texto": 0,
+    "unit_nulo": 2075
+  },
+  "metric_unit": [
+    {
+      "metric": "cpu_hours",
+      "unit_nulo": 505,
+      "count": 0,
+      "gb_hours": 0,
+      "hours": 10187
+    },
+    {
+      "metric": "requests",
+      "unit_nulo": 916,
+      "count": 18596,
+      "gb_hours": 0,
+      "hours": 0
+    },
+    {
+      "metric": "storage_gb_hours",
+      "unit_nulo": 654,
+      "count": 0,
+      "gb_hours": 12342,
+      "hours": 0
+    }
+  ],
+  "costos": {
+    "min": -154.4608,
+    "p50": 1.0043,
+    "p90": 9.9944,
+    "p99": 16.6934,
+    "p99.9": 103.6077,
+    "max": 317.4308,
+    "negativos (< 0)": 216,
+    "negativos bajo tolerancia (< -0.01)": 211,
+    "mayores a 10x p99": 34
+  },
+  "costos_por_servicio": [
+    {
+      "service": "compute",
+      "eventos": 12498,
+      "costo_total_usd": 61786.8,
+      "p50": 1.3733,
+      "p99": 13.4861,
+      "max": 302.35,
+      "negativos": 56
+    },
+    {
+      "service": "genai",
+      "eventos": 4158,
+      "costo_total_usd": 29544.43,
+      "p50": 2.0438,
+      "p99": 19.7267,
+      "max": 317.43,
+      "negativos": 21
+    },
+    {
+      "service": "database",
+      "eventos": 7419,
+      "costo_total_usd": 22635.46,
+      "p50": 0.9194,
+      "p99": 8.3631,
+      "max": 149.91,
+      "negativos": 44
+    },
+    {
+      "service": "analytics",
+      "eventos": 4590,
+      "costo_total_usd": 19708.76,
+      "p50": 1.216,
+      "p99": 11.6259,
+      "max": 249.39,
+      "negativos": 19
+    },
+    {
+      "service": "storage",
+      "eventos": 7614,
+      "costo_total_usd": 9407.14,
+      "p50": 0.3536,
+      "p99": 3.3358,
+      "max": 62.99,
+      "negativos": 44
+    },
+    {
+      "service": "networking",
+      "eventos": 6921,
+      "costo_total_usd": 4351.39,
+      "p50": 0.1904,
+      "p99": 1.6749,
+      "max": 29.63,
+      "negativos": 32
+    }
+  ],
+  "integridad_eventos": {
+    "org_id sin maestro (customers_orgs)": 0,
+    "resource_id sin maestro (resources)": 0,
+    "org del evento <> org del recurso": 0,
+    "service del evento <> service del recurso": 0,
+    "region del evento <> region del recurso": 0,
+    "evento anterior a la creación del recurso": 7371
+  },
+  "orden_temporal": {
+    "dias_cubiertos_por_archivo_promedio": 59.69,
+    "eventos_tardios_segun_watermark": {
+      "watermark 1 h": 42801,
+      "watermark 24 h": 42118,
+      "watermark 72 h": 40683,
+      "watermark 168 h": 37831
+    }
+  },
+  "eventos_por_dia": {
+    "min": 720,
+    "promedio": 720.0,
+    "max": 720
+  },
+  "facturacion_moneda": {
+    "montos_por_moneda": [
+      {
+        "currency": "ARS",
+        "facturas": 51,
+        "subtotal_mediana": 816.1,
+        "subtotal_min": -1355.74,
+        "subtotal_max": 1683.69,
+        "fx_promedio": 0.0015
+      },
+      {
+        "currency": "EUR",
+        "facturas": 29,
+        "subtotal_mediana": 697.84,
+        "subtotal_min": -1095.1,
+        "subtotal_max": 2237.39,
+        "fx_promedio": 1.10165
+      },
+      {
+        "currency": "USD",
+        "facturas": 160,
+        "subtotal_mediana": 654.61,
+        "subtotal_min": -1671.83,
+        "subtotal_max": 2048.95,
+        "fx_promedio": 0.99769
+      }
+    ],
+    "ratio_impuestos_subtotal": [
+      {
+        "ratio": 0.21,
+        "count": 227
+      },
+      {
+        "ratio": -0.21,
+        "count": 13
+      }
+    ],
+    "orgs_que_cambian_de_moneda": 50,
+    "revenue_por_mes_segun_criterio": [
+      {
+        "month": "2025-06-01",
+        "A_tasa_tal_cual": 60599.0,
+        "B_usd_forzado_a_1": 60493.0,
+        "C_sin_aplicar_tasa": 74646.0
+      },
+      {
+        "month": "2025-07-01",
+        "A_tasa_tal_cual": 54109.0,
+        "B_usd_forzado_a_1": 54038.0,
+        "C_sin_aplicar_tasa": 69152.0
+      },
+      {
+        "month": "2025-08-01",
+        "A_tasa_tal_cual": 49477.0,
+        "B_usd_forzado_a_1": 49763.0,
+        "C_sin_aplicar_tasa": 67496.0
+      }
+    ],
+    "revenue_total_segun_criterio": {
+      "A_tasa_tal_cual": 164185.0,
+      "B_usd_forzado_a_1": 164294.0,
+      "C_sin_aplicar_tasa": 211294.0
+    },
+    "ars_sin_tasa_vs_con_tasa": {
+      "sin_tasa": 50293.0,
+      "con_tasa": 76.0
+    },
+    "mediana_subtotal_sobre_uso": [
+      {
+        "month": "2025-07-01",
+        "ARS": 0.73,
+        "EUR": 0.84,
+        "USD": 0.85
+      },
+      {
+        "month": "2025-08-01",
+        "ARS": 0.92,
+        "EUR": 1.08,
+        "USD": 0.79
+      }
+    ]
+  },
+  "hallazgos": [
+    {
+      "hallazgo": "120 archivos JSONL pequeños",
+      "evidencia": "105.2 KB por archivo",
+      "impacto en el diseño": "Compactación al promover a Bronze; particionado grueso (small files)"
+    },
+    {
+      "hallazgo": "Volumen bajo en la muestra",
+      "evidencia": "43,200 eventos · 12.3 MB · 720 por día",
+      "impacto en el diseño": "Big Data se justifica por velocidad, variedad y veracidad, no por volumen"
+    },
+    {
+      "hallazgo": "Evolución de esquema v1 → v2",
+      "evidencia": "corte limpio el 2025-07-18",
+      "impacto en el diseño": "Esquema superset; compatibilización v1/v2 en Silver (NULL ≠ 0)"
+    },
+    {
+      "hallazgo": "value NULL",
+      "evidencia": "877 eventos",
+      "impacto en el diseño": "Regla de calidad (completitud)"
+    },
+    {
+      "hallazgo": "value como texto",
+      "evidencia": "1309 eventos, todos casteables",
+      "impacto en el diseño": "Lectura como texto + cast controlado (D-05)"
+    },
+    {
+      "hallazgo": "unit NULL",
+      "evidencia": "2075 eventos; metric→unit fija",
+      "impacto en el diseño": "Imputación de unit por métrica + flag"
+    },
+    {
+      "hallazgo": "Costos negativos",
+      "evidencia": "216 (< 0) · 211 (< −0,01)",
+      "impacto en el diseño": "Flag de anomalía con tolerancia −0,01 (no quarantine)"
+    },
+    {
+      "hallazgo": "Spikes de costo",
+      "evidencia": "34 eventos > 10 × p99; escalas distintas por servicio",
+      "impacto en el diseño": "Anomalías por servicio con percentiles/MAD"
+    },
+    {
+      "hallazgo": "event_id único",
+      "evidencia": "0 duplicados",
+      "impacto en el diseño": "Clave de deduplicación = event_id"
+    },
+    {
+      "hallazgo": "Colisiones de clave contextual",
+      "evidencia": "14 eventos, no son duplicados",
+      "impacto en el diseño": "No usar (org, resource, timestamp, metric) como clave"
+    },
+    {
+      "hallazgo": "Eventos anteriores a la creación del recurso",
+      "evidencia": "7371 eventos",
+      "impacto en el diseño": "Regla de consistencia temporal: marcar, no eliminar"
+    },
+    {
+      "hallazgo": "Archivos con eventos de todo el período",
+      "evidencia": "42,118 eventos tardíos con watermark 24 h (1 archivo por micro-lote)",
+      "impacto en el diseño": "Streaming sin estado a Bronze + agregados diarios en batch (D-04)"
+    },
+    {
+      "hallazgo": "Moneda de facturación inconsistente",
+      "evidencia": "revenue varía 22.3 % según el criterio de conversión",
+      "impacto en el diseño": "Normalización FX como decisión abierta (D-08)"
+    },
+    {
+      "hallazgo": "Tickets abiertos / críticos / SLA",
+      "evidencia": "240 abiertos · 56 críticos · 95 SLA breach",
+      "impacto en el diseño": "Condiciones de negocio: insumo del mart de Soporte"
+    },
+    {
+      "hallazgo": "PII en users y resources",
+      "evidencia": "800 emails · 85 recursos pii:true",
+      "impacto en el diseño": "Clasificación, enmascaramiento y control de acceso (gobierno)"
+    }
+  ],
+  "generado_utc": "2026-10-01T23:53:09+00:00",
+  "spark_version": "3.5.3"
+}
