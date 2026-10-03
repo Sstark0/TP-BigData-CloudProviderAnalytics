@@ -1,9 +1,9 @@
-# Se requiere una versión exacta de PySpark
+# Entorno validado de exploración: Python 3.11 + Java17 (Python3.14 incompatible con serialización Spark3.5).
 pyspark==3.5.3
-
-# Tablas 
-pandas>=2.0
-pyarrow>=14
-
-# Para la ejecución del notebook
+setuptools
+pandas==2.3.3
+pyarrow==18.1.0
 jupyter
+nbclient
+nbformat
+ipykernel

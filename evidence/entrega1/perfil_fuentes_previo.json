@@ -396,7 +396,7 @@
       "tipo": "Negocio",
       "dimension": "-",
       "fuente": "billing_monthly",
-      "chequeo": "subtotal negativo (semántica abierta, ver D-09)",
+      "chequeo": "subtotal negativo (posible nota de crédito, ver D-09)",
       "casos": 13,
       "total": 240,
       "pct": 5.4
@@ -744,9 +744,9 @@
   "costos": {
     "min": -154.4608,
     "p50": 1.0043,
-    "p90": 9.9966,
-    "p99": 16.7006,
-    "p99.9": 128.2206,
+    "p90": 9.9944,
+    "p99": 16.6934,
+    "p99.9": 103.6077,
     "max": 317.4308,
     "negativos (< 0)": 216,
     "negativos bajo tolerancia (< -0.01)": 211,
@@ -971,7 +971,7 @@
     {
       "hallazgo": "Archivos con eventos de todo el período",
       "evidencia": "42,118 eventos tardíos con watermark 24 h (1 archivo por micro-lote)",
-      "impacto en el diseño": "Captura sin filtro temporal; dedupe/publicación con control de estado a Bronze + agregados diarios en batch (D-04)"
+      "impacto en el diseño": "Streaming sin estado a Bronze + agregados diarios en batch (D-04)"
     },
     {
       "hallazgo": "Moneda de facturación inconsistente",
@@ -989,6 +989,6 @@
       "impacto en el diseño": "Clasificación, enmascaramiento y control de acceso (gobierno)"
     }
   ],
-  "generado_utc": "2026-10-02T21:00:42+00:00",
+  "generado_utc": "2026-10-01T23:53:09+00:00",
   "spark_version": "3.5.3"
 }

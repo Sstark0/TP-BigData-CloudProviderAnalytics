@@ -36,11 +36,11 @@ Los objetivos se **definen** en esta entrega y se **verifican** en las siguiente
 
 | # | Objetivo | Indicador y meta | Cómo se verifica | Se verifica en |
 |---|---|---|---|---|
-| O1 | **Completitud de la ingesta** | 100 % de los registros de Landing terminan en Bronze **o** en quarantine (eventos: 43.200) | Conteo Landing = Bronze + quarantine, por fuente | Entrega 2 |
+| O1 | **Completitud de la ingesta** | 100 % de los registros de Landing quedan clasificados como aceptados, rechazados o duplicados (eventos: 43.200) | Balance de aceptados/rechazados/duplicados, por fuente y corrida | Entrega 2 |
 | O2 | **Unicidad e idempotencia** | 0 `event_id` duplicados en Bronze/Silver, también después de re-ejecutar el pipeline | Conteo antes/después de una segunda ejecución | Entrega 2 |
 | O3 | **Calidad controlada** | ≥ 3 reglas de calidad activas; cada registro rechazado o marcado tiene su motivo; % por regla reportado | Tabla de quarantine y métricas por regla | Entrega 2 |
-| O4 | **Frescura** | Eventos visibles en Silver en ≤ 5 minutos desde que llega el archivo **(supuesto)**; maestros y facturación actualizados con frecuencia diaria / mensual | Diferencia entre `ingest_ts` y hora de llegada del archivo | Entrega 2 |
-| O5 | **Consistencia entre capas** | El costo total en Gold coincide con el de Silver para el mismo período (diferencia 0 USD, salvo registros en quarantine) | Conciliación de sumas Silver vs. Gold | Entrega 2 |
+| O4 | **Frescura** | Eventos visibles en Silver en ≤ 5 minutos desde que llega el archivo **(supuesto)**; maestros y facturación actualizados con frecuencia diaria / mensual | Diferencia entre `silver_processed_ts` (disponibilidad durable en Silver) y `arrival_ts` (detección del archivo) | Entrega 2 |
+| O5 | **Consistencia entre capas** | El costo total en Gold coincide con el de Silver para el mismo período (igualdad a precisión definida; tolerancia de redondeo declarada, salvo registros en quarantine) | Conciliación de sumas Silver vs. Gold | Entrega 2 |
 | O6 | **Consultas de negocio** | Las 5 consultas obligatorias se resuelven desde los marts Gold y el modelo de serving propuesto. Las metas de desempeño se fijan al diseñar Cassandra | CQL + captura de resultados | Final (2 consultas en la entrega 2) |
 | O7 | **Reproducibilidad** | El pipeline completo corre desde un entorno limpio siguiendo el Quickstart | Ejecución por otro integrante del equipo | Entrega 2 y final |
 
@@ -53,12 +53,12 @@ cuáles son **dominantes**; eso no implica que las demás sean irrelevantes, sin
 ### Volumen — peso en la muestra: **bajo**
 
 - **Medido:** 43.200 eventos en 60 días (exactamente 720 por día), 120 archivos JSONL, ≈ 12,3 MB, más 7 CSV
-  con ≈ 370 KB. Cada evento ocupa ≈ 300 bytes.
+  con 307.906 bytes (≈ 301 KiB). Cada evento ocupa ≈ 300 bytes.
 - **Lectura honesta:** el volumen de la muestra **no constituye por sí mismo una justificación de Big Data**.
 - **Por qué igual se diseña para escalar:** el volumen de eventos crece en forma lineal con la cantidad de recursos
   monitoreados y con la frecuencia de medición (≈ 300 bytes por evento, según la muestra). La arquitectura usa
   procesamiento distribuido (Spark, Parquet particionado) para que ese crecimiento se absorba agregando máquinas sin
-  cambiar el código: el mismo job corre en `local[*]` y en un clúster.
+  cambiar el código: el contrato de transformaciones se conserva; despliegue y recursos se configuran por entorno.
 - **Decisión:** escalamiento horizontal por diseño y tratamiento del problema de **archivos pequeños**
   (120 archivos de ~105 KB) compactando al escribir Bronze.
 
@@ -73,8 +73,7 @@ cuáles son **dominantes**; eso no implica que las demás sean irrelevantes, sin
   watermark del notebook). Ese análisis es **evidencia experimental sobre el comportamiento temporal del dataset**, no una
   medición de latencia productiva.
 - **Decisión:** dos ritmos distintos → **streaming** para eventos y **batch** para maestros y facturación
-  (patrón híbrido, D-03). El streaming ingiere sin estado hasta Bronze/Silver y los agregados diarios se
-  calculan en batch (D-04).
+  (patrón híbrido, D-03). El streaming preserva todos los eventos en Bronze; dedupe y publicación incremental en Silver son operaciones con estado o control de lotes. Los agregados operativos se actualizan por micro-lote; el batch diario reconcilia histórico (D-04).
 
 ### Variedad — peso: **medio-alto**
 

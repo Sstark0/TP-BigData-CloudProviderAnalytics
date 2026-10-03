@@ -6,7 +6,7 @@ El dataset para la realización del proyecto (`cloud_provider_challenge_dataset_
 Para acceder a dicho material, es necesario
 
 1. Descargar y descomprimir el dataset.
-2. Copiar el contenido de `cloud_provider_challenge_dataset_v1/datalake/landing/` dentro de
+2. Copiar el contenido de `datalake/landing/ del ZIP descomprimido` dentro de
    `datalake/landing/` de este repositorio. Debiendo quedar de la siguiente manera:
 
 ```

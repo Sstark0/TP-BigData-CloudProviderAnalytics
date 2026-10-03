@@ -1,13 +1,5 @@
 # Documentación
 
-## Entrega 1 · Documento de diseño (en construcción)
-
-| Sección | Archivo | Estado |
-|---|---|---|
-| 1. Interpretación del caso y 5V | [`entrega1/01_caso_y_5v.md`](entrega1/01_caso_y_5v.md) | borrador v0.2 (revisado) |
-| 2. Inventario y perfil de fuentes | [`entrega1/02_inventario_fuentes.md`](entrega1/02_inventario_fuentes.md) | borrador v0.1 |
-| 3. Arquitectura v1 y patrón | pendiente (paso 4) | — |
-| 4. Diseño del Data Lake | pendiente (paso 5) | — |
-| 5. Flujo batch en MapReduce | pendiente (paso 6) | — |
-| 6. Matriz requisito-componente | pendiente (paso 7) | — |
-| 7. Plan inicial: supuestos, riesgos, esfuerzo | pendiente (paso 8) | — |
+La entrega 1 se revisa desde [el diseño integrado v1.0](entrega1/diseno_integrado.md), con [PDF](entrega1/diseno_integrado.pdf) y diagrama [fuente](entrega1/arquitectura.mmd)/[render](entrega1/arquitectura.svg).
+Se conservan los aportes originales: [caso y 5V](entrega1/01_caso_y_5v.md), [inventario](entrega1/02_inventario_fuentes.md), [decisiones](../DECISIONS.md).
+Los componentes del pipeline están propuestos. La evidencia de exploración y las comprobaciones efectivamente ejecutadas se identifican en [cierre](../evidence/entrega1/CIERRE.md).
