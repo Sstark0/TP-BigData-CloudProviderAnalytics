@@ -1,0 +1,58 @@
+PRIMERA ENTREGA E1 · CLOUD PROVIDER ANALYTICS
+Big Data · ITBA · 2C 2026
+Diseño v1.1 y revisión de reproducibilidad del 05/10/2026
+
+DÓNDE REVISAR EL TRABAJO
+
+Documento principal: docs/entrega1/diseno_integrado.pdf.
+El PDF de seis páginas integra diseño, arquitectura, matriz de los 12 requisitos y plan inicial. El Markdown y el DOCX editable están en la misma carpeta.
+
+Repositorio del equipo:
+https://github.com/Sstark0/TP-BigData-CloudProviderAnalytics
+
+Esta revisión parte del commit e04b00b3078ec5d26041b849890cfe3807cbb570 e incorpora el diseño v1.1 y correcciones de reproducibilidad. Para identificar una versión entregada, registrar el enlace al commit que contenga estos archivos. Un PR abierto no equivale a una actualización de main.
+
+LOS CINCO ARTEFACTOS DE LA CONSIGNA §5.3
+
+- Diseño: docs/entrega1/diseno_integrado.pdf y .md.
+- Repositorio: código, muestras, README, configuración y evidencia versionada.
+- Arquitectura v1: docs/entrega1/arquitectura.svg, .png y .mmd editable.
+- Matriz: PDF §7 y docs/entrega1/matriz_requisitos.md.
+- Plan inicial: PDF §8 y docs/entrega1/plan_inicial.md.
+
+La consigna no exige cinco cargas separadas. El DOCX es una copia editable adicional. El dataset completo del docente no se versiona: data/README.md explica cómo colocarlo. E1 presenta diseño y exploración; el pipeline productivo batch/streaming/Cassandra se implementará en E2 y la final.
+
+FECHA, HORA Y CANAL
+
+La revisión se preparó para la primera entrega indicada para el 05/10. La consigna original conserva el 28/09/2026 a las 18:30; ese horario no confirma la hora de la reprogramación. Confirmar hora y canal en el aviso oficial o con el equipo antes de enviar. La publicación en GitHub no constituye por sí sola un envío al docente.
+
+ÚLTIMA COMPROBACIÓN ANTES DE ENVIAR
+
+- Revisar que figuren los cinco integrantes correctos en el PDF.
+- Confirmar hora y canal actuales.
+- Comprobar que el enlace o commit compartido contiene esta revisión y es accesible al docente.
+- Adjuntar el PDF u otros archivos si el canal lo requiere.
+- Guardar constancia de entrega o recepción.
+
+COBERTURA DEL CHECKLIST E1 DE LA CONSIGNA §9.1
+
+Documento de diseño: PDF, Markdown y DOCX editables/versionados.
+Repositorio accesible: comprobar el commit o rama efectivamente compartidos.
+Caso y objetivos medibles: PDF §1.
+5V: PDF §2.
+Inventario y perfil: PDF §3; inventario, notebook y perfil incluidos.
+Arquitectura y patrón: PDF §4; SVG/PNG/Mermaid.
+Zonas del lago: PDF §5.
+Flujos batch y streaming: PDF §4.
+MapReduce: PDF §6.
+Matriz: PDF §7 y archivo independiente.
+Supuestos, riesgos, mitigaciones y esfuerzo: PDF §8; plan y DECISIONS.md.
+Evidencia mínima: evidence/entrega1/, notebook ejecutado del 02/10 y verificaciones fechadas del 04/10 y 05/10.
+
+REPRODUCIR LA EXPLORACIÓN
+
+Seguir README.md: Python 3.11, Java 17 y requirements.txt. Desde la raíz ejecutar python scripts/run_exploration.py. LANDING_PATH puede señalar el dataset externo; EVIDENCE_DIR puede señalar una carpeta externa para guardar perfil y notebook ejecutado en su subcarpeta entrega1/.
+
+El dataset completo reproduce los hallazgos documentados. La muestra versionada permite una prueba de ejecución, pero no conserva integridad referencial ni reproduce los totales. Usar un destino de evidencia separado cuando se trabaja con la muestra.
+
+El 05/10 pasaron las 19 celdas funcionales en proceso Python directo con Spark tanto sobre el dataset completo como sobre la muestra; también pasaron cuatro pruebas de regresión. Jupyter quedó bloqueado al iniciar el kernel por ZeroMQ, antes de ejecutar celdas; Colab no se validó. Detalles y límites: evidence/entrega1/VERIFICACION_2026-10-05.md y regresiones_2026-10-05.json.

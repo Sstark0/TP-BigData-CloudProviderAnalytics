@@ -1,0 +1,272 @@
+{
+  "verified_at_utc": "2026-10-05T20:05:15+00:00",
+  "base_commit": "e04b00b3078ec5d26041b849890cfe3807cbb570",
+  "execution_method": "Source notebook code cells executed sequentially in a single Python process with Spark; not a Jupyter kernel run",
+  "runtime": {
+    "python": "3.11.16",
+    "java": "17.0.20.1",
+    "pyspark": "3.5.3",
+    "pandas": "2.3.3",
+    "pyarrow": "18.1.0",
+    "master": "local[2]",
+    "timezone": "UTC"
+  },
+  "full": {
+    "code_cells_passed": 19,
+    "events": 43200,
+    "event_files": 120,
+    "external_evidence_directory": true,
+    "late_event_counts": {
+      "watermark 1 h": 42801,
+      "watermark 24 h": 42118,
+      "watermark 72 h": 40683,
+      "watermark 168 h": 37831
+    }
+  },
+  "sample": {
+    "code_cells_passed": 19,
+    "events": 360,
+    "event_files": 1,
+    "external_evidence_directory": true,
+    "late_event_counts": {
+      "watermark 1 h": 0,
+      "watermark 24 h": 0,
+      "watermark 72 h": 0,
+      "watermark 168 h": 0
+    },
+    "referential_integrity_preserved": false
+  },
+  "unit_tests": {
+    "passed": 4,
+    "runner_kernel_execution_mocked": true
+  },
+  "landing_files": 127,
+  "landing_hashes_unchanged": true,
+  "original_evidence_samples_requirements_schemas_unchanged": [
+    "data/sample/billing_monthly.csv",
+    "data/sample/customers_orgs.csv",
+    "data/sample/marketing_touches.csv",
+    "data/sample/nps_surveys.csv",
+    "data/sample/resources.csv",
+    "data/sample/support_tickets.csv",
+    "data/sample/usage_events_stream/events_part_0000.jsonl",
+    "data/sample/users.csv",
+    "evidence/entrega1/01_exploracion_ejecutada.ipynb",
+    "evidence/entrega1/perfil_fuentes.json",
+    "requirements.txt",
+    "src/common/schemas.py"
+  ],
+  "syntax_checks": "passed",
+  "jupyter_runner": {
+    "status": "blocked",
+    "phase": "kernel startup, before notebook cells",
+    "reason": "Operation not permitted in ZeroMQ ip_resolver; kernel died before replying to kernel_info"
+  },
+  "not_validated": [
+    "Google Colab",
+    "production batch pipeline",
+    "Structured Streaming execution",
+    "Cassandra/AstraDB serving"
+  ],
+  "code_sha256": {
+    "notebooks/01_exploracion_fuentes.ipynb": "1c4eee002ff1debf348f4371d4a95877f4529fd3754766865548cf9ed5f25e09",
+    "scripts/run_exploration.py": "c7db6271520886ccdd7ba6438734472f163908d4ae98dd64aa85feec59ec121a",
+    "tests/test_exploration.py": "465927b3628cda6115474e4e18d958485f32b94a1246b759138457d886b53dc8"
+  },
+  "cell_results": {
+    "full": [
+      {
+        "cell": 2,
+        "status": "passed",
+        "seconds": 0.116
+      },
+      {
+        "cell": 4,
+        "status": "passed",
+        "seconds": 2.454
+      },
+      {
+        "cell": 6,
+        "status": "passed",
+        "seconds": 0.008
+      },
+      {
+        "cell": 8,
+        "status": "passed",
+        "seconds": 9.186
+      },
+      {
+        "cell": 10,
+        "status": "passed",
+        "seconds": 2.818
+      },
+      {
+        "cell": 12,
+        "status": "passed",
+        "seconds": 1.271
+      },
+      {
+        "cell": 14,
+        "status": "passed",
+        "seconds": 2.273
+      },
+      {
+        "cell": 16,
+        "status": "passed",
+        "seconds": 2.804
+      },
+      {
+        "cell": 18,
+        "status": "passed",
+        "seconds": 0.537
+      },
+      {
+        "cell": 20,
+        "status": "passed",
+        "seconds": 2.393
+      },
+      {
+        "cell": 22,
+        "status": "passed",
+        "seconds": 1.274
+      },
+      {
+        "cell": 24,
+        "status": "passed",
+        "seconds": 0.999
+      },
+      {
+        "cell": 26,
+        "status": "passed",
+        "seconds": 2.092
+      },
+      {
+        "cell": 27,
+        "status": "passed",
+        "seconds": 0.732
+      },
+      {
+        "cell": 29,
+        "status": "passed",
+        "seconds": 0.801
+      },
+      {
+        "cell": 30,
+        "status": "passed",
+        "seconds": 0.394
+      },
+      {
+        "cell": 31,
+        "status": "passed",
+        "seconds": 0.879
+      },
+      {
+        "cell": 33,
+        "status": "passed",
+        "seconds": 0.003
+      },
+      {
+        "cell": 36,
+        "status": "passed",
+        "seconds": 0.002
+      }
+    ],
+    "sample": [
+      {
+        "cell": 2,
+        "status": "passed",
+        "seconds": 0.165
+      },
+      {
+        "cell": 4,
+        "status": "passed",
+        "seconds": 2.5
+      },
+      {
+        "cell": 6,
+        "status": "passed",
+        "seconds": 0.008
+      },
+      {
+        "cell": 8,
+        "status": "passed",
+        "seconds": 9.513
+      },
+      {
+        "cell": 10,
+        "status": "passed",
+        "seconds": 2.977
+      },
+      {
+        "cell": 12,
+        "status": "passed",
+        "seconds": 1.249
+      },
+      {
+        "cell": 14,
+        "status": "passed",
+        "seconds": 2.256
+      },
+      {
+        "cell": 16,
+        "status": "passed",
+        "seconds": 1.605
+      },
+      {
+        "cell": 18,
+        "status": "passed",
+        "seconds": 0.459
+      },
+      {
+        "cell": 20,
+        "status": "passed",
+        "seconds": 2.043
+      },
+      {
+        "cell": 22,
+        "status": "passed",
+        "seconds": 0.909
+      },
+      {
+        "cell": 24,
+        "status": "passed",
+        "seconds": 1.013
+      },
+      {
+        "cell": 26,
+        "status": "passed",
+        "seconds": 1.866
+      },
+      {
+        "cell": 27,
+        "status": "passed",
+        "seconds": 0.653
+      },
+      {
+        "cell": 29,
+        "status": "passed",
+        "seconds": 0.764
+      },
+      {
+        "cell": 30,
+        "status": "passed",
+        "seconds": 0.352
+      },
+      {
+        "cell": 31,
+        "status": "passed",
+        "seconds": 0.802
+      },
+      {
+        "cell": 33,
+        "status": "passed",
+        "seconds": 0.004
+      },
+      {
+        "cell": 36,
+        "status": "passed",
+        "seconds": 0.003
+      }
+    ]
+  }
+}
