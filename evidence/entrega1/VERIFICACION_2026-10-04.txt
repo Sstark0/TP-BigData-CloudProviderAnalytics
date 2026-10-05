@@ -1,0 +1,35 @@
+VERIFICACIÓN TÉCNICA COMPLEMENTARIA DEL 04/10/2026
+Cloud Provider Analytics · Primera entrega
+Commit: e04b00b3078ec5d26041b849890cfe3807cbb570
+
+ALCANCE Y MÉTODO
+Se ejecutaron en orden las 19 celdas funcionales del notebook fuente, sin cambiar su lógica, en un proceso Python directo con Spark. Se compararon perfiles y hashes con la evidencia versionada del 02/10. Una lectura independiente con csv, json y Decimal verificó los conteos y anomalías principales.
+
+Entorno: Python 3.11.16, Temurin Java 17.0.20.1, PySpark 3.5.3, pandas 2.3.3 y pyarrow 18.1.0. Spark local[2], zona UTC.
+
+RESULTADO
+- Las 19 celdas aprobaron; ver celdas_2026-10-04.json.
+- 43.200 eventos en 120 JSONL; versiones v1=10.800 y v2=32.400.
+- Cero event_id duplicados y cero claves huérfanas.
+- Landing: los 127 archivos conservaron sus hashes.
+- 877 value nulos, 1.309 value de texto casteable, 2.075 unit nulos y 216 costos negativos.
+- 7.371 eventos anteriores al alta del recurso; 85 recursos pii:true; 232 logins anteriores al alta y 40 CSAT fuera de escala.
+- Simulación con watermark de 24 h: 42.118 tardíos. No es una ejecución real de Structured Streaming.
+
+COMPARACIÓN DE PERFILES
+Los conteos centrales coinciden. La fecha de ejecución y tres percentiles aproximados cambiaron:
+p90: 9,9966 → 9,9944; p99: 16,7006 → 16,6934; p99,9: 128,2206 → 103,6077.
+El error de rango de approxQuantile es 0,0001; ambos conjuntos se verificaron contra sus rangos permitidos. No corresponde exigir igualdad exacta de valores entre particionados diferentes. El conteo de spikes permanece en 34. Ver comparacion_2026-10-04.json.
+
+LÍMITES DE LA VALIDACIÓN
+El runner Jupyter literal quedó bloqueado al iniciar el kernel por restricciones de puertos/ZeroMQ del entorno, antes de ejecutar celdas. El resultado 19/19 corresponde al proceso Python directo. La evidencia versionada del 02/10 sí contiene el notebook ejecutado completo. No se probó Colab ni un pipeline productivo batch/streaming/serving.
+
+LÍMITES CONOCIDOS DEL REPOSITORIO
+- Mantener EVIDENCE_DIR dentro del repositorio: una ruta externa escribe el perfil pero falla después al mostrar una ruta relativa.
+- No ejecutar todos los controles con la muestra de un solo JSONL: la simulación de watermark espera archivos previos y no infiere un DataFrame vacío. La muestra tampoco preserva integridad referencial.
+- Algunas dependencias auxiliares de Jupyter no están fijadas; la instalación utilizada funcionó, pero el entorno no está completamente congelado.
+
+Este registro documenta la verificación del 04/10 y no afirma una nueva ejecución del 05/10.
+
+ACTUALIZACIÓN DEL 05/10/2026
+Las dos limitaciones de código de EVIDENCE_DIR y muestra de un solo JSONL descritas arriba se corrigieron después de esta verificación. El alcance original del 04/10 se conserva; ver VERIFICACION_2026-10-05.md para las nuevas pruebas. La muestra sigue sin conservar integridad referencial.

@@ -18,7 +18,7 @@ en Parquet (Landing → Bronze → Silver → Gold) con PySpark, y publicación 
 
 | Instancia | Foco | Estado |
 |---|---|---|
-| Entrega 1 | Diseño y fundación de datos | Diseño v1.0 completado; aprobación del equipo pendiente |
+| Entrega 1 | Diseño y fundación de datos | Diseño consolidado v1.1; evidencia de exploración y regresiones incluidas |
 | Entrega 2 · 16/11/2026 18:30 | Implementación técnica end-to-end mínima | ⬜ |
 | Final · 07/12/2026 21:30 | MVP integrado y defensa | ⬜ |
 
@@ -37,14 +37,17 @@ en Parquet (Landing → Bronze → Silver → Gold) con PySpark, y publicación 
 ├── docs/                  ← documento de diseño y diagramas
 ├── notebooks/             ← exploración (01_exploracion_fuentes.ipynb)
 ├── src/common/            ← código compartido: rutas, sesión Spark, esquemas
-├── tests/                 ← pruebas (entrega 2)
+├── tests/                 ← regresiones de exploración E1
 ├── infra/                 ← entorno de ejecución (Docker diferido, ver D-01)
 └── evidence/              ← resultados de ejecución por entrega
 ```
 
 ## Entrega 1 · 05/10/2026 (hora a confirmar)
 
-Diseño integrado: [Markdown](docs/entrega1/diseno_integrado.md) y [PDF](docs/entrega1/diseno_integrado.pdf).
+Diseño integrado v1.1: [Markdown](docs/entrega1/diseno_integrado.md) y [PDF](docs/entrega1/diseno_integrado.pdf) y [Word editable](docs/entrega1/diseno_integrado.docx).
+Matriz: [Markdown](docs/entrega1/matriz_requisitos.md). Plan: [Markdown](docs/entrega1/plan_inicial.md).
+
+Esta revisión parte de `e04b00b3078ec5d26041b849890cfe3807cbb570` e integra el diseño v1.1 y las correcciones de reproducibilidad del 05/10. Conserva la evidencia histórica fechada. Ver [cambios y validación](evidence/entrega1/VERIFICACION_2026-10-05.md).
 Arquitectura propuesta; no hay pipeline productivo, streaming ni Cassandra implementados.
 Correcciones de esta preparación y comprobaciones: [cierre](evidence/entrega1/CIERRE.md).
 
@@ -73,7 +76,7 @@ python scripts/run_exploration.py
 # Alternativa interactiva: jupyter notebook notebooks/01_exploracion_fuentes.ipynb
 ```
 
-Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datalake/landing` antes de ejecutar. El ejemplo de configuración documenta variables y no carga automáticamente un archivo .env. El runner guarda además un notebook ejecutado en evidence.
+Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datalake/landing` antes de ejecutar. `EVIDENCE_DIR` permite elegir otra carpeta, incluso fuera del repositorio; tanto el perfil como la copia ejecutada se guardan en su subcarpeta `entrega1/`. Usar una ruta absoluta evita ambigüedades. El ejemplo de configuración documenta variables y no carga automáticamente un archivo .env. El runner guarda además un notebook ejecutado en evidence.
 
 **Salida esperada:** tablas de perfil en el notebook y `evidence/entrega1/perfil_fuentes.json`
 (43.200 eventos, 120 archivos, 0 `event_id` duplicados).
@@ -97,3 +100,21 @@ Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datala
 - Documento de diseño · entrega 1: [`docs/`](docs/README.md)
 - Registro de decisiones: [`DECISIONS.md`](DECISIONS.md)
 - Evidencia de exploración: [`evidence/entrega1/`](evidence/entrega1/README.md)
+
+
+## Validación conservada
+
+- 02/10: runner y notebook ejecutado, según evidencia versionada.
+- 04/10: las 19 celdas funcionales se ejecutaron en orden con Spark en un proceso Python directo; el runner Jupyter quedó bloqueado al iniciar kernel por restricciones de puertos/ZeroMQ del entorno usado.
+- 05/10: correcciones y pruebas de regresión documentadas en [verificación del 05/10](evidence/entrega1/VERIFICACION_2026-10-05.md).
+- Colab sigue pendiente de validación.
+
+Usar los datos completos para reproducir los hallazgos documentados. La muestra permite una prueba de ejecución con un solo JSONL; no conserva integridad referencial ni reproduce los totales del dataset. Los percentiles aproximados pueden diferir entre corridas dentro del error de rango configurado. Los detalles están en `evidence/entrega1/VERIFICACION_2026-10-04.txt`.
+
+## Pruebas de regresión
+
+Con el entorno local activado y Java disponible:
+```bash
+python -m unittest discover -s tests -v
+```
+Las pruebas cubren evidencia externa y simulación temporal con uno o varios archivos. La prueba de ruta del runner simula la ejecución del kernel; no reemplaza la ejecución real del notebook.

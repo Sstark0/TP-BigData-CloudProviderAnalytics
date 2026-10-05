@@ -1,5 +1,7 @@
 # Cierre de primera entrega · 02/10/2026
 
+Nota de archivo histórico: las referencias a secciones y páginas de este cierre corresponden al diseño v1.0 del 02/10/2026. Para navegar la edición v1.1 del 05/10, consultar el diseño integrado actual y LEER_PRIMERO_ENTREGA.txt. La evidencia de ejecución de este cierre se conserva sin cambios.
+
 Base revisada: `2a167696d23c95594dac297daf43a53eb7839bf0`. Cambios en copia aislada; no se modificó Landing. Entrega reprogramada al **05/10**, hora a confirmar. Preparado para revisión del equipo; no enviado al docente.
 
 ## Cambios

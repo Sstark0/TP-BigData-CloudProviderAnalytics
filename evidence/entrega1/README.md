@@ -2,10 +2,11 @@
 
 | Archivo | Qué contiene |
 |---|---|
-| `../../notebooks/01_exploracion_fuentes.ipynb` | Notebook PySpark **ejecutado** (con salidas). Lee las 8 fuentes de Landing con esquema explícito. |
+| `../../notebooks/01_exploracion_fuentes.ipynb` | Notebook fuente limpio y ejecutable. Lee las 8 fuentes de Landing con esquema explícito. |
+| `01_exploracion_ejecutada.ipynb` | Notebook ejecutado de referencia del 02/10/2026, con salidas y versiones. |
 | `perfil_fuentes.json` | Todas las métricas del perfil, generadas por el notebook (regenerable). |
 
-Ejecución de referencia: PySpark 3.5.3 · `local[*]` · 43.200 eventos + 7 CSV · ~2–3 min en Colab.
+Ejecución de referencia del 02/10: PySpark 3.5.3 en entorno local · 43.200 eventos + 7 CSV. Colab no fue validado. La verificación independiente del 04/10 se detalla en `VERIFICACION_2026-10-04.txt`.
 
 ## Hallazgos principales y su impacto en el diseño
 
@@ -77,7 +78,12 @@ Los chequeos sobre maestros se clasifican en **Calidad** (validez, completitud, 
 | B · igual, pero USD forzado a 1 | 164.294 |
 | C · no aplicar la tasa (montos ya en escala USD) | 211.294 |
 
+Nota de precisión: la tabla histórica suma valores mensuales ya redondeados a USD. Los totales calculados sin ese redondeo intermedio son A = 164.184,9028152 USD; B = 164.293,0622322 USD; C = 211.294,58 USD. Los valores de la tabla son una comparación exploratoria, no totales contables exactos.
+
 - Los subtotales en ARS tienen la misma magnitud que los de USD (mediana 816 vs. 655). Con la tasa (~0,0015), las facturas en ARS pasan de 50.293 a **76 USD**.
 - **50 de 80** organizaciones cambian de moneda entre meses.
 - Subtotal / costo de uso medido (mediana, jul–ago): 0,73–1,08 en las tres monedas → los montos parecen estar ya en escala USD.
-- **Impacto:** la elección cambia un 22 % el revenue de la consulta obligatoria n.º 4 → decisión abierta **D-08**. El docente confirmó que la inconsistencia es intencional y que en esta entrega corresponde documentar el problema y las posibles soluciones.
+- **Impacto:** la elección cambia un 22 % el revenue de la consulta obligatoria n.º 4 → decisión abierta **D-08**. El aporte original del equipo registra una confirmación docente de la inconsistencia; esta preparación no verificó esa comunicación. Se conservan el problema y las alternativas como decisión abierta.
+## Actualización del 05/10/2026
+
+Se conserva arriba la evidencia de referencia del dataset completo. Las correcciones de rutas de evidencia, muestra de un solo JSONL y runner, junto con sus pruebas y límites, se registran en [VERIFICACION_2026-10-05.md](VERIFICACION_2026-10-05.md). No se reemplazaron las salidas históricas.

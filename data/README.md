@@ -29,3 +29,8 @@ Es imperativo remarcar que esta muestra no conserva la integridad referencial. U
 
 
 `README_dataset_original.txt` es el README del docente, sin modificaciones.
+
+
+## Alcance de la muestra en E1
+
+Para reproducir los hallazgos y totales de E1 se requiere el dataset original completo. La muestra permite una prueba de ejecución del notebook definiendo `LANDING_PATH` a la ruta absoluta de `data/sample/`; con un solo JSONL no hay un micro-lote previo y la simulación informa cero eventos tardíos. Esto no valida una política real de watermark. La muestra no preserva integridad referencial ni reproduce los totales del dataset. Usar otro `EVIDENCE_DIR` para no reemplazar el perfil completo con el perfil de la muestra.

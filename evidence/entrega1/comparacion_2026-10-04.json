@@ -1,0 +1,34 @@
+{
+  "commit": "e04b00b3078ec5d26041b849890cfe3807cbb570",
+  "profile_equivalent_excluding_timestamp_and_order": false,
+  "timestamp_old": "2026-10-02T21:00:42+00:00",
+  "timestamp_new": "2026-10-04T17:24:58+00:00",
+  "different_sections": {
+    "costos": {
+      "old": {
+        "min": -154.4608,
+        "p50": 1.0043,
+        "p90": 9.9966,
+        "p99": 16.7006,
+        "p99.9": 128.2206,
+        "max": 317.4308,
+        "negativos (< 0)": 216,
+        "negativos bajo tolerancia (< -0.01)": 211,
+        "mayores a 10x p99": 34
+      },
+      "new": {
+        "min": -154.4608,
+        "p50": 1.0043,
+        "p90": 9.9944,
+        "p99": 16.6934,
+        "p99.9": 103.6077,
+        "max": 317.4308,
+        "negativos (< 0)": 216,
+        "negativos bajo tolerancia (< -0.01)": 211,
+        "mayores a 10x p99": 34
+      }
+    }
+  },
+  "landing_unchanged": true,
+  "landing_files": 127
+}

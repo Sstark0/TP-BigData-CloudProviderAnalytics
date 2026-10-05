@@ -123,7 +123,7 @@ Silver que la componen → sus `event_id` y `source_file` en Bronze → la líne
 
 ## 2.5 Riesgos de datos (resumen)
 
-Probabilidad, impacto y roles propuestos: diseño integrado, sección 7.
+Probabilidad, impacto y roles propuestos: diseño integrado v1.1, sección 8.
 
 | # | Riesgo | Fuente | Mitigación |
 |---|---|---|---|
