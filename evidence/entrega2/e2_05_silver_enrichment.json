@@ -1,0 +1,284 @@
+{
+  "run_id": "20261114T204558Z-2c0ed7b0",
+  "counts": {
+    "customers_orgs.bronze_ultima_foto": 80,
+    "customers_orgs.silver": 80,
+    "customers_orgs.claves_repetidas": 0,
+    "resources.bronze_ultima_foto": 400,
+    "resources.silver": 400,
+    "resources.claves_repetidas": 0,
+    "silver_eventos": 43200,
+    "enriquecidos": 43200,
+    "enriquecidos.sin_org": 0,
+    "enriquecidos.sin_recurso": 0,
+    "features_org_dia": 4580,
+    "costo_silver_micro_usd": 147433977800,
+    "costo_features_micro_usd": 147433977800,
+    "eventos_en_features": 43200,
+    "requests_silver": 2294079,
+    "requests_features": 2294079
+  },
+  "balances": [
+    {
+      "check": "silver_eventos = enriquecidos",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "silver_eventos = eventos_en_features",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "costo_silver_micro_usd = costo_features_micro_usd",
+      "left": 147433977800,
+      "right": 147433977800,
+      "ok": true
+    },
+    {
+      "check": "requests_silver = requests_features",
+      "left": 2294079,
+      "right": 2294079,
+      "ok": true
+    }
+  ],
+  "outputs": [
+    {
+      "path": "silver/customers_orgs",
+      "parquet_files": 1,
+      "bytes": 7350
+    },
+    {
+      "path": "silver/resources",
+      "parquet_files": 1,
+      "bytes": 12199
+    },
+    {
+      "path": "silver/usage_events_enriched",
+      "parquet_files": 60,
+      "bytes": 2926847
+    },
+    {
+      "path": "silver/org_daily_features",
+      "parquet_files": 1,
+      "bytes": 138940
+    }
+  ],
+  "esquemas": {
+    "customers_orgs": [
+      "org_id: string",
+      "org_name: string",
+      "industry: string",
+      "hq_region: string",
+      "plan_tier: string",
+      "sales_rep: string",
+      "lifecycle_stage: string",
+      "marketing_source: string",
+      "is_enterprise: boolean",
+      "signup_date: date",
+      "nps_score: double",
+      "source_file: string",
+      "bronze_ingest_date: date",
+      "silver_processed_ts: timestamp",
+      "silver_run_id: string"
+    ],
+    "resources": [
+      "resource_id: string",
+      "org_id: string",
+      "service: string",
+      "region: string",
+      "created_at: date",
+      "state: string",
+      "tags: array<string>",
+      "env: string",
+      "team: string",
+      "costcenter: string",
+      "has_pii: boolean",
+      "source_file: string",
+      "bronze_ingest_date: date",
+      "silver_processed_ts: timestamp",
+      "silver_run_id: string"
+    ],
+    "usage_events_enriched": [
+      "event_id: string",
+      "event_ts: timestamp",
+      "org_id: string",
+      "resource_id: string",
+      "service: string",
+      "region: string",
+      "metric: string",
+      "value: double",
+      "unit: string",
+      "schema_version: int",
+      "cost_usd: decimal(18,6)",
+      "requests: double",
+      "cpu_hours: double",
+      "storage_gb_hours: double",
+      "genai_tokens: bigint",
+      "carbon_kg: double",
+      "org_name: string",
+      "industry: string",
+      "plan_tier: string",
+      "is_enterprise: boolean",
+      "hq_region: string",
+      "lifecycle_stage: string",
+      "resource_state: string",
+      "resource_env: string",
+      "resource_team: string",
+      "resource_costcenter: string",
+      "resource_has_pii: boolean",
+      "org_found: boolean",
+      "resource_found: boolean",
+      "arrival_path: string",
+      "source_file: string",
+      "event_date: date"
+    ],
+    "org_daily_features": [
+      "org_id: string",
+      "event_date: date",
+      "daily_cost_usd: decimal(28,6)",
+      "requests: double",
+      "cpu_hours: double",
+      "storage_gb_hours: double",
+      "requests_events: bigint",
+      "genai_tokens: bigint",
+      "carbon_kg: double",
+      "carbon_coverage: double",
+      "events: bigint",
+      "org_name: string",
+      "plan_tier: string",
+      "industry: string",
+      "silver_processed_ts: timestamp"
+    ]
+  },
+  "muestras": {
+    "resources": [
+      {
+        "resource_id": "res_po4ljedg",
+        "org_id": "org_ir4cowgz",
+        "service": "analytics",
+        "tags": [
+          "env:prod",
+          "team:ml",
+          "backup:daily"
+        ],
+        "env": "prod",
+        "team": "ml",
+        "has_pii": false
+      },
+      {
+        "resource_id": "res_xv8wobir",
+        "org_id": "org_okep7y6w",
+        "service": "compute",
+        "tags": [
+          "env:prod",
+          "costcenter:beta"
+        ],
+        "env": "prod",
+        "team": null,
+        "has_pii": false
+      },
+      {
+        "resource_id": "res_30i6g61p",
+        "org_id": "org_g8sbi4q2",
+        "service": "compute",
+        "tags": [
+          "team:ml"
+        ],
+        "env": null,
+        "team": "ml",
+        "has_pii": false
+      }
+    ],
+    "usage_events_enriched": [
+      {
+        "event_id": "evt_er6cahlthz58",
+        "event_ts": "2025-07-18 00:01:00",
+        "org_id": "org_cwi64ciy",
+        "org_name": "Gamma Digital 20",
+        "plan_tier": "standard",
+        "service": "compute",
+        "metric": "requests",
+        "requests": 118.0,
+        "cost_usd": "9.698200",
+        "genai_tokens": null,
+        "carbon_kg": 0.0236,
+        "resource_env": null
+      },
+      {
+        "event_id": "evt_hbtnrvghnfgu",
+        "event_ts": "2025-07-18 00:03:00",
+        "org_id": "org_1n13jcat",
+        "org_name": "Nimbus Tech 64",
+        "plan_tier": "free",
+        "service": "database",
+        "metric": "requests",
+        "requests": 125.0,
+        "cost_usd": "6.361600",
+        "genai_tokens": null,
+        "carbon_kg": 0.025,
+        "resource_env": null
+      },
+      {
+        "event_id": "evt_gidzdr8o1hf7",
+        "event_ts": "2025-07-18 00:09:00",
+        "org_id": "org_okep7y6w",
+        "org_name": "Alpha Labs 48",
+        "plan_tier": "enterprise",
+        "service": "networking",
+        "metric": "requests",
+        "requests": 116.0,
+        "cost_usd": "0.976100",
+        "genai_tokens": null,
+        "carbon_kg": 0.0232,
+        "resource_env": "prod"
+      }
+    ],
+    "org_daily_features_mayor_costo": [
+      {
+        "org_id": "org_c11ertj5",
+        "org_name": "Apex Cloud 17",
+        "event_date": "2025-07-11",
+        "daily_cost_usd": "456.740300",
+        "requests": 646.0,
+        "genai_tokens": null,
+        "carbon_kg": null,
+        "carbon_coverage": 0.0,
+        "events": 12
+      },
+      {
+        "org_id": "org_tvhhpbmy",
+        "org_name": "Nova Tech 61",
+        "event_date": "2025-07-04",
+        "daily_cost_usd": "345.724500",
+        "requests": 466.0,
+        "genai_tokens": null,
+        "carbon_kg": null,
+        "carbon_coverage": 0.0,
+        "events": 6
+      },
+      {
+        "org_id": "org_rixa11dp",
+        "org_name": "Vertex AI 53",
+        "event_date": "2025-08-24",
+        "daily_cost_usd": "344.916700",
+        "requests": 505.0,
+        "genai_tokens": 5646,
+        "carbon_kg": 0.102994,
+        "carbon_coverage": 1.0,
+        "events": 9
+      }
+    ]
+  },
+  "features_resumen": {
+    "filas_org_dia": 4580,
+    "orgs": 80,
+    "dias": 60,
+    "costo_total_usd": "147433.98",
+    "org_dia_sin_requests": 161,
+    "org_dia_sin_genai_tokens": 3732,
+    "carbon_coverage_promedio": 0.7496
+  }
+}
