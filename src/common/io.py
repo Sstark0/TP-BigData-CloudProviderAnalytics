@@ -83,3 +83,24 @@ def write_parquet(df: DataFrame, path, mode: str = "overwrite", partition_by=Non
         df.repartition(*cols).write.mode(mode).partitionBy(*cols).parquet(str(path))
     else:
         df.coalesce(files).write.mode(mode).parquet(str(path))
+
+def replace_partition(df: DataFrame, table_path, column: str, value: str, files: int = 1) -> None:
+    """Reemplaza UNA partición (<tabla>/<column>=<value>) y deja intactas las demás.
+
+    Re-ejecutar la carga del mismo día no duplica filas. 
+        Primero se borra la partición de ese día y después se escribe. 
+        Si el lote no trae filas (por ejemplo, ningún rechazo), la partición queda
+        borrada, así no sobreviven filas de una ejecución anterior.
+
+    Parquet no es transaccional.
+        Si el proceso se corta entre el borrado y la escritura,
+        la partición queda vacía hasta la próxima ejecución.
+    """
+    import shutil
+
+    target = Path(table_path) / f"{column}={value}"
+    if target.exists():
+        shutil.rmtree(target)
+    if df.limit(1).count() == 0:
+        return
+    (df.drop(column).coalesce(files).write.mode("overwrite").parquet(str(target)))

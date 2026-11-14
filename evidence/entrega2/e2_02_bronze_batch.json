@@ -1,0 +1,243 @@
+{
+  "generado_utc": "2026-11-14T07:47:20Z",
+  "fuentes": {
+    "customers_orgs": {
+      "run_id": "20261114T074720Z-87cd6e0a",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 80,
+        "aceptadas": 80,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 80
+      },
+      "bronze": {
+        "path": "bronze/customers_orgs",
+        "parquet_files": 1,
+        "bytes": 7302
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 80,
+          "right": 80,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 80,
+          "right": 80,
+          "ok": true
+        }
+      ]
+    },
+    "users": {
+      "run_id": "20261114T074730Z-91c6b7bf",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 800,
+        "aceptadas": 800,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 800
+      },
+      "bronze": {
+        "path": "bronze/users",
+        "parquet_files": 1,
+        "bytes": 24486
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 800,
+          "right": 800,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 800,
+          "right": 800,
+          "ok": true
+        }
+      ]
+    },
+    "resources": {
+      "run_id": "20261114T074734Z-70e90acd",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 400,
+        "aceptadas": 400,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 400
+      },
+      "bronze": {
+        "path": "bronze/resources",
+        "parquet_files": 1,
+        "bytes": 12328
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 400,
+          "right": 400,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 400,
+          "right": 400,
+          "ok": true
+        }
+      ]
+    },
+    "support_tickets": {
+      "run_id": "20261114T074736Z-25723d67",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 1000,
+        "aceptadas": 1000,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 1000
+      },
+      "bronze": {
+        "path": "bronze/support_tickets",
+        "parquet_files": 1,
+        "bytes": 19632
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 1000,
+          "right": 1000,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 1000,
+          "right": 1000,
+          "ok": true
+        }
+      ]
+    },
+    "marketing_touches": {
+      "run_id": "20261114T074740Z-e5000126",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 1500,
+        "aceptadas": 1500,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 1500
+      },
+      "bronze": {
+        "path": "bronze/marketing_touches",
+        "parquet_files": 1,
+        "bytes": 23612
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 1500,
+          "right": 1500,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 1500,
+          "right": 1500,
+          "ok": true
+        }
+      ]
+    },
+    "nps_surveys": {
+      "run_id": "20261114T074742Z-037bb3b1",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 92,
+        "aceptadas": 92,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 92
+      },
+      "bronze": {
+        "path": "bronze/nps_surveys",
+        "parquet_files": 1,
+        "bytes": 4233
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 92,
+          "right": 92,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 92,
+          "right": 92,
+          "ok": true
+        }
+      ]
+    },
+    "billing_monthly": {
+      "run_id": "20261114T074744Z-4cfecdf8",
+      "ingest_date": "2026-11-14",
+      "counts": {
+        "leidas": 240,
+        "aceptadas": 240,
+        "quarantine": 0,
+        "duplicados_exactos": 0,
+        "quarantine.malformed_row": 0,
+        "quarantine.key_null": 0,
+        "quarantine.cast_error": 0,
+        "quarantine.key_conflict": 0,
+        "escritas_en_bronze": 240
+      },
+      "bronze": {
+        "path": "bronze/billing_monthly",
+        "parquet_files": 1,
+        "bytes": 11542
+      },
+      "balances": [
+        {
+          "check": "leidas = aceptadas + quarantine + duplicados_exactos",
+          "left": 240,
+          "right": 240,
+          "ok": true
+        },
+        {
+          "check": "escritas_en_bronze = aceptadas",
+          "left": 240,
+          "right": 240,
+          "ok": true
+        }
+      ]
+    }
+  }
+}

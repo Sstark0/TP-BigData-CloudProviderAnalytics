@@ -57,3 +57,18 @@ NATURAL_KEYS = {
     "billing_monthly": ["invoice_id"],
     "usage_events": ["event_id"],
 }
+
+# Tipos de destino en Bronze.
+# Lo que no se pueda convertir -> Quarantine
+# Columnas que no figuran quedan como texto
+
+BRONZE_TYPES = {
+    "customers_orgs": {"is_enterprise": "boolean", "signup_date": "date", "nps_score": "double"},
+    "users": {"active": "boolean", "created_at": "date", "last_login": "date"},
+    "resources": {"created_at": "date"},
+    "support_tickets": {"created_at": "date", "resolved_at": "date", "csat": "double", "sla_breached": "boolean"},
+    "marketing_touches": {"timestamp": "date", "clicked": "boolean", "converted": "boolean"},
+    "nps_surveys": {"survey_date": "date", "nps_score": "double"},
+    "billing_monthly": {"month": "date", "subtotal": "decimal(12,2)", "credits": "decimal(12,2)",
+                        "taxes": "decimal(12,2)", "exchange_rate_to_usd": "decimal(12,6)"},
+}

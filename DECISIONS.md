@@ -76,3 +76,14 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 - **Contexto.** Los CSV siguen RFC 4180: los campos con comas van entre comillas y las comillas internas se duplican (`""`). Spark usa por defecto la barra invertida como escape: con esa configuración `tags_json` se cortaba en la primera coma interna (45 recursos con `pii:true` detectados en lugar de 85).
 - **Decisión.** Leer todos los CSV con `option("escape", '"')`. En Bronze, además, `enforceSchema = false` para que Spark valide que el encabezado coincida con el esquema explícito (con esquema explícito las columnas se asignan por posición).
 - **Consecuencias.** Se corrigieron los conteos de PII en el perfil. Queda como regla del lector común de CSV.
+
+## D-11 · Bronze batch: partición, rechazos e idempotencia (E2-02)
+- **Contexto.** LA consigna misma plantea el requerimiento de ingestar al menos tres maestros "a Parquet particionado con tipificación explícita, `ingest_ts`, `source_file` y deduplicación cuando aplique". El contrato del lago de la entrega 1 (diseño v1.1, §5) proponía maestros en Bronze sin partición.
+- **Decisión.**
+  - **Partición por `ingest_date`** (fecha de la carga, UTC) en las 7 fuentes CSV: cada carga es un *snapshot* en su propia carpeta. Cumple el requerimiento anterior y conserva además la historia de los maestros. Se aparta del contrato de E1, que se actualiza en la arquitectura de la entrega 2.
+  - **Reglas de rechazo**, en este orden; la primera que falla manda el registro a `quarantine/source=<fuente>/dt=<fecha>` con `rule_id`, motivo, clave y fila original: `malformed_row`, `key_null`, `cast_error` (un valor presente que no convierte a su tipo, D-05) y `key_conflict` (misma clave natural con contenidos distintos: no se elige una versión al azar).
+  - **Deduplicación**: las copias exactas de una fila se descartan y se cuentan; no son errores.
+  - **Idempotencia**: cada ejecución reemplaza solo la partición del día, en Bronze y en quarantine. Re-ejecutar el mismo día da los mismos conteos.
+  - **Conciliación**: cada carga verifica `leídas = aceptadas + quarantine + duplicados exactos` y `escritas = aceptadas`; si no cierra, el proceso falla.
+- **Descartado.** Partición por `month` en `billing_monthly`: rompería la regla única por fuente y no aporta en Bronze, donde se conserva el grano de origen. *Sobrescribir toda la tabla*: perdería los *snapshots* anteriores.
+- **Consecuencias.** En el dataset las 4.112 filas de las 7 fuentes pasan a Bronze sin rechazos (los CSV no traen errores de formato); las reglas están cubiertas por pruebas con casos construidos (`tests/test_bronze_batch.py`). Parquet no es transaccional: si una carga se corta entre el borrado y la escritura, la partición queda vacía hasta la próxima ejecución.

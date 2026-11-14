@@ -13,7 +13,7 @@ from pathlib import Path
 from src.common import config
 from src.common.io import (CORRUPT, SchemaMismatchError, add_technical_columns, read_landing_csv,
                            validate_csv_header, write_parquet)
-from src.common.runlog import RunLog, describe_file, latest_run
+from src.common.runlog import RunLog, describe_file, latest_run, portable_path
 from src.common.schemas import CSV_COLUMNS
 from src.common.spark import get_spark
 
@@ -54,6 +54,10 @@ class RunLogTests(unittest.TestCase):
             self.assertEqual(saved["inputs"][0], describe_file(source))
             self.assertTrue(saved["balances"][0]["ok"])
             self.assertEqual(latest_run("demo", runs_dir=tmp)["run_id"], run.run_id)
+
+    def test_output_paths_are_relative_to_the_lake(self):
+        """La evidencia no debe llevar la ruta personal de quien ejecutó."""
+        self.assertEqual(portable_path(config.BRONZE / "users"), "bronze/users")
 
     def test_failed_run_is_recorded_and_error_is_not_hidden(self):
         with tempfile.TemporaryDirectory() as tmp:

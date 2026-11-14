@@ -25,7 +25,7 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-from src.common.config import RUNS
+from src.common.config import DATALAKE_ROOT, RUNS
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -60,12 +60,23 @@ def describe_file(path) -> dict:
             digest.update(chunk)
     return {"file": path.name, "bytes": path.stat().st_size, "sha256": digest.hexdigest()}
 
+def portable_path(path) -> str:
+    """Ruta relativa a DATALAKE_ROOT.
+
+    Si la ruta está fuera del lago, queda absoluta.
+    """
+    path = Path(path).resolve()
+    try:
+        return path.relative_to(DATALAKE_ROOT.resolve()).as_posix()
+    except ValueError:
+        return str(path)
+
 
 def describe_output(path) -> dict:
     """Cantidad de archivos Parquet y bytes de una tabla ya escrita."""
     path = Path(path)
     files = [f for f in path.rglob("*.parquet")] if path.exists() else []
-    return {"path": str(path), "parquet_files": len(files), "bytes": sum(f.stat().st_size for f in files)}
+    return {"path": portable_path(path), "parquet_files": len(files), "bytes": sum(f.stat().st_size for f in files)}
 
 
 class RunLog:
