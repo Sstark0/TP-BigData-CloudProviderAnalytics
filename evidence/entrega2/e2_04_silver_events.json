@@ -1,5 +1,5 @@
 {
-  "run_id": "20261114T195406Z-fe43d259",
+  "run_id": "20261114T213259Z-44fe09a1",
   "params": {
     "watermark": "24 hours",
     "max_files_per_trigger": 1,
@@ -13,12 +13,23 @@
     "stream.duplicados_descartados": 0,
     "bronze_eventos": 43200,
     "silver_eventos": 43200,
-    "quarantine_eventos": 0,
-    "quarantine.event_id_null": 0,
+    "quarantine_registros": 2249,
+    "rechazados": 0,
     "duplicados_event_id": 0,
+    "corregidos": 2038,
+    "marcados": 211,
+    "quarantine.event_id_null": 0,
+    "quarantine.unit_mismatch": 0,
+    "quarantine.unit_missing_uninferable": 0,
+    "quarantine.unit_missing": 2038,
+    "quarantine.cost_below_tolerance": 211,
+    "quarantine.event_id_duplicate": 0,
     "silver_a_tiempo": 1428,
     "silver_tardios_recuperados": 41772,
     "silver_event_id_repetidos": 0,
+    "silver_unit_inferida": 2038,
+    "silver_costo_negativo_marcado": 211,
+    "silver_unit_nula_con_value": 0,
     "silver_particiones_event_date": 60
   },
   "balances": [
@@ -29,7 +40,7 @@
       "ok": true
     },
     {
-      "check": "bronze_eventos = silver_eventos + quarantine_eventos + duplicados_event_id",
+      "check": "bronze_eventos = silver_eventos + rechazados + duplicados_event_id",
       "left": 43200,
       "right": 43200,
       "ok": true
@@ -39,13 +50,36 @@
       "left": 43200,
       "right": 43200,
       "ok": true
+    },
+    {
+      "check": "quarantine_registros = rechazados + duplicados_event_id + corregidos + marcados",
+      "left": 2249,
+      "right": 2249,
+      "ok": true
+    },
+    {
+      "check": "corregidos = silver_unit_inferida",
+      "left": 2038,
+      "right": 2038,
+      "ok": true
+    },
+    {
+      "check": "marcados = silver_costo_negativo_marcado",
+      "left": 211,
+      "right": 211,
+      "ok": true
     }
   ],
   "outputs": [
     {
       "path": "silver/usage_events",
       "parquet_files": 60,
-      "bytes": 2641249
+      "bytes": 2671987
+    },
+    {
+      "path": "quarantine/source=usage_events_silver",
+      "parquet_files": 1,
+      "bytes": 201331
     }
   ],
   "muestra_tardios": [

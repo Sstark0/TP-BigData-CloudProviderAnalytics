@@ -1,0 +1,145 @@
+{
+  "silver_run_id": "20261114T224834Z-bf6fc435",
+  "parametros": {
+    "unidad_esperada_por_metrica": {
+      "requests": "count",
+      "cpu_hours": "hours",
+      "storage_gb_hours": "gb_hours"
+    },
+    "tolerancia_costo_usd": -0.01
+  },
+  "reglas": [
+    {
+      "rule_id": "event_id_null",
+      "accion": "rechazado",
+      "condicion_falla": "event_id IS NULL",
+      "motivo": "event_id nulo: no se puede deduplicar ni rastrear el evento",
+      "registros_en_el_dataset": 0
+    },
+    {
+      "rule_id": "unit_mismatch",
+      "accion": "rechazado",
+      "condicion_falla": "unit IS NOT NULL AND metric IN ('requests', 'cpu_hours', 'storage_gb_hours') AND unit <> CASE metric WHEN 'requests' THEN 'count' WHEN 'cpu_hours' THEN 'hours' WHEN 'storage_gb_hours' THEN 'gb_hours' END",
+      "motivo": "la unidad no corresponde a la métrica",
+      "registros_en_el_dataset": 0
+    },
+    {
+      "rule_id": "unit_missing_uninferable",
+      "accion": "rechazado",
+      "condicion_falla": "unit IS NULL AND value IS NOT NULL AND (metric IS NULL OR metric NOT IN ('requests', 'cpu_hours', 'storage_gb_hours'))",
+      "motivo": "unidad vacía y la métrica no permite inferirla",
+      "registros_en_el_dataset": 0
+    },
+    {
+      "rule_id": "unit_missing",
+      "accion": "corregido",
+      "condicion_falla": "unit IS NULL AND value IS NOT NULL AND metric IN ('requests', 'cpu_hours', 'storage_gb_hours')",
+      "motivo": "unidad vacía: se completa a partir de la métrica",
+      "registros_en_el_dataset": 2038
+    },
+    {
+      "rule_id": "cost_below_tolerance",
+      "accion": "marcado",
+      "condicion_falla": "cost_usd_increment < -0.01",
+      "motivo": "costo menor a -0.01 USD: se conserva y se marca para revisión",
+      "registros_en_el_dataset": 211
+    },
+    {
+      "rule_id": "event_id_duplicate",
+      "accion": "descartado",
+      "condicion_falla": "misma event_id ya llegó antes",
+      "motivo": "se conserva la primera llegada",
+      "registros_en_el_dataset": 0
+    }
+  ],
+  "balances_de_la_ejecucion": [
+    {
+      "check": "stream.leidos = stream.emitidos + stream.descartados_por_watermark + stream.duplicados_descartados",
+      "left": 0,
+      "right": 0,
+      "ok": true
+    },
+    {
+      "check": "bronze_eventos = silver_eventos + rechazados + duplicados_event_id",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "silver_eventos = silver_a_tiempo + silver_tardios_recuperados",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "quarantine_registros = rechazados + duplicados_event_id + corregidos + marcados",
+      "left": 2249,
+      "right": 2249,
+      "ok": true
+    },
+    {
+      "check": "corregidos = silver_unit_inferida",
+      "left": 2038,
+      "right": 2038,
+      "ok": true
+    },
+    {
+      "check": "marcados = silver_costo_negativo_marcado",
+      "left": 211,
+      "right": 211,
+      "ok": true
+    }
+  ],
+  "impacto": {
+    "silver_eventos": 43200,
+    "silver_costo_total_usd": 147433.98,
+    "unidad_inferida_eventos": 2038,
+    "unidad_inferida_costo_usd_conservado": 7106.04,
+    "unidad_inferida_por_metrica": {
+      "cpu_hours": 502,
+      "storage_gb_hours": 638,
+      "requests": 898
+    },
+    "costo_negativo_marcado_eventos": 211,
+    "costo_negativo_marcado_usd": -917.6,
+    "costo_negativo_dentro_de_tolerancia_eventos": 5
+  },
+  "muestras": {
+    "unit_missing": [
+      {
+        "rule_id": "unit_missing",
+        "action": "corregido",
+        "reason": "unidad vacía: se completa a partir de la métrica",
+        "record_key": "evt_003mc7ncrk0z",
+        "raw_record": "{\"event_id\":\"evt_003mc7ncrk0z\",\"event_ts\":\"2025-08-04T11:40:00.000Z\",\"org_id\":\"org_w3zp08j3\",\"resource_id\":\"res_rqgkcumc\",\"service\":\"genai\",\"region\":\"ap-south\",\"metric\":\"requests\",\"value\":120.0,\"cost_usd_increment\":11.5385,\"schema_version\":2,\"carbon_kg\":0.024,\"genai_tokens\":1219}",
+        "source_file": "events_part_0097.jsonl"
+      },
+      {
+        "rule_id": "unit_missing",
+        "action": "corregido",
+        "reason": "unidad vacía: se completa a partir de la métrica",
+        "record_key": "evt_01xb4ljijao2",
+        "raw_record": "{\"event_id\":\"evt_01xb4ljijao2\",\"event_ts\":\"2025-08-08T11:33:00.000Z\",\"org_id\":\"org_axeqbnhl\",\"resource_id\":\"res_9c65fpys\",\"service\":\"compute\",\"region\":\"ap-northeast\",\"metric\":\"cpu_hours\",\"value\":1.7567,\"cost_usd_increment\":0.1357,\"schema_version\":2,\"carbon_kg\":3.51E-4}",
+        "source_file": "events_part_0104.jsonl"
+      }
+    ],
+    "cost_below_tolerance": [
+      {
+        "rule_id": "cost_below_tolerance",
+        "action": "marcado",
+        "reason": "costo menor a -0.01 USD: se conserva y se marca para revisión",
+        "record_key": "evt_05rs1cd7uxv6",
+        "raw_record": "{\"event_id\":\"evt_05rs1cd7uxv6\",\"event_ts\":\"2025-08-05T15:21:00.000Z\",\"org_id\":\"org_1n13jcat\",\"resource_id\":\"res_h2r9pegl\",\"service\":\"compute\",\"region\":\"sa-east\",\"metric\":\"requests\",\"value\":119.0,\"unit\":\"count\",\"cost_usd_increment\":-7.7014,\"schema_version\":2,\"carbon_kg\":0.0238}",
+        "source_file": "events_part_0009.jsonl"
+      },
+      {
+        "rule_id": "cost_below_tolerance",
+        "action": "marcado",
+        "reason": "costo menor a -0.01 USD: se conserva y se marca para revisión",
+        "record_key": "evt_07y0qnbewq73",
+        "raw_record": "{\"event_id\":\"evt_07y0qnbewq73\",\"event_ts\":\"2025-08-23T17:57:00.000Z\",\"org_id\":\"org_kdgigatj\",\"resource_id\":\"res_wds0hprw\",\"service\":\"database\",\"region\":\"sa-east\",\"metric\":\"storage_gb_hours\",\"value\":11.6425,\"unit\":\"gb_hours\",\"cost_usd_increment\":-0.506,\"schema_version\":2,\"carbon_kg\":0.002329}",
+        "source_file": "events_part_0063.jsonl"
+      }
+    ]
+  }
+}

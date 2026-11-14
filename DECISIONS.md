@@ -19,6 +19,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-12 | Bronze streaming: partición por `ingest_date`/`batch_id`, manifiesto de lotes y quarantine estructural | Aceptada | 2026-11-14 |
 | D-13 | Silver de eventos: stream con watermark para lo reciente + reconciliación batch como histórico | Aceptada | 2026-11-14 |
 | D-14 | Silver de maestros (última foto), enriquecimiento con LEFT JOIN y features diarias por organización | Aceptada | 2026-11-14 |
+| D-15 | Reglas de calidad de Silver: rechazar, descartar, corregir o marcar, con registro por evento | Aceptada | 2026-11-14 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -123,3 +124,22 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - **Costo en `decimal(18,6)`**: los costos tienen como máximo 4 decimales; sumarlos como decimal es exacto, y el total de las features concilia al micro-dólar con Silver. Gold (E2-07) usa la misma convención.
 - **Descartado.** *Historia de maestros (SCD tipo 2)*: hoy hay una sola foto por maestro; la historia queda en Bronze si se la necesita. *INNER JOIN*: perdería en silencio los eventos de organizaciones o recursos que todavía no estén en el maestro. *Features por organización, día y servicio*: ese grano es el del mart de Gold (E2-07); en Silver las features quedan por organización y día, que es lo que usan la detección de anomalías (E2-09) y el análisis por cliente.
 - **Consecuencias.** 80 organizaciones y 400 recursos conformados; 43.200 eventos enriquecidos sin huérfanos; 4.580 filas organización × día; costo total USD 147.433,98, igual que en Silver. `genai_tokens` y `carbon_kg` solo existen en eventos v2: `carbon_coverage` (0,75 en promedio) dice qué parte del día está medida. Los costos negativos se suman tal cual hasta que E2-06 los marque.
+
+## D-15 · Reglas de calidad de Silver de eventos (E2-06)
+- **Contexto.** Dado que se solcitan tres reglas activas con quarantine y motivo por registro: `event_id` no nulo y único, costo ≥ −0,01 con bandera y `unit` no nula si hay `value`. En el dataset, 2.038 eventos tienen `value` pero no `unit` (USD 7.106 de costo, en las 80 organizaciones y los 60 días), y su métrica indica sin ambigüedad cuál es la unidad. Ningún evento con unidad la trae distinta de la que corresponde a su métrica. Si esos eventos fueran a quarantine, Silver y Gold perderían el 4,8 % del costo.
+- **Decisión.** Cada regla termina en una **acción**, y todas dejan una fila con regla, acción, motivo y registro original en `quarantine/source=usage_events_silver/dt=<ingest_date de Bronze>`, que funciona como registro de calidad:
+
+  | Regla | Falla si | Acción |
+  |---|---|---|
+  | `event_id_null` | `event_id` es nulo | rechazado: sale de Silver |
+  | `event_id_duplicate` | el `event_id` ya llegó antes | descartado: queda la primera llegada (D-06) |
+  | `unit_mismatch` | la unidad no corresponde a la métrica | rechazado |
+  | `unit_missing_uninferable` | sin unidad, con `value` y con métrica desconocida | rechazado |
+  | `unit_missing` | sin unidad, con `value` y con métrica conocida | corregido: `unit` se completa (`requests`→`count`, `cpu_hours`→`hours`, `storage_gb_hours`→`gb_hours`) y `unit_inferred = true` |
+  | `cost_below_tolerance` | `cost_usd_increment` < −0,01 USD | marcado: el evento sigue tal cual, con `cost_negative = true` |
+
+  - El registro guarda el dato **original** (por ejemplo, sin unidad), y Silver el corregido.
+  - Conciliaciones: `Bronze = Silver + rechazados + descartados`; `registros de calidad = rechazados + descartados + corregidos + marcados`; los corregidos y marcados coinciden con las banderas de Silver.
+  - Las banderas `unit_inferred` y `cost_negative` pasan a los eventos enriquecidos, y las features diarias suman `negative_cost_events`.
+- **Descartado.** *Quarantine para los eventos sin unidad (criterio original del plan)*: perdería USD 7.106 por un dato que se reconstruye sin ambigüedad. *Corregir sin dejar registro*: no quedaría constancia de qué se cambió ni por qué. *Rechazar los costos negativos*: pueden ser créditos o ajustes legítimos (ver D-09 para facturación), y sacarlos alteraría el costo; se conservan y se marcan hasta que el negocio defina su semántica.
+- **Consecuencias.** En el dataset: 2.038 corregidos, 211 marcados (USD −917,60), 5 negativos dentro de la tolerancia y 0 rechazados o descartados. Las reglas de rechazo están cubiertas por casos construidos en `tests/test_quality_rules.py`. Cambia el criterio de cierre de E2-06 en `plan_trabajo.md` ("quarantine" pasa a "registro de calidad con acción"). Quien busque solo los rechazos reales filtra `action IN ('rechazado', 'descartado')`.

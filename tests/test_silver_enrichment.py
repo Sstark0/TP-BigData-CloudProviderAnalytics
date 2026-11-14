@@ -19,13 +19,13 @@ D1, D2 = dt.date(2025, 8, 1), dt.date(2025, 8, 2)
 EVENT_COLS = ("event_id string, event_ts timestamp, org_id string, resource_id string, service string, "
               "region string, metric string, value double, unit string, schema_version int, "
               "cost_usd_increment double, genai_tokens long, carbon_kg double, arrival_path string, "
-              "source_file string, event_date date")
+              "source_file string, event_date date, unit_inferred boolean, cost_negative boolean")
 
 
 def ev(i, org, res, metric, value, cost, day=D1, v2=False):
     ts = dt.datetime.combine(day, dt.time(10, 0))
     return (i, ts, org, res, "compute", "us-east-1", metric, value, None, 2 if v2 else 1, cost,
-            500 if v2 else None, 0.01 if v2 else None, "a_tiempo", "f.jsonl", day)
+            500 if v2 else None, 0.01 if v2 else None, "a_tiempo", "f.jsonl", day, False, cost < -0.01)
 
 
 class SilverEnrichmentTests(unittest.TestCase):
