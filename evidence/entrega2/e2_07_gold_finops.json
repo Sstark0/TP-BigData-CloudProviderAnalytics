@@ -1,0 +1,398 @@
+{
+  "run_id": "20261114T235014Z-11eb270f",
+  "counts": {
+    "silver_eventos": 43200,
+    "gold_filas": 11050,
+    "gold_claves_distintas": 11050,
+    "gold_eventos": 43200,
+    "costo_silver_micro_usd": 147433977800,
+    "costo_gold_micro_usd": 147433977800,
+    "requests_silver": 2294079,
+    "requests_gold": 2294079,
+    "org_dia_distintos_de_features": 0,
+    "particiones_usage_date": 60,
+    "fingerprint": 144780998816
+  },
+  "balances": [
+    {
+      "check": "gold_filas = gold_claves_distintas",
+      "left": 11050,
+      "right": 11050,
+      "ok": true
+    },
+    {
+      "check": "silver_eventos = gold_eventos",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "costo_silver_micro_usd = costo_gold_micro_usd",
+      "left": 147433977800,
+      "right": 147433977800,
+      "ok": true
+    },
+    {
+      "check": "requests_silver = requests_gold",
+      "left": 2294079,
+      "right": 2294079,
+      "ok": true
+    }
+  ],
+  "re_ejecucion": {
+    "run_id_anterior": "20261114T234909Z-3d6a5cc9",
+    "fingerprint_anterior": 144780998816,
+    "mismo_contenido": true
+  },
+  "tabla": {
+    "path": "gold/org_daily_usage_by_service",
+    "parquet_files": 60,
+    "bytes": 828338
+  },
+  "esquema": [
+    "org_id: string",
+    "service: string",
+    "org_name: string",
+    "plan_tier: string",
+    "industry: string",
+    "daily_cost_usd: decimal(18,6)",
+    "requests: double",
+    "cpu_hours: double",
+    "storage_gb_hours: double",
+    "genai_tokens: bigint",
+    "carbon_kg: double",
+    "events: bigint",
+    "resources_active: bigint",
+    "negative_cost_events: bigint",
+    "negative_cost_usd: decimal(18,6)",
+    "unit_inferred_events: bigint",
+    "late_events: bigint",
+    "carbon_coverage: double",
+    "gold_processed_ts: timestamp",
+    "gold_run_id: string",
+    "usage_date: date"
+  ],
+  "muestra": [
+    {
+      "org_id": "org_53lc58dr",
+      "service": "analytics",
+      "org_name": "Apex Digital 16",
+      "plan_tier": "standard",
+      "industry": "Energy",
+      "daily_cost_usd": "47.367900",
+      "requests": 604.0,
+      "cpu_hours": 0.0,
+      "storage_gb_hours": null,
+      "genai_tokens": null,
+      "carbon_kg": 0.1208,
+      "events": 6,
+      "resources_active": 2,
+      "negative_cost_events": 0,
+      "negative_cost_usd": "0.000000",
+      "unit_inferred_events": 0,
+      "late_events": 0,
+      "carbon_coverage": 1.0,
+      "usage_date": "2025-08-31"
+    },
+    {
+      "org_id": "org_53lc58dr",
+      "service": "compute",
+      "org_name": "Apex Digital 16",
+      "plan_tier": "standard",
+      "industry": "Energy",
+      "daily_cost_usd": "1.012500",
+      "requests": null,
+      "cpu_hours": 1.1799000000000002,
+      "storage_gb_hours": 9.866399999999999,
+      "genai_tokens": null,
+      "carbon_kg": 0.002209,
+      "events": 6,
+      "resources_active": 2,
+      "negative_cost_events": 0,
+      "negative_cost_usd": "0.000000",
+      "unit_inferred_events": 0,
+      "late_events": 0,
+      "carbon_coverage": 1.0,
+      "usage_date": "2025-08-31"
+    },
+    {
+      "org_id": "org_53lc58dr",
+      "service": "database",
+      "org_name": "Apex Digital 16",
+      "plan_tier": "standard",
+      "industry": "Energy",
+      "daily_cost_usd": "1.701100",
+      "requests": null,
+      "cpu_hours": 0.0,
+      "storage_gb_hours": 37.2119,
+      "genai_tokens": null,
+      "carbon_kg": 0.007442,
+      "events": 3,
+      "resources_active": 1,
+      "negative_cost_events": 0,
+      "negative_cost_usd": "0.000000",
+      "unit_inferred_events": 0,
+      "late_events": 0,
+      "carbon_coverage": 1.0,
+      "usage_date": "2025-08-31"
+    },
+    {
+      "org_id": "org_53lc58dr",
+      "service": "genai",
+      "org_name": "Apex Digital 16",
+      "plan_tier": "standard",
+      "industry": "Energy",
+      "daily_cost_usd": "15.143200",
+      "requests": 112.0,
+      "cpu_hours": 0.0,
+      "storage_gb_hours": 12.9945,
+      "genai_tokens": 2208,
+      "carbon_kg": 0.024999,
+      "events": 3,
+      "resources_active": 1,
+      "negative_cost_events": 0,
+      "negative_cost_usd": "0.000000",
+      "unit_inferred_events": 0,
+      "late_events": 0,
+      "carbon_coverage": 1.0,
+      "usage_date": "2025-08-31"
+    }
+  ],
+  "consultas_de_referencia": {
+    "org_id": "org_53lc58dr",
+    "ultimo_dia_del_dataset": "2025-08-31",
+    "q1_costos_y_requests_ultimos_7_dias": [
+      {
+        "usage_date": "2025-08-25",
+        "service": "analytics",
+        "daily_cost_usd": "22.351200",
+        "requests": 340.0
+      },
+      {
+        "usage_date": "2025-08-25",
+        "service": "database",
+        "daily_cost_usd": "6.230400",
+        "requests": 107.0
+      },
+      {
+        "usage_date": "2025-08-25",
+        "service": "networking",
+        "daily_cost_usd": "2.573600",
+        "requests": 248.0
+      },
+      {
+        "usage_date": "2025-08-26",
+        "service": "analytics",
+        "daily_cost_usd": "30.204700",
+        "requests": 335.0
+      },
+      {
+        "usage_date": "2025-08-26",
+        "service": "compute",
+        "daily_cost_usd": "18.511300",
+        "requests": 225.0
+      },
+      {
+        "usage_date": "2025-08-26",
+        "service": "database",
+        "daily_cost_usd": "24.976100",
+        "requests": 355.0
+      },
+      {
+        "usage_date": "2025-08-26",
+        "service": "genai",
+        "daily_cost_usd": "1.817500",
+        "requests": null
+      },
+      {
+        "usage_date": "2025-08-26",
+        "service": "networking",
+        "daily_cost_usd": "1.192000",
+        "requests": 122.0
+      },
+      {
+        "usage_date": "2025-08-26",
+        "service": "storage",
+        "daily_cost_usd": "2.748200",
+        "requests": 121.0
+      },
+      {
+        "usage_date": "2025-08-27",
+        "service": "analytics",
+        "daily_cost_usd": "18.092500",
+        "requests": 226.0
+      },
+      {
+        "usage_date": "2025-08-27",
+        "service": "compute",
+        "daily_cost_usd": "42.189400",
+        "requests": 516.0
+      },
+      {
+        "usage_date": "2025-08-27",
+        "service": "database",
+        "daily_cost_usd": "10.634500",
+        "requests": 238.0
+      },
+      {
+        "usage_date": "2025-08-27",
+        "service": "genai",
+        "daily_cost_usd": "43.688300",
+        "requests": 349.0
+      },
+      {
+        "usage_date": "2025-08-27",
+        "service": "storage",
+        "daily_cost_usd": "0.276900",
+        "requests": null
+      },
+      {
+        "usage_date": "2025-08-28",
+        "service": "analytics",
+        "daily_cost_usd": "14.536600",
+        "requests": 223.0
+      },
+      {
+        "usage_date": "2025-08-28",
+        "service": "compute",
+        "daily_cost_usd": "28.966200",
+        "requests": 370.0
+      },
+      {
+        "usage_date": "2025-08-28",
+        "service": "database",
+        "daily_cost_usd": "22.157400",
+        "requests": 374.0
+      },
+      {
+        "usage_date": "2025-08-28",
+        "service": "genai",
+        "daily_cost_usd": "14.990100",
+        "requests": 120.0
+      },
+      {
+        "usage_date": "2025-08-28",
+        "service": "networking",
+        "daily_cost_usd": "2.478800",
+        "requests": 240.0
+      },
+      {
+        "usage_date": "2025-08-28",
+        "service": "storage",
+        "daily_cost_usd": "4.923400",
+        "requests": 238.0
+      },
+      {
+        "usage_date": "2025-08-29",
+        "service": "analytics",
+        "daily_cost_usd": "17.292300",
+        "requests": 234.0
+      },
+      {
+        "usage_date": "2025-08-29",
+        "service": "compute",
+        "daily_cost_usd": "0.464700",
+        "requests": null
+      },
+      {
+        "usage_date": "2025-08-29",
+        "service": "database",
+        "daily_cost_usd": "10.365800",
+        "requests": 201.0
+      },
+      {
+        "usage_date": "2025-08-29",
+        "service": "networking",
+        "daily_cost_usd": "1.244500",
+        "requests": 109.0
+      },
+      {
+        "usage_date": "2025-08-30",
+        "service": "compute",
+        "daily_cost_usd": "11.375500",
+        "requests": 112.0
+      },
+      {
+        "usage_date": "2025-08-30",
+        "service": "database",
+        "daily_cost_usd": "19.288700",
+        "requests": 365.0
+      },
+      {
+        "usage_date": "2025-08-30",
+        "service": "genai",
+        "daily_cost_usd": "33.072900",
+        "requests": 243.0
+      },
+      {
+        "usage_date": "2025-08-30",
+        "service": "networking",
+        "daily_cost_usd": "3.405000",
+        "requests": 321.0
+      },
+      {
+        "usage_date": "2025-08-30",
+        "service": "storage",
+        "daily_cost_usd": "2.632600",
+        "requests": 114.0
+      },
+      {
+        "usage_date": "2025-08-31",
+        "service": "analytics",
+        "daily_cost_usd": "47.367900",
+        "requests": 604.0
+      },
+      {
+        "usage_date": "2025-08-31",
+        "service": "compute",
+        "daily_cost_usd": "1.012500",
+        "requests": null
+      },
+      {
+        "usage_date": "2025-08-31",
+        "service": "database",
+        "daily_cost_usd": "1.701100",
+        "requests": null
+      },
+      {
+        "usage_date": "2025-08-31",
+        "service": "genai",
+        "daily_cost_usd": "15.143200",
+        "requests": 112.0
+      },
+      {
+        "usage_date": "2025-08-31",
+        "service": "storage",
+        "daily_cost_usd": "2.643600",
+        "requests": 125.0
+      }
+    ],
+    "q2_top5_servicios_ultimos_14_dias": [
+      {
+        "service": "analytics",
+        "cost_usd": "282.074600",
+        "requests": 3671.0
+      },
+      {
+        "service": "genai",
+        "cost_usd": "271.274300",
+        "requests": 2016.0
+      },
+      {
+        "service": "compute",
+        "cost_usd": "237.477000",
+        "requests": 2807.0
+      },
+      {
+        "service": "database",
+        "cost_usd": "182.779300",
+        "requests": 3103.0
+      },
+      {
+        "service": "storage",
+        "cost_usd": "36.266000",
+        "requests": 1556.0
+      }
+    ]
+  }
+}

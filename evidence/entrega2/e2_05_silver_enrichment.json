@@ -1,5 +1,5 @@
 {
-  "run_id": "20261114T204558Z-2c0ed7b0",
+  "run_id": "20261114T234835Z-008e7b0f",
   "counts": {
     "customers_orgs.bronze_ultima_foto": 80,
     "customers_orgs.silver": 80,
@@ -53,17 +53,17 @@
     {
       "path": "silver/resources",
       "parquet_files": 1,
-      "bytes": 12199
+      "bytes": 12200
     },
     {
       "path": "silver/usage_events_enriched",
       "parquet_files": 60,
-      "bytes": 2926847
+      "bytes": 2957585
     },
     {
       "path": "silver/org_daily_features",
       "parquet_files": 1,
-      "bytes": 138940
+      "bytes": 139814
     }
   ],
   "esquemas": {
@@ -111,6 +111,8 @@
       "metric: string",
       "value: double",
       "unit: string",
+      "unit_inferred: boolean",
+      "cost_negative: boolean",
       "schema_version: int",
       "cost_usd: decimal(18,6)",
       "requests: double",
@@ -147,6 +149,7 @@
       "carbon_kg: double",
       "carbon_coverage: double",
       "events: bigint",
+      "negative_cost_events: bigint",
       "org_name: string",
       "plan_tier: string",
       "industry: string",

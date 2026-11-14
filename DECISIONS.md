@@ -20,6 +20,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-13 | Silver de eventos: stream con watermark para lo reciente + reconciliación batch como histórico | Aceptada | 2026-11-14 |
 | D-14 | Silver de maestros (última foto), enriquecimiento con LEFT JOIN y features diarias por organización | Aceptada | 2026-11-14 |
 | D-15 | Reglas de calidad de Silver: rechazar, descartar, corregir o marcar, con registro por evento | Aceptada | 2026-11-14 |
+| D-16 | Gold FinOps `org_daily_usage_by_service`: grano, partición por `usage_date`, indicadores de calidad y huella de contenido | Aceptada | 2026-11-14 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -143,3 +144,26 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - Las banderas `unit_inferred` y `cost_negative` pasan a los eventos enriquecidos, y las features diarias suman `negative_cost_events`.
 - **Descartado.** *Quarantine para los eventos sin unidad (criterio original del plan)*: perdería USD 7.106 por un dato que se reconstruye sin ambigüedad. *Corregir sin dejar registro*: no quedaría constancia de qué se cambió ni por qué. *Rechazar los costos negativos*: pueden ser créditos o ajustes legítimos (ver D-09 para facturación), y sacarlos alteraría el costo; se conservan y se marcan hasta que el negocio defina su semántica.
 - **Consecuencias.** En el dataset: 2.038 corregidos, 211 marcados (USD −917,60), 5 negativos dentro de la tolerancia y 0 rechazados o descartados. Las reglas de rechazo están cubiertas por casos construidos en `tests/test_quality_rules.py`. Cambia el criterio de cierre de E2-06 en `plan_trabajo.md` ("quarantine" pasa a "registro de calidad con acción"). Quien busque solo los rechazos reales filtra `action IN ('rechazado', 'descartado')`.
+
+## D-16 · Mart FinOps `org_daily_usage_by_service` (E2-07)
+- **Contexto.** Derivado de que se solicita el mart FinOps con grano `org_id, usage_date, service` y "métricas de uso, requests y costos diarios", preparado para servirse en Cassandra (§7.4: costos y requests por organización y servicio en un rango de fechas; Top-N servicios por costo en los últimos 14 días). El contrato de E1 lo ubicaba en `gold/org_daily_usage_by_service/dt=...`, con el objetivo O5: costo de Silver igual al de Gold al mismo corte.
+- **Decisión.**
+  - **Fuente**: `silver/usage_events_enriched`. Se recalcula entera en cada ejecución (`replace_table`), igual que Silver (D-13).
+  - **Columnas**:
+    - Claves: `org_id`, `usage_date` (día UTC del evento) y `service`.
+    - Atributos de la organización (`org_name`, `plan_tier`, `industry`), desnormalizados para que Cassandra responda sin joins.
+    - Medidas: `daily_cost_usd` en `decimal(18,6)`, `requests`, `cpu_hours`, `storage_gb_hours`, `genai_tokens`, `carbon_kg`, `events` y `resources_active`.
+    - Indicadores de calidad: `negative_cost_events`, `negative_cost_usd`, `unit_inferred_events`, `late_events` y `carbon_coverage`.
+    - Linaje: `gold_processed_ts` y `gold_run_id`.
+  - **Partición por `usage_date`**, un archivo por día: 60 archivos, unos 0,8 MB en total. Es el `dt` del contrato de E1 con el nombre de la consigna.
+  - **Los costos negativos se suman** al costo diario y se informan aparte (`negative_cost_usd`). FinOps ve el costo real y también cuánto viene de ajustes marcados.
+  - **Conciliación**:
+    - Una fila por clave.
+    - Eventos, costo (al micro-dólar) y requests de Gold iguales a Silver.
+    - Por organización y día, Gold (sumando servicios) igual a `silver/org_daily_features`.
+    - Si algo no cierra, la ejecución falla.
+  - **Huella de contenido** (`fingerprint`): suma de hashes de clave, costo, requests y eventos. Debe repetirse entre ejecuciones; la evidencia compara la de la corrida anterior.
+  - **Consultas de referencia**: las dos de §7.4 se calculan también en Spark y quedan en la evidencia, para comparar con el resultado de CQL en E2-08. El "hoy" de las consultas es el último día del dataset (31/08/2025), porque los datos son históricos.
+- **Descartado.** *Partición por servicio*: las consultas filtran por organización y rango de fechas, y una partición por servicio no evita leer días que no se piden. *Sin partición*: más simple con este volumen, pero se aparta del contrato y obliga a reescribir todo para corregir un día. *Excluir los costos negativos marcados*: cambiaría el total respecto de Silver y ocultaría los ajustes.
+- **Consecuencias.** 11.050 filas para 80 organizaciones, 60 días y 6 servicios. Costo USD 147.433,98 y 2.294.079 requests, iguales a Silver. La re-ejecución da la misma huella. El modelo de Cassandra (E2-08) parte de este grano; las claves de partición y clustering se deciden allí según las dos consultas.
+
