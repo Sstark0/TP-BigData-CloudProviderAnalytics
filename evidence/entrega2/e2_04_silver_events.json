@@ -1,0 +1,79 @@
+{
+  "run_id": "20261114T195406Z-fe43d259",
+  "params": {
+    "watermark": "24 hours",
+    "max_files_per_trigger": 1,
+    "stream.ultimo_watermark": "2025-08-30T23:58:00.000Z"
+  },
+  "counts": {
+    "stream.microlotes": 120,
+    "stream.leidos": 43200,
+    "stream.emitidos": 1428,
+    "stream.descartados_por_watermark": 41772,
+    "stream.duplicados_descartados": 0,
+    "bronze_eventos": 43200,
+    "silver_eventos": 43200,
+    "quarantine_eventos": 0,
+    "quarantine.event_id_null": 0,
+    "duplicados_event_id": 0,
+    "silver_a_tiempo": 1428,
+    "silver_tardios_recuperados": 41772,
+    "silver_event_id_repetidos": 0,
+    "silver_particiones_event_date": 60
+  },
+  "balances": [
+    {
+      "check": "stream.leidos = stream.emitidos + stream.descartados_por_watermark + stream.duplicados_descartados",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "bronze_eventos = silver_eventos + quarantine_eventos + duplicados_event_id",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "silver_eventos = silver_a_tiempo + silver_tardios_recuperados",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    }
+  ],
+  "outputs": [
+    {
+      "path": "silver/usage_events",
+      "parquet_files": 60,
+      "bytes": 2641249
+    }
+  ],
+  "muestra_tardios": [
+    {
+      "event_id": "evt_5h34ghrga6u4",
+      "event_ts": "2025-07-03 07:13:00",
+      "source_file": "events_part_0006.jsonl",
+      "bronze_batch_id": "2",
+      "arrival_path": "tardio"
+    },
+    {
+      "event_id": "evt_gtc3wj47qsea",
+      "event_ts": "2025-07-03 12:58:00",
+      "source_file": "events_part_0006.jsonl",
+      "bronze_batch_id": "2",
+      "arrival_path": "tardio"
+    },
+    {
+      "event_id": "evt_u6jwjfgl897v",
+      "event_ts": "2025-07-03 18:34:00",
+      "source_file": "events_part_0006.jsonl",
+      "bronze_batch_id": "2",
+      "arrival_path": "tardio"
+    }
+  ],
+  "silver_live": {
+    "path": "silver/usage_events_live",
+    "parquet_files": 120,
+    "bytes": 743568
+  }
+}

@@ -2,8 +2,7 @@
 Esquemas explícitos para leer la zona Landing.
 
 """
-from pyspark.sql.types import StructType, StructField, StringType, IntegerType
-
+from pyspark.sql.types import (DateType, DoubleType, IntegerType, LongType, StringType, StructField, StructType, TimestampType)
 EVENTS_RAW_SCHEMA = StructType([
     StructField("event_id",           StringType(),  True),
     StructField("timestamp",          StringType(),  True),   
@@ -72,3 +71,30 @@ BRONZE_TYPES = {
     "billing_monthly": {"month": "date", "subtotal": "decimal(12,2)", "credits": "decimal(12,2)",
                         "taxes": "decimal(12,2)", "exchange_rate_to_usd": "decimal(12,6)"},
 }
+
+# E2-03, D-12)
+# Lo que escribe S1 y leen S2 (streaming) y B2 (reconciliación).
+# Se declara explícito para que el stream de Silver pueda arrancar aunque Bronze todavía esté vacío.
+
+BRONZE_EVENTS_SCHEMA = StructType([
+    StructField("event_id", StringType()),
+    StructField("event_ts", TimestampType()),
+    StructField("event_date", DateType()),
+    StructField("org_id", StringType()),
+    StructField("resource_id", StringType()),
+    StructField("service", StringType()),
+    StructField("region", StringType()),
+    StructField("metric", StringType()),
+    StructField("value", DoubleType()),
+    StructField("unit", StringType()),
+    StructField("cost_usd_increment", DoubleType()),
+    StructField("schema_version", IntegerType()),
+    StructField("carbon_kg", DoubleType()),
+    StructField("genai_tokens", LongType()),
+    StructField("source_file", StringType()),
+    StructField("arrival_ts", TimestampType()),
+    StructField("ingest_ts", TimestampType()),
+    StructField("run_id", StringType()),
+    StructField("ingest_date", DateType()),      # partición
+    StructField("batch_id", IntegerType()),      # partición
+])

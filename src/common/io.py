@@ -104,3 +104,34 @@ def replace_partition(df: DataFrame, table_path, column: str, value: str, files:
     if df.limit(1).count() == 0:
         return
     (df.drop(column).coalesce(files).write.mode("overwrite").parquet(str(target)))
+
+
+def replace_table(df: DataFrame, table_path, partition_by=None, files: int = 1) -> int:
+    """Reemplaza una tabla completa escribiendo primero en una carpeta temporal y cambiándola de lugar al final.
+
+    Se usa en tablas que se recalculan enteras en cada ejecución (ej. Silver de eventos desde Bronze).
+    - Mientras se escribe, los lectores siguen viendo la versión anterior completa.
+    - El cambio son dos `rename` en el mismo disco: casi instantáneo. Si el proceso se corta antes, queda la
+      versión anterior intacta y una carpeta `.tmp` que la próxima ejecución borra.
+    - No es una transacción real: entre los dos `rename` hay un instante sin tabla.
+    
+    Devuelve la cantidad de filas escritas. Si `partition_by` está, escribe un archivo por partición.
+    """
+    import shutil
+
+    target = Path(table_path)
+    tmp, old = target.with_name(target.name + ".tmp"), target.with_name(target.name + ".old")
+    for leftover in (tmp, old):
+        if leftover.exists():
+            shutil.rmtree(leftover)
+    rows = df.count()
+    writer = (df.repartition(*partition_by) if partition_by else df.coalesce(files)).write.mode("overwrite")
+    if partition_by:
+        writer = writer.partitionBy(*partition_by)
+    writer.parquet(str(tmp))
+    if target.exists():
+        target.rename(old)
+    tmp.rename(target)
+    if old.exists():
+        shutil.rmtree(old)
+    return rows
