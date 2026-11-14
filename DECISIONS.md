@@ -15,7 +15,8 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-08 | Normalización del revenue a USD (moneda y tasa de cambio) | Abierta · inconsistencia intencional (docente) | 2026-09-28 |
 | D-09 | Subtotales negativos e impuesto positivo; `credits` nulo = 0 (supuesto) | Propuesta | 2026-09-28 |
 | D-10 | Dialecto CSV: `escape = '"'` y validación de encabezados | Aceptada | 2026-09-30 |
-
+| D-11 | Bronze batch: partición por `ingest_date`, reglas de rechazo e idempotencia | Aceptada | 2026-11-14 |
+| D-12 | Bronze streaming: partición por `ingest_date`/`batch_id`, manifiesto de lotes y quarantine estructural | Aceptada | 2026-11-14 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -87,3 +88,14 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - **Conciliación**: cada carga verifica `leídas = aceptadas + quarantine + duplicados exactos` y `escritas = aceptadas`; si no cierra, el proceso falla.
 - **Descartado.** Partición por `month` en `billing_monthly`: rompería la regla única por fuente y no aporta en Bronze, donde se conserva el grano de origen. *Sobrescribir toda la tabla*: perdería los *snapshots* anteriores.
 - **Consecuencias.** En el dataset las 4.112 filas de las 7 fuentes pasan a Bronze sin rechazos (los CSV no traen errores de formato); las reglas están cubiertas por pruebas con casos construidos (`tests/test_bronze_batch.py`). Parquet no es transaccional: si una carga se corta entre el borrado y la escritura, la partición queda vacía hasta la próxima ejecución.
+
+## D-12 · Bronze streaming de eventos: partición, lotes e idempotencia (E2-03)
+- **Contexto.** D-04 fijó captura completa hacia Bronze (sin filtro por watermark), staging por `batch_id`, manifiesto de lotes completados y escritor único. El contrato del lago de la entrega 1 (diseño v1.1, §5) proponía Bronze de eventos en `events/dt=AAAA-MM-DD`, con `dt` = fecha del evento. Al implementarlo se midió que cada archivo JSONL trae eventos de muchas fechas: los 120 archivos tocan 7.180 combinaciones archivo × fecha de evento.
+- **Decisión.**
+  - **Lectura** con Structured Streaming sobre `usage_events_stream/`, esquema explícito (superset v1/v2, D-05), `maxFilesPerTrigger` configurable (1 por defecto, para que cada archivo sea un micro-lote) y checkpoint en `_checkpoints/s1_bronze_events`.
+  - **Escritura** con `foreachBatch` en `bronze/usage_events/ingest_date=<fecha de carga>/batch_id=<n>/`. Se agregan `event_ts`, `event_date` y los numéricos tipados, además del linaje (`source_file`, `arrival_ts`, `ingest_ts`, `run_id`, `batch_id`).
+  - **Idempotencia.** Un lote re-ejecutado reemplaza su propia carpeta (en cualquier fecha de carga), así que no duplica filas. El manifiesto `_runs/s1_bronze_events/batches/batch_id=<n>.json` se escribe al final; los lectores solo leen lotes con manifiesto. El checkpoint evita volver a leer archivos ya procesados.
+  - **Quarantine estructural** en `quarantine/source=usage_events/dt=<fecha de carga>/batch_id=<n>/`: `malformed_json`, `timestamp_invalid`, `cast_error`. Las reglas de negocio (event_id nulo o repetido, costo negativo, `value` nulo) se aplican en Silver (E2-04 y E2-06), porque Bronze conserva el dato como llegó.
+  - **Conciliación** por lote (`leídos = Bronze + quarantine`) y global (`eventos en Landing = Bronze + quarantine`; cada archivo de Landing en exactamente un lote).
+- **Descartado.** *Partición por fecha del evento en Bronze*: con un archivo por micro-lote escribiría unos 7.180 archivos chicos en vez de 120, y un lote re-ejecutado tocaría hasta 60 particiones, con lo que reemplazarlo sin duplicar sería mucho más difícil. La fecha del evento se usa como partición en Silver, donde el dedup y el watermark ya agruparon los datos. *Escribir con el sink de archivos de Spark* (`writeStream.parquet`): no permite quarantine ni manifiesto propio por lote.
+- **Consecuencias.** Se aparta del contrato de E1 (`events/dt=`), que se actualiza en la arquitectura v2 (E2-13). Los 43.200 eventos pasan a Bronze en 120 lotes sin rechazos estructurales; una segunda ejecución no agrega lotes. Las reglas y la re-ejecución de lotes están cubiertas por `tests/test_bronze_streaming.py`. Igual que en D-11, Parquet no es transaccional: un lote cortado a mitad de escritura queda sin manifiesto y se ignora hasta que Spark lo re-ejecute.

@@ -1,0 +1,1125 @@
+{
+  "run_id": "20261114T083101Z-5262ce06",
+  "params": {
+    "max_files_per_trigger": 1,
+    "trigger": "availableNow"
+  },
+  "counts": {
+    "microlotes_esta_ejecucion": 0,
+    "landing_eventos": 43200,
+    "bronze_eventos": 43200,
+    "quarantine_eventos": 0,
+    "lotes_completos": 120,
+    "archivos_ingeridos": 120,
+    "archivos_en_landing": 120,
+    "archivos_en_mas_de_un_lote": 0
+  },
+  "balances": [
+    {
+      "check": "landing_eventos = bronze_eventos + quarantine_eventos",
+      "left": 43200,
+      "right": 43200,
+      "ok": true
+    },
+    {
+      "check": "archivos_en_landing = archivos_ingeridos",
+      "left": 120,
+      "right": 120,
+      "ok": true
+    }
+  ],
+  "outputs": [
+    {
+      "path": "bronze/usage_events",
+      "parquet_files": 120,
+      "bytes": 3063628
+    }
+  ],
+  "lotes": [
+    {
+      "batch_id": 0,
+      "files": [
+        "events_part_0004.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 1,
+      "files": [
+        "events_part_0005.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 2,
+      "files": [
+        "events_part_0006.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 3,
+      "files": [
+        "events_part_0007.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 4,
+      "files": [
+        "events_part_0008.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 5,
+      "files": [
+        "events_part_0009.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 6,
+      "files": [
+        "events_part_0010.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 7,
+      "files": [
+        "events_part_0011.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 8,
+      "files": [
+        "events_part_0012.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 9,
+      "files": [
+        "events_part_0013.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 10,
+      "files": [
+        "events_part_0015.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 11,
+      "files": [
+        "events_part_0016.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 12,
+      "files": [
+        "events_part_0017.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 13,
+      "files": [
+        "events_part_0018.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 14,
+      "files": [
+        "events_part_0019.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 15,
+      "files": [
+        "events_part_0020.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 16,
+      "files": [
+        "events_part_0021.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 17,
+      "files": [
+        "events_part_0022.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 18,
+      "files": [
+        "events_part_0024.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 19,
+      "files": [
+        "events_part_0025.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 20,
+      "files": [
+        "events_part_0026.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 21,
+      "files": [
+        "events_part_0027.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 22,
+      "files": [
+        "events_part_0028.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 23,
+      "files": [
+        "events_part_0029.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 24,
+      "files": [
+        "events_part_0030.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 25,
+      "files": [
+        "events_part_0031.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 26,
+      "files": [
+        "events_part_0032.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 27,
+      "files": [
+        "events_part_0033.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 28,
+      "files": [
+        "events_part_0034.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 29,
+      "files": [
+        "events_part_0036.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 30,
+      "files": [
+        "events_part_0037.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 31,
+      "files": [
+        "events_part_0039.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 32,
+      "files": [
+        "events_part_0040.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 33,
+      "files": [
+        "events_part_0041.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 34,
+      "files": [
+        "events_part_0042.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 35,
+      "files": [
+        "events_part_0043.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 36,
+      "files": [
+        "events_part_0044.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 37,
+      "files": [
+        "events_part_0045.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 38,
+      "files": [
+        "events_part_0046.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 39,
+      "files": [
+        "events_part_0047.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 40,
+      "files": [
+        "events_part_0048.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 41,
+      "files": [
+        "events_part_0049.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 42,
+      "files": [
+        "events_part_0050.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 43,
+      "files": [
+        "events_part_0051.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 44,
+      "files": [
+        "events_part_0052.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 45,
+      "files": [
+        "events_part_0053.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 46,
+      "files": [
+        "events_part_0054.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 47,
+      "files": [
+        "events_part_0055.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 48,
+      "files": [
+        "events_part_0056.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 49,
+      "files": [
+        "events_part_0057.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 50,
+      "files": [
+        "events_part_0058.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 51,
+      "files": [
+        "events_part_0059.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 52,
+      "files": [
+        "events_part_0060.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 53,
+      "files": [
+        "events_part_0062.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 54,
+      "files": [
+        "events_part_0063.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 55,
+      "files": [
+        "events_part_0064.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 56,
+      "files": [
+        "events_part_0065.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 57,
+      "files": [
+        "events_part_0066.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 58,
+      "files": [
+        "events_part_0067.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 59,
+      "files": [
+        "events_part_0068.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 60,
+      "files": [
+        "events_part_0069.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 61,
+      "files": [
+        "events_part_0070.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 62,
+      "files": [
+        "events_part_0071.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 63,
+      "files": [
+        "events_part_0072.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 64,
+      "files": [
+        "events_part_0073.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 65,
+      "files": [
+        "events_part_0074.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 66,
+      "files": [
+        "events_part_0075.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 67,
+      "files": [
+        "events_part_0076.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 68,
+      "files": [
+        "events_part_0077.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 69,
+      "files": [
+        "events_part_0078.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 70,
+      "files": [
+        "events_part_0079.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 71,
+      "files": [
+        "events_part_0080.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 72,
+      "files": [
+        "events_part_0081.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 73,
+      "files": [
+        "events_part_0082.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 74,
+      "files": [
+        "events_part_0083.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 75,
+      "files": [
+        "events_part_0084.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 76,
+      "files": [
+        "events_part_0085.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 77,
+      "files": [
+        "events_part_0086.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 78,
+      "files": [
+        "events_part_0087.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 79,
+      "files": [
+        "events_part_0089.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 80,
+      "files": [
+        "events_part_0090.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 81,
+      "files": [
+        "events_part_0091.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 82,
+      "files": [
+        "events_part_0092.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 83,
+      "files": [
+        "events_part_0093.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 84,
+      "files": [
+        "events_part_0095.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 85,
+      "files": [
+        "events_part_0096.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 86,
+      "files": [
+        "events_part_0097.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 87,
+      "files": [
+        "events_part_0098.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 88,
+      "files": [
+        "events_part_0099.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 89,
+      "files": [
+        "events_part_0100.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 90,
+      "files": [
+        "events_part_0101.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 91,
+      "files": [
+        "events_part_0102.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 92,
+      "files": [
+        "events_part_0103.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 93,
+      "files": [
+        "events_part_0104.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 94,
+      "files": [
+        "events_part_0105.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 95,
+      "files": [
+        "events_part_0106.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 96,
+      "files": [
+        "events_part_0107.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 97,
+      "files": [
+        "events_part_0108.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 98,
+      "files": [
+        "events_part_0109.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 99,
+      "files": [
+        "events_part_0110.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 100,
+      "files": [
+        "events_part_0111.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 101,
+      "files": [
+        "events_part_0112.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 102,
+      "files": [
+        "events_part_0113.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 103,
+      "files": [
+        "events_part_0114.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 104,
+      "files": [
+        "events_part_0115.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 105,
+      "files": [
+        "events_part_0116.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 106,
+      "files": [
+        "events_part_0118.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 107,
+      "files": [
+        "events_part_0000.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 108,
+      "files": [
+        "events_part_0001.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 109,
+      "files": [
+        "events_part_0002.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 110,
+      "files": [
+        "events_part_0003.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 111,
+      "files": [
+        "events_part_0014.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 112,
+      "files": [
+        "events_part_0023.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 113,
+      "files": [
+        "events_part_0035.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 114,
+      "files": [
+        "events_part_0038.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 115,
+      "files": [
+        "events_part_0061.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 116,
+      "files": [
+        "events_part_0117.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 117,
+      "files": [
+        "events_part_0119.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 118,
+      "files": [
+        "events_part_0088.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    },
+    {
+      "batch_id": 119,
+      "files": [
+        "events_part_0094.jsonl"
+      ],
+      "read": 360,
+      "bronze": 360,
+      "quarantine": 0
+    }
+  ],
+  "bronze_tabla": {
+    "path": "bronze/usage_events",
+    "parquet_files": 120,
+    "bytes": 3063628
+  }
+}
