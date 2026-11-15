@@ -23,6 +23,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-16 | Gold FinOps `org_daily_usage_by_service`: grano, partición por `usage_date`, indicadores de calidad y huella de contenido | Aceptada | 2026-11-14 |
 | D-17 | Serving en AstraDB: una tabla por consulta, claves Cassandra, carga con driver desde Spark y limpieza de obsoletas | Aceptada | 2026-11-14 |
 | D-18 | Anomalías de costo: z-score robusto (MAD) sobre línea base móvil, percentil para arranque en frío, umbrales | Aceptada | 2026-11-15 |
+| D-19 | Orquestación: `run_pipeline.py` por etapas, corte ante fallas, registro de ejecución y limpieza segura | Aceptada | 2026-11-15 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -216,3 +217,15 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - El z-score clásico (media y desvío, z > 3) marca 132 días y detecta 24 de los 25: un spike previo infla el desvío y esconde al siguiente. La MAD no tiene ese problema; `tests/test_cost_anomalies.py` lo reproduce.
 - **Descartado.** *z-score clásico*: se enmascara con los propios spikes. *Percentiles por serie*: con unos 28 días de historia, un p99 por serie es casi el máximo, inestable. *Modelos de ML (Isolation Forest, pronóstico)*: sin etiquetas no hay cómo validarlos mejor que un método estadístico explicable, y FinOps necesita entender por qué se marca cada día. *Línea base con todo el período*: miraría el futuro y el propio spike entraría en su referencia.
 - **Limitaciones.** Sin etiquetas reales no se puede medir la precisión; el recall se mide contra spikes evidentes. Los días sin uso no son ceros: la línea base usa solo días con uso. El respaldo por percentil usa todo el período (en operación se usaría el período anterior). Solo se marcan subas: las bajas y los créditos se ven por el flag de costo negativo. Los umbrales deben revisarse con FinOps cuando haya casos confirmados. El mart no se sirve todavía en Cassandra; queda para la entrega final, con una tabla por consulta (D-17).
+
+## D-19 · Orquestación, manejo de errores y limpieza (E2-12)
+- **Contexto.** El pipeline tiene nueve etapas que dependen unas de otras: cada una lee lo que dejó la anterior. En E2-07 se ejecutó Gold sobre un enriquecimiento desactualizado porque se había saltado una etapa. La consigna pide documentar la puesta en marcha, logs, manejo de errores, pruebas y "mecanismos de limpieza/reinicio" (§6.2 y §7.1). El plan pide que otra persona del equipo ejecute el pipeline desde un entorno limpio siguiendo el README.
+- **Decisión.**
+  - **`scripts/run_pipeline.py`** ejecuta las etapas en orden, **cada una en un proceso aparte** con su propia sesión de Spark. Es el mismo script que se corre a mano, así que no hay dos formas de ejecutar el pipeline.
+  - **Corte ante fallas**: si una etapa sale con error, o si su registro no existe o tiene un balance que no cierra, el pipeline se detiene y dice en qué etapa y en qué log mirar. No sigue sobre datos viejos.
+  - **Registro de la ejecución** (`evidence/entrega2/e2_12_pipeline_run.json`): operador, entorno (Python, Java, PySpark, driver de Cassandra, sistema), resultado de las pruebas y, por etapa, duración, estado y los conteos y balances del registro de cada proceso. La salida completa de cada etapa va a `datalake/_runs/pipeline/<run_id>/`.
+  - **La evidencia de cada paquete no se reescribe en cada corrida**: las etapas escriben su evidencia en la carpeta de la ejecución, salvo que se pida `--actualizar-evidencias`.
+  - **`--clean`** vacía `bronze/`, `silver/`, `gold/`, `quarantine/` y `_checkpoints/` (conserva sus `.gitkeep`) y se niega a borrar una carpeta que contenga `landing/`. Landing es inmutable (D-02) y `_runs/` conserva el historial. Cassandra no necesita limpieza: la carga reemplaza por clave y borra lo que ya no está en Gold (D-17).
+  - **AstraDB opcional**: sin credenciales, la etapa de serving se omite y queda registrado. El resto del pipeline se puede reproducir sin cuenta en Astra.
+- **Descartado.** *Orquestador externo (Airflow, Prefect, Make)*: agrega una instalación y un servicio más para nueve pasos lineales; queda como mejora para la entrega final si se agendan ejecuciones. *Todas las etapas en una sola sesión de Spark*: más rápido, pero un fallo en una etapa podría dejar estado en memoria que afecte a la siguiente, y ya no sería el mismo script que se corre a mano.
+- **Consecuencias.** Una corrida completa desde cero (`--clean --tests`) tarda unos 8 minutos y reproduce exactamente el mismo Gold: la huella de contenido es `144780998816` en dos máquinas distintas. El mismo script sirve para demostrar la idempotencia en E2-10, corriéndolo dos veces y comparando los registros.
