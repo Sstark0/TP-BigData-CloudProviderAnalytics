@@ -1,0 +1,102 @@
+{
+  "fila": {
+    "org_id": "org_53lc58dr",
+    "usage_date": "2025-08-21",
+    "service": "database"
+  },
+  "recorrido": {
+    "1_gold": {
+      "tabla": "gold/org_daily_usage_by_service",
+      "daily_cost_usd": "24.484800",
+      "events": 6,
+      "gold_run_id": "20261115T093251Z-d7d6b167",
+      "registro_de_la_ejecucion": "_runs/g1_gold_finops/20261115T093251Z-d7d6b167.json",
+      "ejecucion_ok": true
+    },
+    "2_silver_enriquecido": {
+      "tabla": "silver/usage_events_enriched",
+      "eventos": 6,
+      "costo_usd": "24.484800",
+      "coincide_con_gold": true
+    },
+    "3_silver_canonico": {
+      "tabla": "silver/usage_events",
+      "eventos": 6,
+      "por_camino": {
+        "tardio": 6
+      },
+      "corregidos_o_marcados": 2,
+      "lotes_de_bronze": [
+        5,
+        12,
+        61,
+        85,
+        87,
+        112
+      ],
+      "silver_run_ids": [
+        "20261115T093158Z-4d772d54"
+      ]
+    },
+    "4_bronze": {
+      "manifiestos": "_runs/s1_bronze_events/batches/batch_id=<lote>.json",
+      "lotes": 6,
+      "archivos": 6
+    },
+    "5_landing": {
+      "carpeta": "landing/usage_events_stream/",
+      "archivos": {
+        "events_part_0009.jsonl": {
+          "lote": 5,
+          "s1_run_id": "20261115T085325Z-62412540",
+          "lote_completo": true,
+          "sha256_registrado": "fe6ec8f1cfc30dcb66e700e6367835a3b7fa05bf51723f781367e48fb3f088ad",
+          "sha256_actual": "fe6ec8f1cfc30dcb66e700e6367835a3b7fa05bf51723f781367e48fb3f088ad",
+          "intacto": true
+        },
+        "events_part_0017.jsonl": {
+          "lote": 12,
+          "s1_run_id": "20261115T085325Z-62412540",
+          "lote_completo": true,
+          "sha256_registrado": "9fcd3ab48c6babe4f87eaa0c74e1a708a0afd3ca86442dd9a644b9c38c893cf3",
+          "sha256_actual": "9fcd3ab48c6babe4f87eaa0c74e1a708a0afd3ca86442dd9a644b9c38c893cf3",
+          "intacto": true
+        },
+        "events_part_0070.jsonl": {
+          "lote": 61,
+          "s1_run_id": "20261115T085325Z-62412540",
+          "lote_completo": true,
+          "sha256_registrado": "76dc40f8602c1fddd63a170ef43bbd859be6074c538e816b68d85da7efab08fe",
+          "sha256_actual": "76dc40f8602c1fddd63a170ef43bbd859be6074c538e816b68d85da7efab08fe",
+          "intacto": true
+        },
+        "events_part_0096.jsonl": {
+          "lote": 85,
+          "s1_run_id": "20261115T085325Z-62412540",
+          "lote_completo": true,
+          "sha256_registrado": "bd842387bf7a177eb671a6a8d91af6ddb673bb7a68160927af61bea0d587c978",
+          "sha256_actual": "bd842387bf7a177eb671a6a8d91af6ddb673bb7a68160927af61bea0d587c978",
+          "intacto": true
+        },
+        "events_part_0098.jsonl": {
+          "lote": 87,
+          "s1_run_id": "20261115T085325Z-62412540",
+          "lote_completo": true,
+          "sha256_registrado": "3c7281907b6e888d23371b472b2bec3dfbe0550dd8065658f74aa0077b24b8ad",
+          "sha256_actual": "3c7281907b6e888d23371b472b2bec3dfbe0550dd8065658f74aa0077b24b8ad",
+          "intacto": true
+        },
+        "events_part_0023.jsonl": {
+          "lote": 112,
+          "s1_run_id": "20261115T085325Z-62412540",
+          "lote_completo": true,
+          "sha256_registrado": "1114e355fb15940646a511eab8b112994ec28307d75af1953ec3aa7a74b69074",
+          "sha256_actual": "1114e355fb15940646a511eab8b112994ec28307d75af1953ec3aa7a74b69074",
+          "intacto": true
+        }
+      },
+      "todos_intactos": true
+    }
+  },
+  "linaje_completo_y_consistente": true
+}

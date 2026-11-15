@@ -1,0 +1,256 @@
+{
+  "generado_utc": "2026-11-15T10:20:17Z",
+  "tablas": 20,
+  "columnas": 301,
+  "columnas_sin_descripcion": [],
+  "por_clasificacion": {
+    "interna": [
+      "bronze/resources",
+      "bronze/marketing_touches",
+      "silver/resources"
+    ],
+    "confidencial": [
+      "bronze/customers_orgs",
+      "bronze/support_tickets",
+      "bronze/nps_surveys",
+      "bronze/billing_monthly",
+      "bronze/usage_events",
+      "silver/usage_events_live",
+      "silver/usage_events",
+      "quarantine/source=usage_events_silver",
+      "silver/customers_orgs",
+      "silver/usage_events_enriched",
+      "silver/org_daily_features",
+      "gold/org_daily_usage_by_service",
+      "gold/top_services_by_org_14d",
+      "gold/cost_anomaly_mart",
+      "cassandra/cloud_analytics.org_daily_usage_by_service",
+      "cassandra/cloud_analytics.top_services_by_org_14d"
+    ],
+    "personal": [
+      "bronze/users"
+    ]
+  },
+  "tablas_detalle": [
+    {
+      "name": "bronze/customers_orgs",
+      "layer": "Bronze",
+      "grain": "Organización",
+      "rows": 80,
+      "files": 1,
+      "bytes": 7303,
+      "partition": "ingest_date",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/users",
+      "layer": "Bronze",
+      "grain": "Usuario",
+      "rows": 800,
+      "files": 1,
+      "bytes": 24486,
+      "partition": "ingest_date",
+      "classification": "personal",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/resources",
+      "layer": "Bronze",
+      "grain": "Recurso",
+      "rows": 400,
+      "files": 1,
+      "bytes": 12328,
+      "partition": "ingest_date",
+      "classification": "interna",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/support_tickets",
+      "layer": "Bronze",
+      "grain": "Ticket",
+      "rows": 1000,
+      "files": 1,
+      "bytes": 19633,
+      "partition": "ingest_date",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/marketing_touches",
+      "layer": "Bronze",
+      "grain": "Contacto",
+      "rows": 1500,
+      "files": 1,
+      "bytes": 23612,
+      "partition": "ingest_date",
+      "classification": "interna",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/nps_surveys",
+      "layer": "Bronze",
+      "grain": "Encuesta",
+      "rows": 92,
+      "files": 1,
+      "bytes": 4233,
+      "partition": "ingest_date",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/billing_monthly",
+      "layer": "Bronze",
+      "grain": "Factura",
+      "rows": 240,
+      "files": 1,
+      "bytes": 11542,
+      "partition": "ingest_date",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "bronze/usage_events",
+      "layer": "Bronze",
+      "grain": "Evento (tal como llegó)",
+      "rows": 43200,
+      "files": 120,
+      "bytes": 3063627,
+      "partition": "ingest_date / batch_id",
+      "classification": "confidencial",
+      "owner": "Streaming"
+    },
+    {
+      "name": "silver/usage_events_live",
+      "layer": "Silver",
+      "grain": "Evento a tiempo",
+      "rows": 1428,
+      "files": 120,
+      "bytes": 743565,
+      "partition": "—",
+      "classification": "confidencial",
+      "owner": "Streaming"
+    },
+    {
+      "name": "silver/usage_events",
+      "layer": "Silver",
+      "grain": "Evento único",
+      "rows": 43200,
+      "files": 60,
+      "bytes": 2672027,
+      "partition": "event_date",
+      "classification": "confidencial",
+      "owner": "Streaming"
+    },
+    {
+      "name": "quarantine/source=usage_events_silver",
+      "layer": "Silver",
+      "grain": "Evento × regla",
+      "rows": 2249,
+      "files": 1,
+      "bytes": 201331,
+      "partition": "dt",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "silver/customers_orgs",
+      "layer": "Silver",
+      "grain": "Organización",
+      "rows": 80,
+      "files": 1,
+      "bytes": 7350,
+      "partition": "—",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "silver/resources",
+      "layer": "Silver",
+      "grain": "Recurso",
+      "rows": 400,
+      "files": 1,
+      "bytes": 12200,
+      "partition": "—",
+      "classification": "interna",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "silver/usage_events_enriched",
+      "layer": "Silver",
+      "grain": "Evento único",
+      "rows": 43200,
+      "files": 60,
+      "bytes": 2957585,
+      "partition": "event_date",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "silver/org_daily_features",
+      "layer": "Silver",
+      "grain": "Organización × día",
+      "rows": 4580,
+      "files": 1,
+      "bytes": 139814,
+      "partition": "—",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "gold/org_daily_usage_by_service",
+      "layer": "Gold",
+      "grain": "Organización × día × servicio",
+      "rows": 11050,
+      "files": 60,
+      "bytes": 828338,
+      "partition": "usage_date",
+      "classification": "confidencial",
+      "owner": "Gold y serving"
+    },
+    {
+      "name": "gold/top_services_by_org_14d",
+      "layer": "Gold",
+      "grain": "Organización × fin de ventana × posición",
+      "rows": 15599,
+      "files": 1,
+      "bytes": 143359,
+      "partition": "—",
+      "classification": "confidencial",
+      "owner": "Gold y serving"
+    },
+    {
+      "name": "gold/cost_anomaly_mart",
+      "layer": "Gold",
+      "grain": "Organización × día × servicio",
+      "rows": 11050,
+      "files": 60,
+      "bytes": 1132142,
+      "partition": "usage_date",
+      "classification": "confidencial",
+      "owner": "Batch y calidad"
+    },
+    {
+      "name": "cassandra/cloud_analytics.org_daily_usage_by_service",
+      "layer": "Serving",
+      "grain": "Organización × día × servicio",
+      "rows": null,
+      "files": null,
+      "bytes": null,
+      "partition": null,
+      "classification": "confidencial",
+      "owner": "Gold y serving"
+    },
+    {
+      "name": "cassandra/cloud_analytics.top_services_by_org_14d",
+      "layer": "Serving",
+      "grain": "Organización × fin de ventana × posición",
+      "rows": null,
+      "files": null,
+      "bytes": null,
+      "partition": null,
+      "classification": "confidencial",
+      "owner": "Gold y serving"
+    }
+  ]
+}

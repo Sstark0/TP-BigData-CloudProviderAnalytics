@@ -40,7 +40,8 @@ Windows se usa WSL2.
 
 ### 1. Preparar el entorno (una sola vez)
 
-Si usás Windows, primero instalá WSL2 desde PowerShell como administrador con `wsl --install -d Ubuntu`,
+Para usuarios Windows:
+ Primero instala WSL2 desde PowerShell como administrador con `wsl --install -d Ubuntu`,
 reiniciá y abrí la terminal de Ubuntu. Después, en Linux o en Ubuntu:
 
 ```bash
@@ -231,6 +232,8 @@ Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datala
 
 - Diseño de la entrega 1: [`docs/`](docs/README.md)
 - Correcciones y plan de trabajo de la entrega 2: [`docs/entrega2/`](docs/entrega2/)
+- Arquitectura implementada: [`docs/entrega2/arquitectura_v2.md`](docs/entrega2/arquitectura_v2.md)
+- Gobierno preliminar: [`docs/entrega2/gobierno.md`](docs/entrega2/gobierno.md) · catálogo de datos: [`docs/entrega2/catalogo_datos.md`](docs/entrega2/catalogo_datos.md)
 - Registro de decisiones: [`DECISIONS.md`](DECISIONS.md)
 - Evidencia: [`evidence/entrega1/`](evidence/entrega1/README.md) y [`evidence/entrega2/`](evidence/entrega2/), con un JSON por paquete y las capturas de AstraDB
 

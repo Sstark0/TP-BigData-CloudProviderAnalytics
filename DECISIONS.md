@@ -25,6 +25,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-18 | Anomalías de costo: z-score robusto (MAD) sobre línea base móvil, percentil para arranque en frío, umbrales | Aceptada | 2026-11-15 |
 | D-19 | Orquestación: `run_pipeline.py` por etapas, corte ante fallas, registro de ejecución y limpieza segura | Aceptada | 2026-11-15 |
 | D-20 | Idempotencia: comparación antes/después con conteos y huella de contenido por tabla | Aceptada | 2026-11-15 |
+| D-21 | Gobierno preliminar: catálogo como código, clasificación en tres clases, linaje verificable y minimización de datos personales | Aceptada | 2026-11-15 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -254,3 +255,15 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - Si una métrica difiere, o si la re-ejecución falla, el chequeo termina con error.
 - **Descartado.** *Comparar solo conteos*: no detecta un valor cambiado ni un reemplazo de filas. *Comparar los archivos Parquet byte a byte*: Spark puede nombrar y repartir los archivos distinto en cada corrida sin que cambie el contenido. *Contar las fotos de Bronze*: una re-ejecución otro día agrega una foto de cada maestro, por diseño (D-11). Queda como dato informativo; lo que se compara es el contenido de la última foto, que Silver usa.
 - **Consecuencias.** En la prueba local, la re-ejecución tarda unos 4 minutos (contra 8 desde cero), porque los streams no reprocesan nada. Da 22 de 22 métricas del lago iguales, con las mismas huellas. La evidencia oficial (`evidence/entrega2/e2_10_idempotency.json`) incluye además Cassandra.
+
+## D-21 · Gobierno preliminar: catálogo, clasificación y linaje (E2-11)
+- **Contexto.** La consigna pide "definir controles iniciales, metadatos, linaje, responsabilidades, acceso y evidencias" (§6.2), y en la final un diccionario de datos (§7.1). La rúbrica le asigna un 10 % a "Gobierno y calidad": responsables, controles, linaje, seguridad y observabilidad. Casi todos los controles ya existían (D-11 a D-20), pero dispersos. `users.email` es el único dato personal directo del dataset (sintético, `@example.com`), `sales_rep` es un seudónimo y `nps_surveys.comment` es texto libre.
+- **Decisión.**
+  - **Documento único** ([`docs/entrega2/gobierno.md`](docs/entrega2/gobierno.md)) con controles, metadatos, linaje, responsables, acceso, observabilidad y pendientes. Cada afirmación apunta a su evidencia.
+  - **Catálogo como código.** Las descripciones viven en `src/common/catalog.py`, y `scripts/build_catalog.py` las cruza con los Parquet reales para generar [`catalogo_datos.md`](docs/entrega2/catalogo_datos.md): 20 tablas y 301 columnas. Una columna sin describir hace fallar el script, y las pruebas verifican que los esquemas declarados en el código estén descritos.
+  - **Clasificación en tres clases**: interna, confidencial y personal, por tabla, más notas por columna (personal, seudónimo, texto libre, indicador de PII).
+  - **Linaje verificable a nivel fila.** `scripts/trace_lineage.py` recorre una fila de Gold hasta los archivos de Landing por las columnas de linaje y los manifiestos de lote. Verifica que el costo coincida en cada capa y que el SHA-256 de cada archivo sea el registrado al ingerirlo.
+  - **Minimización.** `email` queda en Bronze, porque Landing es inmutable, pero ningún proceso lo propaga. Una prueba verifica que ninguna tabla derive de `bronze/users`.
+  - **Responsables por ámbito** según los roles del plan de trabajo, con un rol revisor distinto.
+- **Descartado.** *Catálogo escrito a mano*: se desactualiza sin aviso con el primer cambio de esquema. *Herramienta de catálogo externa (DataHub, OpenMetadata)*: requiere un servicio más que montar para 20 tablas; queda como mejora si el proyecto crece. *Hashear `email` ya en Bronze*: rompería la regla de que Bronze conserva el dato tal como llegó; como no se propaga, el riesgo se controla por minimización.
+- **Consecuencias.** El diccionario de datos de la final parte de este catálogo. Los pendientes de gobierno pasan al backlog (E2-14): alertas, token de solo lectura para el consumo, política de retención, medición de la frescura O4 y confirmación de responsables.
