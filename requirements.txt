@@ -7,5 +7,5 @@ jupyter
 nbclient
 nbformat
 ipykernel
-# Serving en AstraDB (E2-08); 3.28+ es totalmente compatible con Astra
-cassandra-driver==3.29.2
+# Serving en AstraDB (E2-08); versión validada contra Astra en WSL2 (E2-12)
+cassandra-driver==3.30.1

@@ -1,0 +1,376 @@
+{
+  "pipeline_run_id": "20261115T093104Z-fc645efc",
+  "inicio_utc": "2026-11-15T09:31:04Z",
+  "operador": "Antonio",
+  "entorno": {
+    "python": "3.11.18",
+    "sistema": "Linux-6.6.87.2-microsoft-standard-WSL2-x86_64-with-glibc2.43",
+    "java": "openjdk version \"17.0.21.0.3\" 2026-10-24",
+    "pyspark": "3.5.3",
+    "cassandra": "3.30.1"
+  },
+  "opciones": {
+    "tests": false,
+    "clean": false,
+    "desde": "landing_check",
+    "hasta": "serving_astra",
+    "sin_serving": false,
+    "operador": "Antonio",
+    "actualizar_evidencias": false
+  },
+  "etapas": [
+    {
+      "etapa": "landing_check",
+      "script": "scripts/check_common.py",
+      "duracion_s": 11.4,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "e2_01_check_common": {
+          "run_id": "20261115T093108Z-39a90bbc",
+          "status": "ok",
+          "counts": {
+            "customers_orgs.filas": 80,
+            "customers_orgs.mal_formadas": 0,
+            "customers_orgs.columnas_tecnicas_nulas": 0,
+            "users.filas": 800,
+            "users.mal_formadas": 0,
+            "users.columnas_tecnicas_nulas": 0,
+            "resources.filas": 400,
+            "resources.mal_formadas": 0,
+            "resources.columnas_tecnicas_nulas": 0,
+            "support_tickets.filas": 1000,
+            "support_tickets.mal_formadas": 0,
+            "support_tickets.columnas_tecnicas_nulas": 0,
+            "marketing_touches.filas": 1500,
+            "marketing_touches.mal_formadas": 0,
+            "marketing_touches.columnas_tecnicas_nulas": 0,
+            "nps_surveys.filas": 92,
+            "nps_surveys.mal_formadas": 0,
+            "nps_surveys.columnas_tecnicas_nulas": 0,
+            "billing_monthly.filas": 240,
+            "billing_monthly.mal_formadas": 0,
+            "billing_monthly.columnas_tecnicas_nulas": 0,
+            "resources.con_tag_pii": 85
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "bronze_batch",
+      "script": "scripts/run_bronze_batch.py",
+      "duracion_s": 26.9,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "b1_bronze_customers_orgs": {
+          "run_id": "20261115T093119Z-b6cde2d8",
+          "status": "ok",
+          "counts": {
+            "leidas": 80,
+            "aceptadas": 80,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 80
+          },
+          "balances_ok": true
+        },
+        "b1_bronze_users": {
+          "run_id": "20261115T093129Z-6f17574e",
+          "status": "ok",
+          "counts": {
+            "leidas": 800,
+            "aceptadas": 800,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 800
+          },
+          "balances_ok": true
+        },
+        "b1_bronze_resources": {
+          "run_id": "20261115T093132Z-5fc63218",
+          "status": "ok",
+          "counts": {
+            "leidas": 400,
+            "aceptadas": 400,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 400
+          },
+          "balances_ok": true
+        },
+        "b1_bronze_support_tickets": {
+          "run_id": "20261115T093135Z-e9be3e6c",
+          "status": "ok",
+          "counts": {
+            "leidas": 1000,
+            "aceptadas": 1000,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 1000
+          },
+          "balances_ok": true
+        },
+        "b1_bronze_marketing_touches": {
+          "run_id": "20261115T093137Z-eda16c36",
+          "status": "ok",
+          "counts": {
+            "leidas": 1500,
+            "aceptadas": 1500,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 1500
+          },
+          "balances_ok": true
+        },
+        "b1_bronze_nps_surveys": {
+          "run_id": "20261115T093139Z-a06386a3",
+          "status": "ok",
+          "counts": {
+            "leidas": 92,
+            "aceptadas": 92,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 92
+          },
+          "balances_ok": true
+        },
+        "b1_bronze_billing_monthly": {
+          "run_id": "20261115T093141Z-27d7661f",
+          "status": "ok",
+          "counts": {
+            "leidas": 240,
+            "aceptadas": 240,
+            "quarantine": 0,
+            "duplicados_exactos": 0,
+            "quarantine.malformed_row": 0,
+            "quarantine.key_null": 0,
+            "quarantine.cast_error": 0,
+            "quarantine.key_conflict": 0,
+            "escritas_en_bronze": 240
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "bronze_streaming",
+      "script": "scripts/run_bronze_streaming.py",
+      "duracion_s": 12.0,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "s1_bronze_events": {
+          "run_id": "20261115T093146Z-117494c6",
+          "status": "ok",
+          "counts": {
+            "microlotes_esta_ejecucion": 0,
+            "landing_eventos": 43200,
+            "bronze_eventos": 43200,
+            "quarantine_eventos": 0,
+            "lotes_completos": 120,
+            "archivos_ingeridos": 120,
+            "archivos_en_landing": 120,
+            "archivos_en_mas_de_un_lote": 0
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "silver_events",
+      "script": "scripts/run_silver_events.py",
+      "duracion_s": 22.6,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "b2_silver_events": {
+          "run_id": "20261115T093158Z-4d772d54",
+          "status": "ok",
+          "counts": {
+            "stream.microlotes": 0,
+            "stream.leidos": 0,
+            "stream.emitidos": 0,
+            "stream.descartados_por_watermark": 0,
+            "stream.duplicados_descartados": 0,
+            "bronze_eventos": 43200,
+            "silver_eventos": 43200,
+            "quarantine_registros": 2249,
+            "rechazados": 0,
+            "duplicados_event_id": 0,
+            "corregidos": 2038,
+            "marcados": 211,
+            "quarantine.event_id_null": 0,
+            "quarantine.unit_mismatch": 0,
+            "quarantine.unit_missing_uninferable": 0,
+            "quarantine.unit_missing": 2038,
+            "quarantine.cost_below_tolerance": 211,
+            "quarantine.event_id_duplicate": 0,
+            "silver_a_tiempo": 1428,
+            "silver_tardios_recuperados": 41772,
+            "silver_event_id_repetidos": 0,
+            "silver_unit_inferida": 2038,
+            "silver_costo_negativo_marcado": 211,
+            "silver_unit_nula_con_value": 0,
+            "silver_particiones_event_date": 60
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "silver_enrichment",
+      "script": "scripts/run_silver_enrichment.py",
+      "duracion_s": 18.7,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "b3_silver_enrichment": {
+          "run_id": "20261115T093221Z-d33649e7",
+          "status": "ok",
+          "counts": {
+            "customers_orgs.bronze_ultima_foto": 80,
+            "customers_orgs.silver": 80,
+            "customers_orgs.claves_repetidas": 0,
+            "resources.bronze_ultima_foto": 400,
+            "resources.silver": 400,
+            "resources.claves_repetidas": 0,
+            "silver_eventos": 43200,
+            "enriquecidos": 43200,
+            "enriquecidos.sin_org": 0,
+            "enriquecidos.sin_recurso": 0,
+            "features_org_dia": 4580,
+            "costo_silver_micro_usd": 147433977800,
+            "costo_features_micro_usd": 147433977800,
+            "eventos_en_features": 43200,
+            "requests_silver": 2294079,
+            "requests_features": 2294079
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "quality_report",
+      "script": "scripts/report_quality.py",
+      "duracion_s": 12.0,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {}
+    },
+    {
+      "etapa": "gold_finops",
+      "script": "scripts/run_gold_finops.py",
+      "duracion_s": 22.9,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "g1_gold_finops": {
+          "run_id": "20261115T093251Z-d7d6b167",
+          "status": "ok",
+          "counts": {
+            "silver_eventos": 43200,
+            "gold_filas": 11050,
+            "gold_claves_distintas": 11050,
+            "gold_eventos": 43200,
+            "costo_silver_micro_usd": 147433977800,
+            "costo_gold_micro_usd": 147433977800,
+            "requests_silver": 2294079,
+            "requests_gold": 2294079,
+            "org_dia_distintos_de_features": 0,
+            "particiones_usage_date": 60,
+            "fingerprint": 144780998816,
+            "top_filas": 15599,
+            "top_claves_distintas": 15599,
+            "top_ultima_ventana_diferencias": 0
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "cost_anomalies",
+      "script": "scripts/run_cost_anomalies.py",
+      "duracion_s": 30.1,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "g3_cost_anomalies": {
+          "run_id": "20261115T093314Z-23e22ace",
+          "status": "ok",
+          "counts": {
+            "gold_filas": 11050,
+            "anomaly_filas": 11050,
+            "puntuadas": 9216,
+            "historia_insuficiente": 1834,
+            "flag_spike": 222,
+            "flag_spike.mad": 204,
+            "flag_spike.percentil_servicio": 18,
+            "flag_costo_negativo": 208,
+            "flag_cualquiera": 429,
+            "claves_distintas": 11050
+          },
+          "balances_ok": true
+        }
+      }
+    },
+    {
+      "etapa": "serving_astra",
+      "script": "scripts/run_serving_astra.py",
+      "duracion_s": 163.6,
+      "codigo_salida": 0,
+      "estado": "ok",
+      "procesos": {
+        "v1_serving_astra": {
+          "run_id": "20261115T093354Z-d9afe6d3",
+          "status": "ok",
+          "counts": {
+            "sentencias_esquema": 2,
+            "org_daily_usage_by_service.cassandra_antes": 11050,
+            "org_daily_usage_by_service.gold_filas": 11050,
+            "org_daily_usage_by_service.escritas": 11050,
+            "org_daily_usage_by_service.obsoletas_borradas": 0,
+            "org_daily_usage_by_service.cassandra_despues": 11050,
+            "org_daily_usage_by_service.organizaciones_distintas_de_gold": 0,
+            "top_services_by_org_14d.cassandra_antes": 15599,
+            "top_services_by_org_14d.gold_filas": 15599,
+            "top_services_by_org_14d.escritas": 15599,
+            "top_services_by_org_14d.obsoletas_borradas": 0,
+            "top_services_by_org_14d.cassandra_despues": 15599,
+            "top_services_by_org_14d.organizaciones_distintas_de_gold": 0,
+            "consultas_iguales_a_spark": 2
+          },
+          "balances_ok": true
+        }
+      }
+    }
+  ],
+  "evidencias_de_etapas": "datalake/_runs/pipeline/20261115T093104Z-fc645efc/evidence/",
+  "fin_utc": "2026-11-15T09:36:25Z",
+  "estado": "ok"
+}

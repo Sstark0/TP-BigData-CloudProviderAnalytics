@@ -24,6 +24,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-17 | Serving en AstraDB: una tabla por consulta, claves Cassandra, carga con driver desde Spark y limpieza de obsoletas | Aceptada | 2026-11-14 |
 | D-18 | Anomalías de costo: z-score robusto (MAD) sobre línea base móvil, percentil para arranque en frío, umbrales | Aceptada | 2026-11-15 |
 | D-19 | Orquestación: `run_pipeline.py` por etapas, corte ante fallas, registro de ejecución y limpieza segura | Aceptada | 2026-11-15 |
+| D-20 | Idempotencia: comparación antes/después con conteos y huella de contenido por tabla | Aceptada | 2026-11-15 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -229,3 +230,20 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - **AstraDB opcional**: sin credenciales, la etapa de serving se omite y queda registrado. El resto del pipeline se puede reproducir sin cuenta en Astra.
 - **Descartado.** *Orquestador externo (Airflow, Prefect, Make)*: agrega una instalación y un servicio más para nueve pasos lineales; queda como mejora para la entrega final si se agendan ejecuciones. *Todas las etapas en una sola sesión de Spark*: más rápido, pero un fallo en una etapa podría dejar estado en memoria que afecte a la siguiente, y ya no sería el mismo script que se corre a mano.
 - **Consecuencias.** Una corrida completa desde cero (`--clean --tests`) tarda unos 8 minutos y reproduce exactamente el mismo Gold: la huella de contenido es `144780998816` en dos máquinas distintas. El mismo script sirve para demostrar la idempotencia en E2-10, corriéndolo dos veces y comparando los registros.
+
+## D-20 · Demostración de idempotencia (E2-10)
+- **Contexto.** La consigna pide "demostrar re-ejecución sin duplicados mediante conteos antes/después, checkpoints, claves naturales o upserts" (§6.2), y el plan, que re-ejecutar el pipeline no cambie los conteos de Silver, Gold ni Cassandra. Cada capa ya es idempotente por su propio mecanismo:
+  - Bronze batch reemplaza la partición del día (D-11).
+  - Los streams retoman desde su checkpoint, y cada lote reemplaza su carpeta (D-12, D-13).
+  - Silver y Gold se recalculan enteros desde la capa anterior (D-13, D-16).
+  - Cassandra hace upsert por clave primaria y borra lo que ya no está en Gold (D-17).
+  
+  Faltaba demostrarlo de punta a punta, con una sola evidencia.
+- **Decisión.** `scripts/check_idempotency.py` toma una foto del estado, re-ejecuta el pipeline completo **sin `--clean`** (como una re-ejecución real) y vuelve a tomar la foto. Compara:
+  - **Por tabla del lago** (Bronze, Silver, registro de calidad y Gold): filas y **huella de contenido**, la suma de `xxhash64` de cada fila sobre sus columnas de negocio (`src/common/fingerprint.py`). La huella no depende del orden ni de los archivos, y cambia si cambia un valor o si una fila aparece, desaparece o se duplica. Contar filas solo no alcanza: la misma cantidad puede esconder contenido distinto.
+  - **Columnas volátiles excluidas de la huella**: hora de proceso, `run_id` y fecha de carga (`ingest_ts`, `run_id`, `ingest_date`, `*_processed_ts`, `*_run_id`, `loaded_at`). Cambian legítimamente en cada corrida sin que cambie el dato.
+  - **Streams**: lotes completos de S1 (manifiestos) y número del último lote confirmado de S2. Spark conserva solo los ~100 últimos registros de lotes, por eso se compara el último número y no la cantidad de archivos.
+  - **Cassandra** (si hay credenciales): filas y costo total por tabla, sumando las particiones de cada organización.
+  - Si una métrica difiere, o si la re-ejecución falla, el chequeo termina con error.
+- **Descartado.** *Comparar solo conteos*: no detecta un valor cambiado ni un reemplazo de filas. *Comparar los archivos Parquet byte a byte*: Spark puede nombrar y repartir los archivos distinto en cada corrida sin que cambie el contenido. *Contar las fotos de Bronze*: una re-ejecución otro día agrega una foto de cada maestro, por diseño (D-11). Queda como dato informativo; lo que se compara es el contenido de la última foto, que Silver usa.
+- **Consecuencias.** En la prueba local, la re-ejecución tarda unos 4 minutos (contra 8 desde cero), porque los streams no reprocesan nada. Da 22 de 22 métricas del lago iguales, con las mismas huellas. La evidencia oficial (`evidence/entrega2/e2_10_idempotency.json`) incluye además Cassandra.

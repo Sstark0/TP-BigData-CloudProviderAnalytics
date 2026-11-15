@@ -1,0 +1,288 @@
+{
+  "operador": "Antonio",
+  "inicio_utc": "2026-11-15T09:30:06Z",
+  "cassandra_incluida": true,
+  "pipeline_rerun": {
+    "codigo_salida": 0,
+    "registro": "evidence/entrega2/e2_10_pipeline_rerun.json"
+  },
+  "informativo_fotos_bronze_por_maestro": {
+    "customers_orgs": 1,
+    "users": 1,
+    "resources": 1,
+    "support_tickets": 1,
+    "marketing_touches": 1,
+    "nps_surveys": 1,
+    "billing_monthly": 1
+  },
+  "fin_utc": "2026-11-15T09:37:15Z",
+  "comparacion": [
+    {
+      "metrica": "bronze.billing_monthly",
+      "antes": {
+        "filas": 240,
+        "huella": "7343377570671573567"
+      },
+      "despues": {
+        "filas": 240,
+        "huella": "7343377570671573567"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.customers_orgs",
+      "antes": {
+        "filas": 80,
+        "huella": "-2143478941586352788"
+      },
+      "despues": {
+        "filas": 80,
+        "huella": "-2143478941586352788"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.marketing_touches",
+      "antes": {
+        "filas": 1500,
+        "huella": "85916349476887307070"
+      },
+      "despues": {
+        "filas": 1500,
+        "huella": "85916349476887307070"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.nps_surveys",
+      "antes": {
+        "filas": 92,
+        "huella": "-24046304848723936187"
+      },
+      "despues": {
+        "filas": 92,
+        "huella": "-24046304848723936187"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.resources",
+      "antes": {
+        "filas": 400,
+        "huella": "150647840622285245097"
+      },
+      "despues": {
+        "filas": 400,
+        "huella": "150647840622285245097"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.support_tickets",
+      "antes": {
+        "filas": 1000,
+        "huella": "-34356005951935892477"
+      },
+      "despues": {
+        "filas": 1000,
+        "huella": "-34356005951935892477"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.usage_events",
+      "antes": {
+        "filas": 43200,
+        "huella": "409794445506883662066"
+      },
+      "despues": {
+        "filas": 43200,
+        "huella": "409794445506883662066"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "bronze.users",
+      "antes": {
+        "filas": 800,
+        "huella": "25418011468149224916"
+      },
+      "despues": {
+        "filas": 800,
+        "huella": "25418011468149224916"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "cassandra.org_daily_usage_by_service",
+      "antes": {
+        "filas": 11050,
+        "costo_usd": "147433.977800"
+      },
+      "despues": {
+        "filas": 11050,
+        "costo_usd": "147433.977800"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "cassandra.top_services_by_org_14d",
+      "antes": {
+        "filas": 15599,
+        "costo_usd": "1841438.635300"
+      },
+      "despues": {
+        "filas": 15599,
+        "costo_usd": "1841438.635300"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "gold.cost_anomaly_mart",
+      "antes": {
+        "filas": 11050,
+        "huella": "88180817314712967765"
+      },
+      "despues": {
+        "filas": 11050,
+        "huella": "88180817314712967765"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "gold.org_daily_usage_by_service",
+      "antes": {
+        "filas": 11050,
+        "huella": "102867256762859773828"
+      },
+      "despues": {
+        "filas": 11050,
+        "huella": "102867256762859773828"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "gold.top_services_by_org_14d",
+      "antes": {
+        "filas": 15599,
+        "huella": "328815374199147084207"
+      },
+      "despues": {
+        "filas": 15599,
+        "huella": "328815374199147084207"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.customers_orgs",
+      "antes": {
+        "filas": 80,
+        "huella": "-16183599478732113050"
+      },
+      "despues": {
+        "filas": 80,
+        "huella": "-16183599478732113050"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.org_daily_features",
+      "antes": {
+        "filas": 4580,
+        "huella": "-365009762192141531834"
+      },
+      "despues": {
+        "filas": 4580,
+        "huella": "-365009762192141531834"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.registro_calidad",
+      "antes": {
+        "filas": 2249,
+        "huella": "225032327105014817797"
+      },
+      "despues": {
+        "filas": 2249,
+        "huella": "225032327105014817797"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.registro_calidad.corregido",
+      "antes": 2038,
+      "despues": 2038,
+      "igual": true
+    },
+    {
+      "metrica": "silver.registro_calidad.marcado",
+      "antes": 211,
+      "despues": 211,
+      "igual": true
+    },
+    {
+      "metrica": "silver.resources",
+      "antes": {
+        "filas": 400,
+        "huella": "102848006393158883551"
+      },
+      "despues": {
+        "filas": 400,
+        "huella": "102848006393158883551"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.usage_events",
+      "antes": {
+        "filas": 43200,
+        "huella": "-399181995699922918639"
+      },
+      "despues": {
+        "filas": 43200,
+        "huella": "-399181995699922918639"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.usage_events_enriched",
+      "antes": {
+        "filas": 43200,
+        "huella": "-416385972959550634066"
+      },
+      "despues": {
+        "filas": 43200,
+        "huella": "-416385972959550634066"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "silver.usage_events_live",
+      "antes": {
+        "filas": 1428,
+        "huella": "75814741942327742511"
+      },
+      "despues": {
+        "filas": 1428,
+        "huella": "75814741942327742511"
+      },
+      "igual": true
+    },
+    {
+      "metrica": "stream.s1.lotes_completos",
+      "antes": 120,
+      "despues": 120,
+      "igual": true
+    },
+    {
+      "metrica": "stream.s2.ultimo_lote_confirmado",
+      "antes": 119,
+      "despues": 119,
+      "igual": true
+    }
+  ],
+  "metricas": 24,
+  "iguales": 24,
+  "idempotente": true
+}
