@@ -1,0 +1,204 @@
+{
+  "run_id": "20261115T074541Z-e7e77f2f",
+  "params": {
+    "window_days": 28,
+    "min_history": 7,
+    "z_threshold": 3.5,
+    "min_excess_usd": 5.0,
+    "cold_start_percentile": 0.99
+  },
+  "counts": {
+    "gold_filas": 11050,
+    "anomaly_filas": 11050,
+    "puntuadas": 9216,
+    "historia_insuficiente": 1834,
+    "flag_spike": 222,
+    "flag_spike.mad": 204,
+    "flag_spike.percentil_servicio": 18,
+    "flag_costo_negativo": 208,
+    "flag_cualquiera": 429,
+    "claves_distintas": 11050
+  },
+  "balances": [
+    {
+      "check": "gold_filas = anomaly_filas",
+      "left": 11050,
+      "right": 11050,
+      "ok": true
+    },
+    {
+      "check": "anomaly_filas = claves_distintas",
+      "left": 11050,
+      "right": 11050,
+      "ok": true
+    },
+    {
+      "check": "anomaly_filas = puntuadas + historia_insuficiente",
+      "left": 11050,
+      "right": 11050,
+      "ok": true
+    }
+  ],
+  "tabla": {
+    "path": "gold/cost_anomaly_mart",
+    "parquet_files": 60,
+    "bytes": 1132203
+  },
+  "distribucion": {
+    "por_tipo_y_severidad": {
+      "costo_negativo / revisar": 207,
+      "spike / alta": 90,
+      "spike / media": 131,
+      "spike+costo_negativo / alta": 1
+    },
+    "spikes_por_servicio": {
+      "analytics": 32,
+      "compute": 72,
+      "database": 44,
+      "genai": 35,
+      "networking": 14,
+      "storage": 25
+    },
+    "spikes_por_deteccion": {
+      "mad": 204,
+      "percentil_servicio": 18
+    },
+    "tasa_spike_sobre_puntuadas": 0.0221,
+    "robust_z_percentiles_50_90_95_99_999": [
+      0.0,
+      1.7875,
+      2.5412500000000002,
+      5.932650000000025,
+      22.925184999999995
+    ]
+  },
+  "evaluacion": {
+    "referencia": "spikes de E1: eventos con costo > 10 × p99 del costo por evento (una fila por org, día y servicio)",
+    "spikes_conocidos": 34,
+    "detectados": 34,
+    "detectados_por_metodo": {
+      "mad": 25,
+      "percentil_servicio": 9
+    },
+    "no_detectados": [],
+    "sensibilidad_al_umbral": [
+      {
+        "z_umbral": 3.0,
+        "exceso_min_usd": 0.0,
+        "flags_mad": 330,
+        "spikes_conocidos_detectados": 25
+      },
+      {
+        "z_umbral": 3.0,
+        "exceso_min_usd": 5.0,
+        "flags_mad": 270,
+        "spikes_conocidos_detectados": 25
+      },
+      {
+        "z_umbral": 3.5,
+        "exceso_min_usd": 0.0,
+        "flags_mad": 246,
+        "spikes_conocidos_detectados": 25
+      },
+      {
+        "z_umbral": 3.5,
+        "exceso_min_usd": 5.0,
+        "flags_mad": 204,
+        "spikes_conocidos_detectados": 25
+      },
+      {
+        "z_umbral": 5.0,
+        "exceso_min_usd": 0.0,
+        "flags_mad": 117,
+        "spikes_conocidos_detectados": 25
+      },
+      {
+        "z_umbral": 5.0,
+        "exceso_min_usd": 5.0,
+        "flags_mad": 107,
+        "spikes_conocidos_detectados": 25
+      }
+    ],
+    "comparacion_z_clasico": {
+      "z_clasico_mayor_3": 132,
+      "robust_z_spike_mad": 204,
+      "ambos": 98,
+      "spikes_conocidos_con_z_clasico": 24,
+      "spikes_conocidos_con_robust_z": 25
+    }
+  },
+  "mayor_exceso": [
+    {
+      "org_id": "org_rixa11dp",
+      "usage_date": "2025-08-24",
+      "service": "genai",
+      "org_name": "Vertex AI 53",
+      "daily_cost_usd": "340.525900",
+      "baseline_median_usd": 28.207,
+      "baseline_mad_usd": 10.2497,
+      "excess_cost_usd": 312.3189,
+      "robust_z": 20.553,
+      "detection": "mad",
+      "severity": "alta"
+    },
+    {
+      "org_id": "org_c11ertj5",
+      "usage_date": "2025-07-11",
+      "service": "genai",
+      "org_name": "Apex Cloud 17",
+      "daily_cost_usd": "334.676700",
+      "baseline_median_usd": 16.6906,
+      "baseline_mad_usd": 12.7015,
+      "excess_cost_usd": null,
+      "robust_z": null,
+      "detection": "percentil_servicio",
+      "severity": "alta"
+    },
+    {
+      "org_id": "org_c11ertj5",
+      "usage_date": "2025-08-05",
+      "service": "genai",
+      "org_name": "Apex Cloud 17",
+      "daily_cost_usd": "265.240200",
+      "baseline_median_usd": 17.51275,
+      "baseline_mad_usd": 13.2575,
+      "excess_cost_usd": 247.72745,
+      "robust_z": 12.604,
+      "detection": "mad",
+      "severity": "alta"
+    },
+    {
+      "org_id": "org_5935a0l7",
+      "usage_date": "2025-07-15",
+      "service": "compute",
+      "org_name": "Omega Digital 40",
+      "daily_cost_usd": "264.485600",
+      "baseline_median_usd": 18.4012,
+      "baseline_mad_usd": 10.53645,
+      "excess_cost_usd": 246.0844,
+      "robust_z": 15.753,
+      "detection": "mad",
+      "severity": "alta"
+    },
+    {
+      "org_id": "org_1t2tala7",
+      "usage_date": "2025-08-23",
+      "service": "compute",
+      "org_name": "Gamma Data 15",
+      "daily_cost_usd": "257.364000",
+      "baseline_median_usd": 18.3974,
+      "baseline_mad_usd": 10.164,
+      "excess_cost_usd": 238.9666,
+      "robust_z": 15.858,
+      "detection": "mad",
+      "severity": "alta"
+    }
+  ],
+  "limitaciones": [
+    "No hay etiquetas reales de anomalía: la precisión no se puede medir. El recall se mide contra los 34 spikes evidentes encontrados en E1, que son los casos fáciles; anomalías sutiles no tienen referencia.",
+    "Las series tienen días sin uso (no son ceros): la línea base usa solo los días con uso de los últimos 28.",
+    "Arranque en frío: con menos de 7 días de historia se usa el p99 del servicio de todo el período, que mira hacia adelante. En operación real se usaría el p99 del período anterior.",
+    "Solo se marcan subas de costo. Las bajas (y los créditos) se ven por el flag de costo negativo de D-15.",
+    "Umbrales (3,5 y USD 5) fijados con este dataset; deben revisarse con FinOps cuando haya casos confirmados."
+  ]
+}

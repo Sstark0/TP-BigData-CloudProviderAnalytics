@@ -22,6 +22,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-15 | Reglas de calidad de Silver: rechazar, descartar, corregir o marcar, con registro por evento | Aceptada | 2026-11-14 |
 | D-16 | Gold FinOps `org_daily_usage_by_service`: grano, partición por `usage_date`, indicadores de calidad y huella de contenido | Aceptada | 2026-11-14 |
 | D-17 | Serving en AstraDB: una tabla por consulta, claves Cassandra, carga con driver desde Spark y limpieza de obsoletas | Aceptada | 2026-11-14 |
+| D-18 | Anomalías de costo: z-score robusto (MAD) sobre línea base móvil, percentil para arranque en frío, umbrales | Aceptada | 2026-11-15 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -189,3 +190,29 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
   - *Partición por `(org_id, mes)`*: limita el tamaño de partición en horizontes largos, pero una consulta de 14 días podría cruzar dos meses y necesitar dos lecturas. Con este volumen no hace falta; queda como mejora si el histórico crece.
   - *`ALLOW FILTERING`*: hace que Cassandra recorra datos que la clave no restringe; ninguna consulta lo necesita.
 - **Consecuencias.** Cassandra queda con 11.050 filas en el mart y 15.599 en el ranking, iguales a Gold. Una segunda carga no cambia los conteos. Las cinco consultas de la entrega final (§7.4) requerirán más tablas con el mismo criterio de una tabla por consulta. Los valores nulos se escriben como nulos (tombstones); con este volumen no afecta el rendimiento, y garantiza que una re-carga refleje un valor que pasó a nulo.
+
+## D-18 · Anomalías de costo: `cost_anomaly_mart` (E2-09)
+- **Contexto.** La consigna pide flags o scores de anomalía "con métodos justificados, por ejemplo z-score, MAD o percentiles" (§6.2), en un mart `cost_anomaly_mart` con grano `org_id, date, service` y "score o flag de anomalía y contexto del costo" (§7.3), con métricas y limitaciones (§7.1). El checklist pide registrar los umbrales (§6.3). E1 encontró 34 eventos con costo mayor a 10 × p99, cada uno en una combinación distinta de organización, día y servicio. Las series (organización × servicio) tienen una mediana de 39 días con uso.
+- **Decisión.**
+  - **Fuente y grano**: `gold/org_daily_usage_by_service`, una fila por fila del mart (11.050), con partición por `usage_date`.
+  - **Método principal: z-score robusto con MAD.** Para cada día se toma la misma serie en los **28 días anteriores** (sin el día evaluado: no mira el futuro y el día raro no contamina su propia referencia). `robust_z = 0,6745 × (costo − mediana) / MAD`. Si la MAD es 0, se usa 1,2533 × desvío absoluto medio.
+  - **Umbrales**:
+
+    | Parámetro | Valor | Por qué |
+    |---|---|---|
+    | `z_threshold` | 3,5 | Valor de referencia de Iglewicz y Hoaglin para z robusto |
+    | `min_excess_usd` | USD 5 | Materialidad: un salto de centavos puede ser estadísticamente raro sin importarle a FinOps |
+    | `window_days` | 28 | Cuatro semanas: incluye ciclos semanales y deja historia suficiente en 60 días de datos |
+    | `min_history` | 7 | Con menos días, la mediana y la MAD no son estables |
+    | `cold_start_percentile` | p99 del servicio | Respaldo para los días sin historia suficiente |
+
+  - **Arranque en frío**: con menos de 7 días de historia se marca spike si el costo supera el p99 del costo diario del servicio entre todas las organizaciones, por al menos USD 5.
+  - **Tipos**: `spike` (por `mad` o por `percentil_servicio`), `costo_negativo` (el día tiene costos marcados por D-15) o ambos. **Severidad**: `alta` si `robust_z` ≥ 7 o si se detectó por percentil, `media` para el resto de los spikes y `revisar` para costos negativos.
+  - **Contexto en cada fila**: costo del día, mediana y MAD de la línea base, exceso en USD, `robust_z`, `z_classic`, días de historia, método y umbrales usados.
+- **Evaluación** (`evidence/entrega2/e2_09_cost_anomalies.json`).
+  - Spikes: 222 (204 por MAD, el 2,2 % de los 9.216 días puntuados, y 18 por percentil). Además, 208 días con costos negativos.
+  - **Recall frente a los 34 spikes conocidos de E1: 34/34** (25 por MAD y 9 por percentil, todos en los primeros 11 días del dataset).
+  - Sensibilidad: con z entre 3 y 5 y exceso entre 0 y 5 USD, los flags por MAD van de 107 a 330 y el recall se mantiene en 25/25.
+  - El z-score clásico (media y desvío, z > 3) marca 132 días y detecta 24 de los 25: un spike previo infla el desvío y esconde al siguiente. La MAD no tiene ese problema; `tests/test_cost_anomalies.py` lo reproduce.
+- **Descartado.** *z-score clásico*: se enmascara con los propios spikes. *Percentiles por serie*: con unos 28 días de historia, un p99 por serie es casi el máximo, inestable. *Modelos de ML (Isolation Forest, pronóstico)*: sin etiquetas no hay cómo validarlos mejor que un método estadístico explicable, y FinOps necesita entender por qué se marca cada día. *Línea base con todo el período*: miraría el futuro y el propio spike entraría en su referencia.
+- **Limitaciones.** Sin etiquetas reales no se puede medir la precisión; el recall se mide contra spikes evidentes. Los días sin uso no son ceros: la línea base usa solo días con uso. El respaldo por percentil usa todo el período (en operación se usaría el período anterior). Solo se marcan subas: las bajas y los créditos se ven por el flag de costo negativo. Los umbrales deben revisarse con FinOps cuando haya casos confirmados. El mart no se sirve todavía en Cassandra; queda para la entrega final, con una tabla por consulta (D-17).
