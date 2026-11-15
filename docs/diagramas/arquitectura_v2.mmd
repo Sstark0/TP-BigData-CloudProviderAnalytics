@@ -1,0 +1,88 @@
+---
+title: Arquitectura implementada v2.0 · 15/11/2026
+---
+flowchart TB
+  subgraph FUENTES["Fuentes"]
+    direction LR
+    CSV["7 CSV<br/>CRM, usuarios, recursos,<br/>soporte, marketing, NPS, facturación"]
+    JSONL["120 JSONL<br/>eventos de uso v1 y v2"]
+  end
+
+  subgraph LANDING["Landing · inmutable"]
+    direction LR
+    LC["landing/*.csv"]
+    LJ["landing/usage_events_stream/"]
+  end
+
+  subgraph BRONZE["Bronze · Parquet"]
+    direction LR
+    BB["7 tablas tipadas<br/>partición ingest_date<br/>+ quarantine estructural"]
+    BE["usage_events<br/>ingest_date / batch_id<br/>+ manifiesto por lote"]
+  end
+
+  subgraph SILVER["Silver · Parquet"]
+    direction LR
+    SM["customers_orgs · resources<br/>última foto de cada maestro"]
+    SL["usage_events_live<br/>solo lo que llegó a tiempo"]
+    SE["usage_events<br/>únicos, con banderas de calidad<br/>partición event_date"]
+    SQ["registro de calidad<br/>rechazado · descartado ·<br/>corregido · marcado"]
+    SF["usage_events_enriched<br/>org_daily_features"]
+  end
+
+  subgraph GOLD["Gold · Parquet"]
+    direction LR
+    G1["org_daily_usage_by_service<br/>org × día × servicio<br/>partición usage_date"]
+    G2["top_services_by_org_14d<br/>ranking en ventanas de 14 días"]
+    G3["cost_anomaly_mart<br/>z robusto (MAD) + percentil"]
+  end
+
+  subgraph SERVING["Serving · AstraDB"]
+    direction LR
+    C1["keyspace cloud_analytics<br/>2 tablas query-first<br/>partición org_id"]
+  end
+
+  subgraph CONSUMO["Consumo"]
+    direction LR
+    Q["2 consultas CQL<br/>cql/02_queries.cql"]
+  end
+
+  CSV --> LC
+  JSONL --> LJ
+  LC -- "B1 · batch" --> BB
+  LJ -- "S1 · Structured Streaming<br/>foreachBatch + checkpoint" --> BE
+  BB -- "B3a" --> SM
+  BE -- "S2 · stream<br/>watermark 24 h + dedup" --> SL
+  BE -- "B2 · reconciliación<br/>Bronze completo" --> SE
+  SE -.- SQ
+  SL -. "a_tiempo / tardío" .-> SE
+  SE -- "B3b · LEFT JOIN<br/>+ features" --> SF
+  SM --> SF
+  SF -- "G1" --> G1
+  G1 -- "G2" --> G2
+  G1 -- "G3" --> G3
+  G1 -- "V1 · driver en<br/>foreachPartition" --> C1
+  G2 --> C1
+  C1 --> Q
+
+  subgraph CONTROL["Capacidades transversales · aplican a todas las capas"]
+    direction LR
+    T1["Orquestación<br/>run_pipeline.py: orden, corte<br/>ante fallas, limpieza segura"]
+    T2["Observabilidad<br/>registro por ejecución en _runs:<br/>conteos, balances y errores"]
+    T3["Calidad<br/>quarantine y registro de calidad<br/>huellas de contenido (idempotencia)"]
+    T4["Seguridad<br/>credenciales de AstraDB<br/>fuera del repositorio"]
+  end
+
+  classDef fuente fill:#f3f4f6,stroke:#6b7280,color:#111827
+  classDef landing fill:#e5e7eb,stroke:#4b5563,color:#111827
+  classDef bronze fill:#f6e3cf,stroke:#9a5b23,color:#3b2412
+  classDef silver fill:#e8edf2,stroke:#5b6b7b,color:#1f2a35
+  classDef gold fill:#fbefc4,stroke:#a07b12,color:#3d2f05
+  classDef serving fill:#dcefe4,stroke:#2f7a4f,color:#123222
+  classDef control fill:#ffffff,stroke:#6b7280,stroke-dasharray:4 3,color:#374151
+  class CSV,JSONL,Q fuente
+  class LC,LJ landing
+  class BB,BE bronze
+  class SM,SL,SE,SQ,SF silver
+  class G1,G2,G3 gold
+  class C1 serving
+  class T1,T2,T3,T4 control

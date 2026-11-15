@@ -24,6 +24,14 @@ en Parquet (Landing → Bronze → Silver → Gold) con PySpark, y publicación 
 
 Correcciones de la entrega 1 y plan de la entrega 2: [`docs/entrega2/`](docs/entrega2/).
 
+## Arquitectura implementada (entrega 2)
+
+![Arquitectura implementada v2.0](docs/diagramas/arquitectura_v2.png)
+
+Documento completo: [`docs/entrega2/arquitectura_v2.md`](docs/entrega2/arquitectura_v2.md). Incluye el flujo de
+eventos (streaming, watermark, late data y calidad), qué cambió respecto de la entrega 1, particiones, claves
+de Cassandra y umbrales.
+
 ## Quickstart (entrega 2)
 
 Entorno validado: **Linux o WSL2 (Ubuntu) con Python 3.11 y Java 17**. En Windows nativo, Spark no puede escribir

@@ -5,10 +5,10 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 
 | ID | Decisión | Estado | Fecha |
 |---|---|---|---|
-| D-01 | Entorno de ejecución: PySpark 3.5 en Colab / local; Docker diferido | Aceptada | 2026-09-25 |
+| D-01 | Entorno de ejecución: PySpark 3.5 local (validado en WSL2) / Colab; Docker diferido | Aceptada | 2026-09-25 |
 | D-02 | Landing inmutable; lectura con esquema explícito "defensivo" | Aceptada | 2026-09-25 |
-| D-03 | Patrón arquitectónico híbrido | Propuesta | 2026-09-25 |
-| D-04 | Replay, late data e idempotencia | Propuesta | 2026-09-25 |
+| D-03 | Patrón arquitectónico híbrido | Aceptada · validada en E2 | 2026-11-15 |
+| D-04 | Replay, late data e idempotencia | Aceptada · validada en E2 | 2026-11-15 |
 | D-05 | Numéricos ambiguos leídos como texto y casteados con fallback | Aceptada | 2026-09-25 |
 | D-06 | Deduplicación de eventos por `event_id` | Aceptada | 2026-09-25 |
 | D-07 | Configuración de Spark para dataset chico | Aceptada | 2026-09-25 |
@@ -32,6 +32,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 - **Decisión.** PySpark 3.5.3 (misma línea que Colab), `local[*]`. Rutas por variables de entorno (`config/.env.example`).
 - **Descartado.** Clúster Hadoop/YARN en Docker: costo alto de montaje y ningún requisito lo pide. `docker-compose` con Jupyter + PySpark queda como mejora de reproducibilidad a evaluar para la 2.ª entrega (`infra/README.md`).
 - **Consecuencias.** HDFS y YARN se usan como marco conceptual (bloques, archivos pequeños, localidad, recursos), no como infraestructura.
+- **Actualización (E2, 15/11/2026).** En Windows nativo, Spark no puede escribir Parquet sin `winutils.exe`, y los workers de Python pueden resolver `python` al alias de Microsoft Store. El entorno validado pasa a ser **Linux o WSL2 (Ubuntu) con Python 3.11 y Java 17**: el pipeline completo corrió ahí (`evidence/entrega2/e2_12_pipeline_run.json`). Colab sigue sin validar para el pipeline; Docker sigue diferido.
 
 ## D-02 · Landing inmutable
 - **Contexto.** "Los archivos de Landing no deben modificarse" (consigna 3.2).
@@ -43,6 +44,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 - **Decisión propuesta.** Híbrido: **eventos con ingesta Structured Streaming**, publicación incremental y reconciliación batch diaria del histórico + **batch para maestros y facturación**. Es híbrido con un único contrato de transformación reutilizado; no se presenta como Kappa pura.
 - **Descartado.** *Lambda clásica* (batch layer + speed layer sobre los mismos eventos): duplica la lógica sin ganancia, porque Landing ya permite recalcular. *Kappa pura*: tratar CSV mensuales como streams es artificial.
 - **Detalle.** Se desarrolla en el paso 4 (arquitectura v1).
+- **Validación (E2, 15/11/2026).** Implementado como se propuso, con un ajuste: los eventos entran por streaming (S1) y desde Bronze se separan en una vista reciente por streaming con watermark (S2) y el histórico canónico por reconciliación batch (B2). Gold sale solo del histórico, no de micro-lotes provisionales. Ver D-12, D-13 y [`docs/entrega2/arquitectura_v2.md`](docs/entrega2/arquitectura_v2.md).
 
 ## D-04 · Replay, late data e idempotencia (propuesta v1)
 - **Evidencia.** La simulación con un archivo por micro-lote y watermark 24 h identifica 42.118 eventos atrasados; no demuestra el descarte real de Spark.
@@ -51,6 +53,11 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 - **Replay didáctico.** Mantener Landing intacto. Una copia derivada para demo puede ordenarse por event_ts fuera de Landing, con manifiesto del origen. Ensayar también archivos originales mezclados y comparar sumas completas. No sustituir el original.
 - **Trade-off.** Reescribir particiones pequeñas simplifica el prototipo, pero no escala ni es atómico en todos los almacenamientos. En producción evaluar formato transaccional; no incorporarlo ahora como implementación.
 - **Estado.** Diseño propuesto; validar en entrega 2 watermark, checkpoint, dedupe, recuperación y latencia. Véase documento integrado.
+- **Validación (E2, 15/11/2026).**
+  - **Watermark real de Spark**: con watermark de 24 h y un archivo por micro-lote descarta 41.761 eventos, contra 42.118 estimados en la simulación de E1; la diferencia es el desfase de un lote con que Spark aplica el watermark. La reconciliación los recupera a todos (D-13).
+  - **Staging, manifiesto y escritor único**: implementados en S1. Cada lote es una carpeta `batch_id`, el manifiesto se escribe al final y un lote sin manifiesto no se lee (D-12).
+  - **Recuperación de corrida incompleta e idempotencia**: probadas con lotes re-ejecutados, en el mismo día y en otro, y con una re-ejecución completa del pipeline que no cambia ninguna tabla (D-20).
+  - **Replay didáctico ordenado**: no se implementó; queda en el backlog.
 
 ## D-05 · Numéricos ambiguos
 - **Contexto.** El 3 % de `value` llega como texto (`"95.0"`). Declararlo `DoubleType` en la lectura lo convertiría en NULL en silencio.

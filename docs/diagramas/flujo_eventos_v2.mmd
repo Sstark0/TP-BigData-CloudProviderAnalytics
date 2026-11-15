@@ -1,0 +1,55 @@
+---
+title: Flujo de eventos · streaming, late data y calidad · v2.0 · 15/11/2026
+---
+flowchart TB
+  L["Landing · 120 JSONL · 43.200 eventos"]
+
+  subgraph S1["S1 · Structured Streaming: Landing → Bronze"]
+    direction TB
+    R1["readStream con esquema explícito v1/v2<br/>maxFilesPerTrigger = 1 · checkpoint s1"]
+    F1["foreachBatch: un lote = una carpeta batch_id<br/>re-ejecutar un lote la reemplaza"]
+    M1["manifiesto del lote al final<br/>sin manifiesto = lote incompleto, no se lee"]
+    R1 --> F1 --> M1
+  end
+
+  BE["Bronze usage_events · 43.200 · 120 lotes<br/>sin filtro temporal: captura completa"]
+  QB["quarantine estructural<br/>JSON roto · timestamp ilegible · número inválido<br/>0 en el dataset"]
+
+  subgraph S2["S2 · Structured Streaming: Bronze → Silver (vista reciente)"]
+    direction TB
+    W["withWatermark(event_ts, 24 h)<br/>dropDuplicatesWithinWatermark(event_id)<br/>checkpoint s2"]
+    OK["usage_events_live<br/>1.439 a tiempo"]
+    LATE["41.761 tardíos<br/>descartados por el watermark"]
+    W --> OK
+    W -.-> LATE
+  end
+
+  subgraph B2["B2 · reconciliación batch: Bronze completo → Silver canónico"]
+    direction TB
+    RJ["rechazar: event_id nulo, unidad incoherente"]
+    DD["descartar copias: queda la primera llegada"]
+    FX["corregir: unidad inferida (2.038)<br/>marcar: costo < −0,01 (211)"]
+    RJ --> DD --> FX
+  end
+
+  SE["Silver usage_events · 43.200 únicos<br/>1.439 a_tiempo + 41.761 tardío recuperados"]
+  RC["registro de calidad · 2.249 filas<br/>regla, acción, motivo y dato original"]
+
+  L --> R1
+  M1 --> BE
+  F1 -.-> QB
+  BE --> W
+  BE --> RJ
+  OK -. "marca a_tiempo" .-> SE
+  FX --> SE
+  FX -.-> RC
+  LATE -. "no se pierden: siguen en Bronze" .-> RJ
+
+  classDef bronze fill:#f6e3cf,stroke:#9a5b23,color:#3b2412
+  classDef silver fill:#e8edf2,stroke:#5b6b7b,color:#1f2a35
+  classDef warn fill:#fdecea,stroke:#b42318,color:#4a1009
+  classDef neutral fill:#f3f4f6,stroke:#6b7280,color:#111827
+  class BE,QB bronze
+  class SE,OK,RC silver
+  class LATE warn
+  class L,R1,F1,M1,W,RJ,DD,FX neutral
