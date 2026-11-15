@@ -63,7 +63,9 @@ def main() -> int:
         "por_tipo_y_severidad": counts(mart.where("is_anomaly"), "anomaly_type", "severity"),
         "spikes_por_servicio": counts(mart.where("is_spike"), "service"),
         "spikes_por_deteccion": counts(mart.where("is_spike"), "detection"),
-        "tasa_spike_sobre_puntuadas": round(scored.where("detection = 'mad'").count() / scored.count(), 4),
+        # Con pocos datos (por ejemplo, la muestra de data/sample) puede no haber ningún día puntuado
+        "tasa_spike_sobre_puntuadas": (round(scored.where("detection = 'mad'").count() / n_scored, 4)
+                                       if (n_scored := scored.count()) else None),
         "robust_z_percentiles_50_90_95_99_999": scored.select(
             F.expr("percentile(robust_z, array(0.5, 0.9, 0.95, 0.99, 0.999))")).first()[0],
     }
