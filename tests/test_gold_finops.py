@@ -11,7 +11,8 @@ from pathlib import Path
 
 from src.common.runlog import RunLog
 from src.common.spark import get_spark
-from src.gold.finops import build_gold_finops, fingerprint, org_daily_usage_by_service, reference_queries
+from src.gold.finops import build_gold_finops, build_top_services, fingerprint, org_daily_usage_by_service, \
+    reference_queries, top_services_by_org
 
 ENRICHED = ("event_id string, org_id string, resource_id string, service string, metric string, "
             "cost_usd decimal(18,6), requests double, cpu_hours double, storage_gb_hours double, genai_tokens long, "
@@ -92,6 +93,30 @@ class GoldFinopsTests(unittest.TestCase):
         top = q["q2_top5_servicios_ultimos_14_dias"]
         self.assertEqual([r["service"] for r in top], ["storage", "compute"])
         self.assertEqual(len(q["q1_costos_y_requests_ultimos_7_dias"]), 2)
+
+
+    def test_top_services_rank_rolling_14_day_windows(self):
+        day = lambda n: D - dt.timedelta(days=n)
+        rows = [ev("e1", service="compute", cost="5.0", day=day(0)), ev("e2", service="storage", cost="3.0", day=day(0)),
+                ev("e3", service="storage", cost="4.0", day=day(5)),       # dentro de la ventana que termina hoy
+                ev("e4", service="genai", cost="50.0", day=day(20))]       # solo en ventanas viejas
+        gold = org_daily_usage_by_service(self.spark.createDataFrame(rows, ENRICHED), "t")
+        top = {(r.window_end_date, r.cost_rank): r for r in top_services_by_org(gold, "t").collect()}
+        self.assertEqual((top[(D, 1)].service, top[(D, 1)].cost_usd), ("storage", Decimal("7.0")))   # 3 + 4
+        self.assertEqual((top[(D, 2)].service, top[(D, 2)].days_with_usage), ("compute", 1))
+        self.assertNotIn((D, 3), top)                                       # genai quedó fuera de los 14 días
+        self.assertEqual(top[(day(20), 1)].service, "genai")
+        self.assertFalse(top[(day(20), 1)].window_complete)                 # primer día del dataset: ventana parcial
+        self.assertTrue(top[(D, 1)].window_complete)
+
+    def test_build_top_services_reconciles_with_the_mart(self):
+        rows = [ev("e1", service="compute", cost="2.0"), ev("e2", service="genai", cost="9.0"), ev("e3", org="org_2")]
+        gold = org_daily_usage_by_service(self.spark.createDataFrame(rows, ENRICHED), "t")
+        with RunLog("test_g2", runs_dir=self.tmp / "_runs") as run:
+            top = build_top_services(self.spark, run, gold, self.tmp / "top")
+        self.assertEqual(run.data["counts"]["top_ultima_ventana_diferencias"], 0)
+        self.assertEqual([r.service for r in top.where("org_id = 'org_1'").orderBy("cost_rank").collect()],
+                         ["genai", "compute"])
 
 
 if __name__ == "__main__":

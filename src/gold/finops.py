@@ -21,7 +21,7 @@ G1 · Mart FinOps org_daily_usage_by_service (E2-07).
     usage_date, un archivo por día (60 archivos). 
     Coincide con E1 (`org_daily_usage_by_service/dt=`) y con las consultas por rango de fechas; un día se puede reprocesar o borrar sin tocar los demás.
 """
-from pyspark.sql import DataFrame, SparkSession
+from pyspark.sql import DataFrame, SparkSession, Window
 from pyspark.sql import functions as F
 
 from src.common.io import replace_table
@@ -53,6 +53,35 @@ def org_daily_usage_by_service(enriched: DataFrame, run_id: str) -> DataFrame:
                  F.sum(F.col("unit_inferred").cast("int")).alias("unit_inferred_events"),
                  F.sum((F.col("arrival_path") == "tardio").cast("int")).alias("late_events"),
                  F.round(F.count("carbon_kg") / F.count(F.lit(1)), 4).alias("carbon_coverage"))
+            .withColumn("gold_processed_ts", F.current_timestamp())
+            .withColumn("gold_run_id", F.lit(run_id)))
+
+
+TOP_TABLE = "top_services_by_org_14d"
+WINDOW_DAYS = 14
+
+
+def top_services_by_org(gold: DataFrame, run_id: str, days: int = WINDOW_DAYS) -> DataFrame:
+    """Ranking de servicios por costo acumulado en ventanas móviles de `days` días, para cada organización y cada
+    día de fin de ventana (G2, tabla de serving de la consulta Top-N de la consigna §7.4).
+
+    Cassandra no puede agrupar por servicio ni ordenar por costo en org_daily_usage_by_service (solo ordena por las
+    columnas de clustering), así que el ranking se calcula acá y se guarda ya ordenado: `cost_rank` = 1 es el
+    servicio de mayor costo. Las primeras ventanas del dataset tienen menos de `days` días: `window_complete` lo dice.
+    """
+    first_day = gold.agg(F.min("usage_date")).first()[0]
+    ends = gold.select(F.col("usage_date").alias("window_end_date")).distinct()
+    in_window = (gold.join(ends, (gold.usage_date <= ends.window_end_date)
+                           & (gold.usage_date > F.date_sub(ends.window_end_date, days)))
+                 .groupBy("org_id", "window_end_date", "service")
+                 .agg(F.sum("daily_cost_usd").cast("decimal(18,6)").alias("cost_usd"),
+                      F.sum("requests").alias("requests"),
+                      F.countDistinct("usage_date").alias("days_with_usage")))
+    rank = F.row_number().over(Window.partitionBy("org_id", "window_end_date")
+                               .orderBy(F.desc("cost_usd"), F.asc("service")))
+    return (in_window.withColumn("cost_rank", rank)
+            .withColumn("window_days", F.lit(days))
+            .withColumn("window_complete", F.date_sub("window_end_date", days - 1) >= F.lit(first_day))
             .withColumn("gold_processed_ts", F.current_timestamp())
             .withColumn("gold_run_id", F.lit(run_id)))
 
@@ -122,3 +151,23 @@ def build_gold_finops(spark: SparkSession, run: RunLog, enriched: DataFrame, fea
     if not ok:
         raise RuntimeError("Gold FinOps no concilia con Silver; ver el registro de la ejecución")
     return gold
+
+
+def build_top_services(spark: SparkSession, run: RunLog, gold: DataFrame, top_path) -> DataFrame:
+    """G2: ranking de servicios en ventanas de 14 días. Concilia contra el mart: cada ventana suma lo mismo."""
+    run.count("top_filas", replace_table(top_services_by_org(gold, run.run_id), top_path))
+    top = spark.read.parquet(str(top_path))
+    run.count("top_claves_distintas", top.select("org_id", "window_end_date", "cost_rank").distinct().count())
+    # Para la última ventana, el costo de cada (org, servicio) debe ser la suma de sus 14 días en el mart
+    last = gold.agg(F.max("usage_date")).first()[0]
+    expected = (gold.where(F.col("usage_date") > F.date_sub(F.lit(last), WINDOW_DAYS))
+                .groupBy("org_id", "service").agg(F.sum("daily_cost_usd").alias("expected")))
+    got = top.where(F.col("window_end_date") == F.lit(last)).select("org_id", "service", "cost_usd")
+    run.count("top_ultima_ventana_diferencias",
+              expected.join(got, ["org_id", "service"], "full_outer")
+              .where(F.coalesce("expected", F.lit(0)) != F.coalesce("cost_usd", F.lit(0))).count())
+    run.add_output(top_path)
+    if not (run.check_balance("top_filas", ["top_claves_distintas"])
+            and run.data["counts"]["top_ultima_ventana_diferencias"] == 0):
+        raise RuntimeError("El ranking de servicios no concilia con el mart; ver el registro de la ejecución")
+    return top

@@ -21,6 +21,7 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 | D-14 | Silver de maestros (última foto), enriquecimiento con LEFT JOIN y features diarias por organización | Aceptada | 2026-11-14 |
 | D-15 | Reglas de calidad de Silver: rechazar, descartar, corregir o marcar, con registro por evento | Aceptada | 2026-11-14 |
 | D-16 | Gold FinOps `org_daily_usage_by_service`: grano, partición por `usage_date`, indicadores de calidad y huella de contenido | Aceptada | 2026-11-14 |
+| D-17 | Serving en AstraDB: una tabla por consulta, claves Cassandra, carga con driver desde Spark y limpieza de obsoletas | Aceptada | 2026-11-14 |
 ---
 
 ## D-01 · Entorno de ejecución
@@ -167,3 +168,24 @@ Estado: `Aceptada` · `Propuesta` (a validar con el equipo/docente; entrega repr
 - **Descartado.** *Partición por servicio*: las consultas filtran por organización y rango de fechas, y una partición por servicio no evita leer días que no se piden. *Sin partición*: más simple con este volumen, pero se aparta del contrato y obliga a reescribir todo para corregir un día. *Excluir los costos negativos marcados*: cambiaría el total respecto de Silver y ocultaría los ajustes.
 - **Consecuencias.** 11.050 filas para 80 organizaciones, 60 días y 6 servicios. Costo USD 147.433,98 y 2.294.079 requests, iguales a Silver. La re-ejecución da la misma huella. El modelo de Cassandra (E2-08) parte de este grano; las claves de partición y clustering se deciden allí según las dos consultas.
 
+## D-17 · Serving en Cassandra/AstraDB (E2-08)
+- **Contexto.** La consigna (§6.2) pide un keyspace, una tabla query-first para el mart cargada desde Spark y dos consultas CQL con resultados. §7.4 fija las consultas: (1) costos y requests diarios por organización y servicio en un rango de fechas; (2) Top-N servicios por costo acumulado en los últimos 14 días para una organización. El checklist pide registrar las claves de Cassandra (§6.3). La base es AstraDB Serverless (non-vector), keyspace `cloud_analytics`, AWS us-east-2; AstraDB no acepta `CREATE KEYSPACE` por CQL, así que el keyspace se crea desde el portal.
+- **Decisión: una tabla por consulta** (`cql/01_schema.cql`).
+
+  | Tabla | Clave de partición | Clustering | Responde |
+  |---|---|---|---|
+  | `org_daily_usage_by_service` | `org_id` | `usage_date DESC, service ASC` | Consulta 1: `WHERE org_id = ? AND usage_date >= ? AND usage_date <= ?` |
+  | `top_services_by_org_14d` | `org_id` | `window_end_date DESC, cost_rank ASC` | Consulta 2: `WHERE org_id = ? AND window_end_date = ? LIMIT N` |
+
+  - **Partición por `org_id`**: las dos consultas piden una sola organización, y cada consulta lee una sola partición. Hoy cada partición tiene como máximo 360 filas por tabla (60 días × 6 servicios); con un año serían unas 2.200, muy por debajo de los límites recomendados para una partición de Cassandra.
+  - **Ranking precalculado**: Cassandra solo ordena por columnas de clustering y no puede agrupar por `service` en la primera tabla. El ranking se calcula en Spark (`gold/top_services_by_org_14d`, ventanas móviles de 14 días para cada día de fin) y `cost_rank` es columna de clustering. La consulta es una lectura directa, sin agregar ni ordenar en el cliente.
+  - **Carga**: driver de Python (`cassandra-driver` 3.29.2) dentro de `foreachPartition`. Cada partición de Spark abre su sesión con el Secure Connect Bundle y escribe con sentencias preparadas en paralelo. Es la opción "foreachBatch/driver" de la consigna (§4.4) y evita instalar los JARs del conector de Spark.
+  - **Idempotencia**: el INSERT de Cassandra es un upsert por clave primaria, así que re-cargar no duplica. Las filas cuya clave ya no está en Gold se borran (`prune_stale`, organización por organización). Las claves se normalizan antes de comparar, porque el driver devuelve las fechas como `cassandra.util.Date`, que es igual a `datetime.date` pero con otro hash: sin normalizar, la limpieza borraría filas válidas.
+  - **Verificación**: antes y después de cargar se cuentan filas y se suma el costo por organización con `COUNT(*)` y `SUM` dentro de cada partición; deben coincidir con Gold. Las dos consultas se ejecutan desde `cql/02_queries.cql` y se comparan con las calculadas en Spark (E2-07).
+  - **Credenciales**: token y bundle se leen de variables de entorno (`ASTRA_DB_APPLICATION_TOKEN`, `ASTRA_SECURE_BUNDLE_PATH`) y se guardan fuera del repositorio. La evidencia no las incluye.
+- **Descartado.**
+  - *Conector de Spark para Cassandra*: necesita descargar y configurar JARs para Spark 3.5 en cada entorno, y la consigna admite el driver.
+  - *Una sola tabla y agregar en el cliente para el Top-N*: no es query-first, porque obliga a traer 14 días × 6 servicios y ordenar fuera de Cassandra.
+  - *Partición por `(org_id, mes)`*: limita el tamaño de partición en horizontes largos, pero una consulta de 14 días podría cruzar dos meses y necesitar dos lecturas. Con este volumen no hace falta; queda como mejora si el histórico crece.
+  - *`ALLOW FILTERING`*: hace que Cassandra recorra datos que la clave no restringe; ninguna consulta lo necesita.
+- **Consecuencias.** Cassandra queda con 11.050 filas en el mart y 15.599 en el ranking, iguales a Gold. Una segunda carga no cambia los conteos. Las cinco consultas de la entrega final (§7.4) requerirán más tablas con el mismo criterio de una tabla por consulta. Los valores nulos se escriben como nulos (tombstones); con este volumen no afecta el rendimiento, y garantiza que una re-carga refleje un valor que pasó a nulo.

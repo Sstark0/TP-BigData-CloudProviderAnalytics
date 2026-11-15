@@ -1,5 +1,5 @@
 {
-  "run_id": "20261114T235014Z-11eb270f",
+  "run_id": "20261115T055911Z-45281cf1",
   "counts": {
     "silver_eventos": 43200,
     "gold_filas": 11050,
@@ -11,7 +11,10 @@
     "requests_gold": 2294079,
     "org_dia_distintos_de_features": 0,
     "particiones_usage_date": 60,
-    "fingerprint": 144780998816
+    "fingerprint": 144780998816,
+    "top_filas": 15599,
+    "top_claves_distintas": 15599,
+    "top_ultima_ventana_diferencias": 0
   },
   "balances": [
     {
@@ -37,10 +40,16 @@
       "left": 2294079,
       "right": 2294079,
       "ok": true
+    },
+    {
+      "check": "top_filas = top_claves_distintas",
+      "left": 15599,
+      "right": 15599,
+      "ok": true
     }
   ],
   "re_ejecucion": {
-    "run_id_anterior": "20261114T234909Z-3d6a5cc9",
+    "run_id_anterior": "20261114T235014Z-11eb270f",
     "fingerprint_anterior": 144780998816,
     "mismo_contenido": true
   },
@@ -48,6 +57,11 @@
     "path": "gold/org_daily_usage_by_service",
     "parquet_files": 60,
     "bytes": 828338
+  },
+  "tabla_top_servicios_14d": {
+    "path": "gold/top_services_by_org_14d",
+    "parquet_files": 1,
+    "bytes": 143359
   },
   "esquema": [
     "org_id: string",
