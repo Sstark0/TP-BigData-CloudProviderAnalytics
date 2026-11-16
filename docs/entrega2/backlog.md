@@ -19,10 +19,9 @@ No son trabajo de la final, pero si no se hacen, la entrega 2 queda incompleta o
 
 | ID | Ítem | Rol | Criterio de aceptación |
 |---|---|---|---|
-| C-1 | Confirmar los roles y sacar la marca de "provisoria" | Todo el equipo | `plan_trabajo.md` §1 confirmado; C-01 del plan de correcciones en Hecho |
-| C-2 | Actualizar el seguimiento: E2-01 a E2-14 con estado real, horas, fecha de cierre y PR | Líder técnico | `plan_trabajo.md` §6 sin filas "Pendiente" que estén hechas (C-05) |
+| C-2 | Actualizar el seguimiento: E2-01 a E2-14 con estado real, horas y fecha de cierre | Líder técnico | `plan_trabajo.md` §6 sin filas "Pendiente" que estén hechas (C-05) |
 | C-3 | Cerrar P-01 a P-04 del plan de correcciones con su evidencia | Líder técnico | P-01 (D-04 validada), P-02 (diagrama v2), P-03 (D-12 a D-18) y P-04 (ver BD-7) en Hecho; P-05 queda abierta con fecha (B-01) |
-| C-4 | Revisar y aprobar los PR de E2-03 a E2-14 e integrar `entrega2` en `main` antes de las 17:00 | Todos · Líder técnico | Commit de `main` enviado al docente (E2-15) |
+| C-4 | Revisar E2-03 a E2-14 e integrar `entrega2` en `main` antes de las 17:00 | Todos · Líder técnico | Commit de `main` enviado al docente (E2-15) |
 | C-5 | Ejecución del README por otra persona del equipo (criterio de E2-12) | Plataforma y gobierno | `e2_12_pipeline_run_<nombre>.json` en el repo. Si no llega al corte, pasa a la final como B-10 |
 
 ## 1. Obligatorio para la final
@@ -92,7 +91,7 @@ Parte de lo que el plan asignaba a la final ya se hizo en la entrega 2:
 | F-05 Gobierno y documentación | 8 | Catálogo, linaje, clasificación (E2-11) | 9 | B-11, B-12 |
 | F-06 Pruebas ampliadas | 8 | 75 pruebas | 4 | B-08 |
 | F-07 Un solo comando | 6 | `run_pipeline.py` (E2-12) | 9 | B-07, B-09, B-10 |
-| F-08 Integración continua | 8 | Flujo de PR | 0 | Se absorbe en cada ítem |
+| F-08 Integración continua | 8 | Integración por ramas | 0 | Se absorbe en cada ítem |
 | F-09 Presentación, video y defensa | 15 | — | 15 | B-14 a B-16 |
 | **Total** | **83** | | **72 + 20 deseable** | |
 

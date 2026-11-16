@@ -10,7 +10,7 @@ dependa de una sola persona.
 
 | Rol | Responsable | Se ocupa de | Revisa a |
 |---|---|---|---|
-| Líder técnico | **Antonio Uriel Serrano Jaimes** | Arquitectura, integración, revisión de PRs, documentación, entrega | Gold y serving |
+| Líder técnico | **Antonio Uriel Serrano Jaimes** | Arquitectura, integración, revisión, documentación, entrega | Gold y serving |
 | Streaming | **Agustín Ezequiel Pagani** | Eventos: Landing → Bronze → Silver, watermark, checkpoints, late data | Batch y calidad |
 | Batch y calidad | **Stephanie Amairany Castillo Avendaño** | Maestros y facturación a Bronze y Silver; reglas de calidad y quarantine; analítica | Plataforma y gobierno |
 | Gold y serving | **Tomas Lautaro Reymundo** | Mart FinOps, AstraDB, consultas CQL | Streaming |
@@ -21,8 +21,8 @@ dependa de una sola persona.
 
 | Tema | Decisión |
 |---|---|
-| Ramas | `main` es lo que se evalúa. El trabajo va en la rama `entrega2`; cada paquete, en una rama corta `e2/<paquete>` que se integra a `entrega2` por PR |
-| Revisión | Toda PR necesita la aprobación del revisor del paquete (§1) antes de integrarse |
+| Ramas | `main` es lo que se evalúa. El trabajo va en la rama `entrega2`; cada paquete, en una rama corta `e2/<paquete>` que se integra a `entrega2` |
+| Revisión | Cada paquete lo revisa el revisor asignado (§1) antes de integrarse |
 | Corte | `entrega2` se integra a `main` el **16/11 antes de las 17:00**. Lo que no esté integrado a esa hora pasa al backlog |
 | Cambios posteriores al corte | Commits con prefijo `fix(e2-feedback)`, como pide la regla de corte de la consigna |
 | Representante de la entrega | **Antonio Uriel Serrano Jaimes**: verifica el commit entregado, el canal y guarda la constancia |
@@ -65,7 +65,7 @@ tiene que ser verdadero para darlo por terminado.
 | F-05 | Gobierno: diccionario de datos, linaje y PII | Plataforma y gobierno | 8 | Diccionario de todas las tablas; sin PII en Gold ni en serving | `docs/final/` | 30/11 |
 | F-06 | Pruebas ampliadas y evidencias de rendimiento | Plataforma y gobierno | 8 | Pruebas de transformaciones y reglas; tamaños y tiempos registrados | Salida de pruebas | 02/12 |
 | F-07 | Ejecución de punta a punta con un solo comando | Plataforma y gobierno | 6 | Entorno limpio → Cassandra poblada siguiendo el README | Registro de la ejecución | 02/12 |
-| F-08 | Integración y revisión continua | Líder técnico | 8 | `main` siempre ejecutable | Historial de PRs | 07/12 |
+| F-08 | Integración y revisión continua | Líder técnico | 8 | `main` siempre ejecutable | Historial de commits | 07/12 |
 | F-09 | Presentación, video y defensa | Todos (3 h cada uno) | 15 | Ensayo completo hecho; todos pueden explicar su componente | Material de la defensa | 05/12 |
 | | **Subtotal final** | | **83** | | | |
 
@@ -83,23 +83,23 @@ tiene que ser verdadero para darlo por terminado.
 
 Se actualiza en cada revisión. Estado: Pendiente · En curso · En revisión · Hecho.
 
-| ID | Responsable | Estado | Horas reales | Fecha de cierre | PR |
-|---|---|---|---:|---|---|
-| E2-01 | Gianluca | Pendiente | | | |
-| E2-02 | Stephanie | Pendiente | | | |
-| E2-03 | Agustín | Pendiente | | | |
-| E2-04 | Agustín | Pendiente | | | |
-| E2-05 | Stephanie | Pendiente | | | |
-| E2-06 | Stephanie | Pendiente | | | |
-| E2-07 | Tomas | Pendiente | | | |
-| E2-08 | Tomas | Pendiente | | | |
-| E2-09 | Stephanie | Pendiente | | | |
-| E2-10 | Gianluca | Pendiente | | | |
-| E2-11 | Gianluca | Pendiente | | | |
-| E2-12 | Gianluca | Pendiente | | | |
-| E2-13 | Antonio | Pendiente | | | |
-| E2-14 | Antonio | Pendiente | | | |
-| E2-15 | Antonio | Pendiente | | | |
+| ID | Responsable | Estado | Horas reales | Fecha de cierre |
+|---|---|---|---:|---|
+| E2-01 | Gianluca | Hecho | | 14/11 |
+| E2-02 | Stephanie | Hecho | | 14/11 |
+| E2-03 | Agustín | Hecho | | 14/11 |
+| E2-04 | Agustín | Hecho | | 14/11 |
+| E2-05 | Stephanie | Hecho | | 14/11 |
+| E2-06 | Stephanie | Hecho | | 14/11 |
+| E2-07 | Tomas | Hecho | | 14/11 |
+| E2-08 | Tomas | Hecho | | 15/11 |
+| E2-09 | Stephanie | Hecho | | 15/11 |
+| E2-10 | Gianluca | Hecho | | 15/11 |
+| E2-11 | Gianluca | Hecho | | 15/11 |
+| E2-12 | Gianluca | Hecho | | 15/11 |
+| E2-13 | Antonio | Hecho | | 15/11 |
+| E2-14 | Antonio | Hecho | | 15/11 |
+| E2-15 | Antonio | En curso | | |
 
 ## 7. Riesgos de la ejecución
 
@@ -107,6 +107,6 @@ Se actualiza en cada revisión. Estado: Pendiente · En curso · En revisión ·
 |---|---|---|---|
 | No conectar Spark con AstraDB a tiempo | Media / alto | Crear la base y probar la conexión **el 13/11**, antes de tener Gold; alternativa: carga con el driver de Python | Gold y serving |
 | Tiempo insuficiente para el alcance de E2 | Alta / alto | Orden por dependencias; recorte definido en §5; corte a las 17:00 | Líder técnico |
-| Credenciales expuestas en un repo público | Media / alto | `.env` ignorado; revisión de cada PR | Plataforma y gobierno |
-| Integración de último momento | Media / alto | PRs chicas a `entrega2` desde el primer día; nada se integra sin revisor | Líder técnico |
+| Credenciales expuestas en un repo público | Media / alto | `.env` ignorado; revisión antes de integrar | Plataforma y gobierno |
+| Integración de último momento | Media / alto | Ramas chicas integradas a `entrega2` desde el primer día; nada se integra sin revisor | Líder técnico |
 | Streaming inestable en el entorno de ejecución | Media / medio | `Trigger.AvailableNow` para las demostraciones; checkpoints persistentes | Streaming |

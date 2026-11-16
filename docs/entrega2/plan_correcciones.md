@@ -18,7 +18,7 @@
 
 | ID | Observación | Corrección | Prioridad | Responsable | Fecha objetivo | Evidencia esperada | Estado |
 |---|---|---|---|---|---|---|---|
-| C-01 | Roles propuestos, no nominales | Asignar una persona a cada rol y un revisor a cada paquete | Alta | Líder técnico | 13/11 | Tabla de asignación en [`plan_trabajo.md`](plan_trabajo.md) §1, con nombres | Pendiente |
+| C-01 | Roles propuestos, no nominales | Asignar una persona a cada rol y un revisor a cada paquete | Alta | Líder técnico | 13/11 | Tabla de asignación en [`plan_trabajo.md`](plan_trabajo.md) §1, con nombres | Hecho |
 | C-02 | El esfuerzo cubre solo el cierre de E1 | Estimar por paquete de trabajo todo lo que falta: entrega 2 y final, con contingencia y capacidad del equipo | Alta | Líder técnico | 13/11 | [`plan_trabajo.md`](plan_trabajo.md) §3 a §5 | Hecho |
 | C-03 | Faltan criterios de cierre | Definir para cada paquete un criterio verificable y la evidencia que lo demuestra | Alta | Líder técnico | 13/11 | Columnas "Criterio de cierre" y "Evidencia" de [`plan_trabajo.md`](plan_trabajo.md) §3 y §4 | Hecho |
 | C-04 | Decisiones organizativas pendientes | Cerrar: flujo de ramas y revisión, representante de la entrega, canal, y regla para cambios posteriores al corte | Alta | Todo el equipo | 13/11 | [`plan_trabajo.md`](plan_trabajo.md) §2, sin ítems "a definir" | Pendiente |

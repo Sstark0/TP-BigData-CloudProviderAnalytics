@@ -2,9 +2,9 @@
 
 Proyecto integrador · **Big Data (72.80) · ITBA · 2.º cuatrimestre 2026** · Prof. Diego Mosquera
 
-Pipeline de datos para el área de datos de un proveedor de nube: ingesta batch y streaming, Data Lake
-en Parquet (Landing → Bronze → Silver → Gold) con PySpark, y publicación de marts analíticos para
-**FinOps, Soporte y Producto/Usage** en Cassandra/AstraDB.
+Pipeline de datos para un proveedor de nube. Ingesta datos en batch y en streaming, los procesa con PySpark en un
+Data Lake en Parquet (Landing → Bronze → Silver → Gold) y publica marts para **FinOps, Soporte y Producto/Usage**
+en Cassandra/AstraDB.
 
 ## Integrantes
 
@@ -18,8 +18,8 @@ en Parquet (Landing → Bronze → Silver → Gold) con PySpark, y publicación 
 
 | Instancia | Foco | Estado |
 |---|---|---|
-| Entrega 1 | Diseño y fundación de datos | Diseño consolidado v1.1; evidencia de exploración y regresiones incluidas |
-| Entrega 2 · 16/11/2026 18:30 | Implementación técnica end-to-end mínima | ⬜ |
+| Entrega 1 · 05/10/2026 | Diseño y fundación de datos | Entregada (diseño v1.1 y exploración) |
+| Entrega 2 · 16/11/2026 18:30 | Implementación técnica end-to-end mínima | Entregada: pipeline completo de Landing a AstraDB |
 | Final · 07/12/2026 21:30 | MVP integrado y defensa | ⬜ |
 
 Correcciones de la entrega 1 y plan de la entrega 2: [`docs/entrega2/`](docs/entrega2/).
@@ -28,21 +28,19 @@ Correcciones de la entrega 1 y plan de la entrega 2: [`docs/entrega2/`](docs/ent
 
 ![Arquitectura implementada v2.0](docs/diagramas/arquitectura_v2.png)
 
-Documento completo: [`docs/entrega2/arquitectura_v2.md`](docs/entrega2/arquitectura_v2.md). Incluye el flujo de
-eventos (streaming, watermark, late data y calidad), qué cambió respecto de la entrega 1, particiones, claves
-de Cassandra y umbrales.
+El detalle está en [`docs/entrega2/arquitectura_v2.md`](docs/entrega2/arquitectura_v2.md): flujo de eventos
+(streaming, watermark, datos tardíos y calidad), cambios respecto de la entrega 1, particiones, claves de
+Cassandra y umbrales.
 
 ## Quickstart (entrega 2)
 
-Entorno validado: **Linux o WSL2 (Ubuntu) con Python 3.11 y Java 17**. En Windows nativo, Spark no puede escribir
-Parquet sin `winutils.exe`, y los workers de Python pueden terminar en el alias de Microsoft Store. Por eso en
-Windows se usa WSL2.
+Lo probamos en **Linux o WSL2 (Ubuntu) con Python 3.11 y Java 17**. En Windows conviene usar WSL2: sin
+`winutils.exe` Spark no escribe Parquet, y los workers de Python pueden terminar llamando al alias de Microsoft Store.
 
 ### 1. Preparar el entorno (una sola vez)
 
-Para usuarios Windows:
- Primero instala WSL2 desde PowerShell como administrador con `wsl --install -d Ubuntu`,
-reiniciá y abrí la terminal de Ubuntu. Después, en Linux o en Ubuntu:
+En Windows, primero instalá WSL2 desde PowerShell como administrador (`wsl --install -d Ubuntu`), reiniciá y
+abrí la terminal de Ubuntu. Después, en Linux o en Ubuntu:
 
 ```bash
 sudo apt update && sudo apt install -y openjdk-17-jdk software-properties-common git unzip
@@ -74,9 +72,9 @@ python scripts/run_pipeline.py --clean --tests --operador "Tu nombre"
 ```
 
 - **Duración:** unos 8 minutos, 2,5 de ellos de pruebas.
-- **Orden:** ejecuta las 67 pruebas y vacía las zonas derivadas. Después corre en orden las nueve etapas: control de Landing, Bronze batch, Bronze streaming, Silver de eventos, enriquecimiento, reporte de calidad, Gold, anomalías y AstraDB. Si una etapa falla, se detiene.
-- **Registro:** queda en `evidence/entrega2/e2_12_pipeline_run.json`, con quién ejecutó, el entorno, las pruebas y los conteos y balances de cada etapa. La salida completa de cada etapa queda en `datalake/_runs/pipeline/<run_id>/`.
-- **AstraDB:** sin sus credenciales, la etapa se **omite** (queda registrado) y el resto corre igual. Ver el paso 4.
+- **Qué hace:** corre las 67 pruebas, vacía las zonas derivadas y ejecuta las nueve etapas en orden (control de Landing, Bronze batch, Bronze streaming, Silver de eventos, enriquecimiento, reporte de calidad, Gold, anomalías y AstraDB). Si una etapa falla, se corta ahí.
+- **Registro:** `evidence/entrega2/e2_12_pipeline_run.json` guarda quién lo corrió, el entorno, las pruebas y los conteos de cada etapa. La salida completa queda en `datalake/_runs/pipeline/<run_id>/`.
+- **AstraDB:** si no hay credenciales, esa etapa se saltea (y queda registrado) y el resto corre igual. Ver el paso 4.
 
 ### 4. AstraDB (etapa de serving)
 
@@ -115,10 +113,10 @@ Las dos consultas para el CQL Console están en [`cql/02_queries.cql`](cql/02_qu
 
 ### Etapas sueltas y opciones
 
-Cada script de `scripts/` se puede correr solo, en este orden: `check_common.py`, `run_bronze_batch.py`,
+También se puede correr cada script de `scripts/` por separado, en este orden: `check_common.py`, `run_bronze_batch.py`,
 `run_bronze_streaming.py`, `run_silver_events.py`, `run_silver_enrichment.py`, `report_quality.py`,
-`run_gold_finops.py`, `run_cost_anomalies.py` y `run_serving_astra.py`. Cada uno lee lo que dejó el anterior: si
-cambia una capa, hay que volver a correr todas las siguientes. Para eso, `run_pipeline.py --desde <etapa>`.
+`run_gold_finops.py`, `run_cost_anomalies.py` y `run_serving_astra.py`. Cada uno usa lo que dejó el anterior, así que
+si cambia una capa hay que volver a correr las siguientes. Para eso está `run_pipeline.py --desde <etapa>`.
 
 | Opción de `run_pipeline.py` | Efecto |
 |---|---|
@@ -131,7 +129,7 @@ cambia una capa, hay que volver a correr todas las siguientes. Para eso, `run_pi
 ### Limpieza y reinicio
 
 - **Reconstruir el lago desde cero:** `python scripts/run_pipeline.py --clean`. Landing es inmutable y nunca se borra.
-- **Re-ejecutar sin limpiar:** es seguro y no duplica nada. El streaming retoma desde su checkpoint, Silver y Gold se recalculan enteros, y AstraDB reemplaza por clave y borra las filas que ya no están en Gold (D-13, D-16, D-17).
+- **Re-ejecutar sin limpiar:** no duplica nada. El streaming sigue desde su checkpoint, Silver y Gold se recalculan completos y AstraDB reescribe por clave y borra lo que ya no está en Gold (D-13, D-16, D-17).
 
 ### Problemas frecuentes
 
@@ -172,20 +170,19 @@ cambia una capa, hay que volver a correr todas las siguientes. Para eso, `run_pi
 └── evidence/              ← resultados de ejecución por entrega
 ```
 
-## Entrega 1 · 05/10/2026 (hora a confirmar)
+## Entrega 1 · 05/10/2026
 
 Diseño integrado v1.1: [Markdown](docs/entrega1/diseno_integrado.md) y [PDF](docs/entrega1/diseno_integrado.pdf) y [Word editable](docs/entrega1/diseno_integrado.docx).
 Matriz: [Markdown](docs/entrega1/matriz_requisitos.md). Plan: [Markdown](docs/entrega1/plan_inicial.md).
 Verificación y cierre: [cambios y validación](evidence/entrega1/VERIFICACION_2026-10-05.md) y [cierre](evidence/entrega1/CIERRE.md).
 
-Esta revisión parte de `e04b00b3078ec5d26041b849890cfe3807cbb570` e integra el diseño v1.1 y las correcciones de reproducibilidad del 05/10. Conserva la evidencia histórica fechada. Ver [cambios y validación](evidence/entrega1/VERIFICACION_2026-10-05.md).
-Arquitectura propuesta; no hay pipeline productivo, streaming ni Cassandra implementados.
-Correcciones de esta preparación y comprobaciones: [cierre](evidence/entrega1/CIERRE.md).
+La entrega 1 era de diseño: la arquitectura era una propuesta y todavía no había pipeline, streaming ni Cassandra.
+La evidencia de esa etapa se conserva con sus fechas.
 
 ## Quickstart (entrega 1: exploración de datos)
 
 ### Google Colab (alternativa por validar)
-Esta preparación validó el entorno local Python3.11; no ejecutó Colab. Verificar una versión de Python compatible con Spark3.5 antes de usar esta alternativa.
+No lo probamos en Colab, solo en local con Python 3.11. Antes de usarlo, verificar que la versión de Python sea compatible con Spark 3.5.
 
 1. Clonar o descargar este repositorio.
 2. Copiar el dataset del docente dentro de `datalake/landing/` (ver [`data/README.md`](data/README.md)).
@@ -207,7 +204,7 @@ python scripts/run_exploration.py
 # Alternativa interactiva: jupyter notebook notebooks/01_exploracion_fuentes.ipynb
 ```
 
-Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datalake/landing` antes de ejecutar. `EVIDENCE_DIR` permite elegir otra carpeta, incluso fuera del repositorio; tanto el perfil como la copia ejecutada se guardan en su subcarpeta `entrega1/`. Usar una ruta absoluta evita ambigüedades. El ejemplo de configuración documenta variables y no carga automáticamente un archivo .env. El runner guarda además un notebook ejecutado en evidence.
+Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datalake/landing` antes de ejecutar. Con `EVIDENCE_DIR` se puede guardar la evidencia en otra carpeta (va a la subcarpeta `entrega1/`). El `.env.example` solo documenta las variables: no se carga solo.
 
 **Salida esperada:** tablas de perfil en el notebook y `evidence/entrega1/perfil_fuentes.json`
 (43.200 eventos, 120 archivos, 0 `event_id` duplicados).
@@ -225,7 +222,7 @@ Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datala
 | Ejecuciones | Cada proceso deja su registro en `datalake/_runs/<proceso>/<run_id>.json`, con conteos y balances |
 | Configuración | Variables de entorno (`config/.env.example`); nunca credenciales en el repo |
 | Commits | `tipo(ámbito): mensaje`; tipos: `feat`, `docs`, `chore`, `fix` |
-| Ramas | `main` siempre entregable; `entrega2` integra; un paquete por rama `e2/<paquete>` con PR revisado |
+| Ramas | `main` siempre entregable; `entrega2` integra; un paquete por rama `e2/<paquete>`, revisada antes de integrar |
 
 
 ## Documentación
@@ -244,9 +241,9 @@ Si el dataset está fuera del repo, exportar `LANDING_PATH=/ruta/absoluta/datala
 - 02/10: runner y notebook ejecutado, según evidencia versionada.
 - 04/10: las 19 celdas funcionales se ejecutaron en orden con Spark en un proceso Python directo; el runner Jupyter quedó bloqueado al iniciar kernel por restricciones de puertos/ZeroMQ del entorno usado.
 - 05/10: correcciones y pruebas de regresión documentadas en [verificación del 05/10](evidence/entrega1/VERIFICACION_2026-10-05.md).
-- Colab sigue pendiente de validación.
+- Colab: sin probar.
 
-Usar los datos completos para reproducir los hallazgos documentados. La muestra permite una prueba de ejecución con un solo JSONL; no conserva integridad referencial ni reproduce los totales del dataset. Los percentiles aproximados pueden diferir entre corridas dentro del error de rango configurado. Los detalles están en `evidence/entrega1/VERIFICACION_2026-10-04.txt`.
+Para reproducir los números documentados hay que usar el dataset completo. La muestra de `data/sample/` sirve para probar que corre (tiene un solo JSONL), pero no mantiene las relaciones entre tablas ni da los mismos totales. Los percentiles aproximados pueden variar un poco entre corridas. Más detalle en `evidence/entrega1/VERIFICACION_2026-10-04.txt`.
 
 ## Pruebas de regresión
 

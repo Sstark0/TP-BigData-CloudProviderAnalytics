@@ -80,8 +80,8 @@ quarantine/source=usage_events_silver            landing/usage_events_stream/<ar
 ## 4. Responsables
 
 Cada capa y cada dominio tienen un rol responsable y otro rol que revisa (plan de trabajo, §1). El responsable
-verifica los criterios de cierre de sus tablas, aprueba los cambios por PR y responde por sus datos. La asignación
-nominal es la de [`plan_trabajo.md`](plan_trabajo.md) §1, provisoria hasta que el equipo la confirme.
+verifica los criterios de cierre de sus tablas, revisa los cambios antes de integrarlos y responde por sus datos. La asignación
+nominal es la de [`plan_trabajo.md`](plan_trabajo.md) §1, confirmada por el equipo.
 
 | Ámbito | Tablas | Responsable | Revisa |
 |---|---|---|---|
@@ -143,4 +143,3 @@ streaming escribe solo a través de su checkpoint.
 - **Enmascaramiento de `email` en Bronze:** hoy se conserva tal como llega. Si alguna vez se necesitara en Silver, debería pasar con hash o seudónimo.
 - **Retención:** no hay una política escrita de cuánto tiempo se guardan las fotos de Bronze y los registros de `_runs/`. Además, AstraDB Free borra una base hibernada más de 30 días.
 - **Latencia del streaming:** no se mide el tiempo entre la llegada de un archivo y su disponibilidad en Silver (objetivo O4 de E1).
-- **Confirmación de responsables:** la asignación nominal de §4 sigue provisoria hasta que el equipo la confirme.
