@@ -21,8 +21,8 @@
 | C-01 | Roles propuestos, no nominales | Asignar una persona a cada rol y un revisor a cada paquete | Alta | Líder técnico | 13/11 | Tabla de asignación en [`plan_trabajo.md`](plan_trabajo.md) §1, con nombres | Hecho |
 | C-02 | El esfuerzo cubre solo el cierre de E1 | Estimar por paquete de trabajo todo lo que falta: entrega 2 y final, con contingencia y capacidad del equipo | Alta | Líder técnico | 13/11 | [`plan_trabajo.md`](plan_trabajo.md) §3 a §5 | Hecho |
 | C-03 | Faltan criterios de cierre | Definir para cada paquete un criterio verificable y la evidencia que lo demuestra | Alta | Líder técnico | 13/11 | Columnas "Criterio de cierre" y "Evidencia" de [`plan_trabajo.md`](plan_trabajo.md) §3 y §4 | Hecho |
-| C-04 | Decisiones organizativas pendientes | Cerrar: flujo de ramas y revisión, representante de la entrega, canal, y regla para cambios posteriores al corte | Alta | Todo el equipo | 13/11 | [`plan_trabajo.md`](plan_trabajo.md) §2, sin ítems "a definir" | Pendiente |
-| C-05 | Gestión de la ejecución | Registrar el avance real de cada paquete (estado, horas, fecha de cierre) | Media | Líder técnico | 16/11 y cada semana | Tabla de seguimiento de [`plan_trabajo.md`](plan_trabajo.md) §6 actualizada | Pendiente |
+| C-04 | Decisiones organizativas pendientes | Cerrar: flujo de ramas y revisión, representante de la entrega, canal, y regla para cambios posteriores al corte | Alta | Todo el equipo | 13/11 | [`plan_trabajo.md`](plan_trabajo.md) §2, sin ítems "a definir" | Hecho |
+| C-05 | Gestión de la ejecución | Registrar el avance real de cada paquete (estado y fecha de cierre) | Media | Líder técnico | 16/11 y cada semana | Tabla de seguimiento de [`plan_trabajo.md`](plan_trabajo.md) §6 actualizada | Hecho |
 
 ## 3. Compromisos derivados de Entrega 1
 
@@ -30,9 +30,9 @@ Lo siguiente no proviene de directamente del feedback recibido, no obstante, res
 
 | ID | Compromiso | Origen | Responsable | Fecha objetivo | Evidencia esperada | Estado |
 |---|---|---|---|---|---|---|
-| P-01 | Validar watermark, checkpoint, deduplicación, late data y recuperación con Structured Streaming real | D-04 | Streaming | 15/11 | Ejecución con conteos en `evidence/entrega2/` y D-04 en estado Aceptada | Pendiente |
-| P-02 | Actualizar el diagrama para que refleje lo implementado | Consigna 6.2 | Líder técnico | 15/11 | Diagrama v2 con versión y fecha | Pendiente |
-| P-03 | Registrar decisiones de particiones, claves de Cassandra y umbrales de anomalías | Consigna 6.3 | Gold y serving | 15/11 | Entradas nuevas en `DECISIONS.md` | Pendiente |
+| P-01 | Validar watermark, checkpoint, deduplicación, late data y recuperación con Structured Streaming real | D-04 | Streaming | 15/11 | Ejecución con conteos en `evidence/entrega2/` y D-04 en estado Aceptada | Hecho |
+| P-02 | Actualizar el diagrama para que refleje lo implementado | Consigna 6.2 | Líder técnico | 15/11 | Diagrama v2 con versión y fecha | Hecho |
+| P-03 | Registrar decisiones de particiones, claves de Cassandra y umbrales de anomalías | Consigna 6.3 | Gold y serving | 15/11 | Entradas nuevas en `DECISIONS.md` | Hecho |
 | P-04 | Validar la alternativa Colab o declararla fuera de alcance | README de E1 | Plataforma y gobierno | 15/11 | README actualizado | Pendiente |
 | P-05 | Resolver o mantener abierta con fecha la normalización a USD y la semántica de signos | D-08, D-09 | Batch y calidad | Antes del mart de revenue (final) | `DECISIONS.md` | Abierta |
 
