@@ -30,7 +30,7 @@ dependa de una sola persona.
 | Seguimiento | Revisión corta diaria hasta el 16/11 y semanal hasta el 07/12; se actualiza la tabla de §6 |
 | Credenciales | Token de AstraDB solo en `.env` local, nunca en el repositorio, que es público |
 
-## 3. Paquetes de la entrega 2 (13/11 → 16/11)
+## 3. Paquetes de la entrega 2
 
 Alcance: el mínimo de la consigna 6.2. Las horas son la estimación por paquete; el **criterio de cierre** es lo que
 tiene que ser verdadero para darlo por terminado.
@@ -71,11 +71,11 @@ tiene que ser verdadero para darlo por terminado.
 
 ## 5. Esfuerzo total y capacidad
 
-| Tramo | Horas estimadas | Con 20 % de contingencia | Días disponibles | Horas por persona |
-|---|---:|---:|---|---|
-| Entrega 2 (13/11 → 16/11) | 76 | 91 | 3,5 días | ≈ 18 h en total |
-| Final (17/11 → 07/12) | 83 | 100 | 3 semanas | ≈ 6,7 h por semana |
-| **Proyecto restante** | **159** | **191** | | |
+| Tramo | Horas estimadas | Con 20 % de contingencia | Horas por persona |
+|---|---:|---:|---|
+| Entrega 2 | 76 | 91 | ≈ 18 h |
+| Final | 83 | 100 | ≈ 20 h |
+| **Proyecto restante** | **159** | **191** | **≈ 38 h** |
 
 
 
@@ -83,23 +83,23 @@ tiene que ser verdadero para darlo por terminado.
 
 Se actualiza en cada revisión. Estado: Pendiente · En curso · En revisión · Hecho.
 
-| ID | Responsable | Estado | Horas reales | Fecha de cierre |
-|---|---|---|---:|---|
-| E2-01 | Gianluca | Hecho | | 14/11 |
-| E2-02 | Stephanie | Hecho | | 14/11 |
-| E2-03 | Agustín | Hecho | | 14/11 |
-| E2-04 | Agustín | Hecho | | 14/11 |
-| E2-05 | Stephanie | Hecho | | 14/11 |
-| E2-06 | Stephanie | Hecho | | 14/11 |
-| E2-07 | Tomas | Hecho | | 14/11 |
-| E2-08 | Tomas | Hecho | | 15/11 |
-| E2-09 | Stephanie | Hecho | | 15/11 |
-| E2-10 | Gianluca | Hecho | | 15/11 |
-| E2-11 | Gianluca | Hecho | | 15/11 |
-| E2-12 | Gianluca | Hecho | | 15/11 |
-| E2-13 | Antonio | Hecho | | 15/11 |
-| E2-14 | Antonio | Hecho | | 15/11 |
-| E2-15 | Antonio | En curso | | |
+| ID | Responsable | Estado | Fecha de cierre |
+|---|---|---|---|
+| E2-01 | Gianluca | Hecho | 14/11 |
+| E2-02 | Stephanie | Hecho | 14/11 |
+| E2-03 | Agustín | Hecho | 14/11 |
+| E2-04 | Agustín | Hecho | 14/11 |
+| E2-05 | Stephanie | Hecho | 14/11 |
+| E2-06 | Stephanie | Hecho | 14/11 |
+| E2-07 | Tomas | Hecho | 14/11 |
+| E2-08 | Tomas | Hecho | 15/11 |
+| E2-09 | Stephanie | Hecho | 15/11 |
+| E2-10 | Gianluca | Hecho | 15/11 |
+| E2-11 | Gianluca | Hecho | 15/11 |
+| E2-12 | Gianluca | Hecho | 15/11 |
+| E2-13 | Antonio | Hecho | 15/11 |
+| E2-14 | Antonio | Hecho | 15/11 |
+| E2-15 | Antonio | En curso | |
 
 ## 7. Riesgos de la ejecución
 
